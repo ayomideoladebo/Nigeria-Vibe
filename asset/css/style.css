@@ -1,0 +1,503 @@
+/* --- Global Styles & Variables --- */
+:root {
+    --font-heading: 'Orbitron', sans-serif;
+    --font-body: 'Rajdhani', sans-serif;
+    --color-purple: #8A2BE2;
+    --color-blue: #00BFFF;
+    --color-green: #39FF14;
+    --color-dark: #0a0a0a;
+    --color-light: #f4f4f4;
+    --text-glow: 0 0 5px var(--color-green), 0 0 10px var(--color-green), 0 0 15px var(--color-green);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-body);
+    background-color: var(--color-dark);
+    color: var(--color-light);
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+h1, h2, h3 {
+    font-family: var(--font-heading);
+    font-weight: 700;
+}
+
+a {
+    text-decoration: none;
+    color: var(--color-green);
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: var(--color-light);
+}
+
+/* --- Background & Overlay --- */
+.background-animation {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 200%;
+    height: 200%;
+    z-index: -2;
+    background: linear-gradient(45deg, var(--color-purple), var(--color-blue), var(--color-green), var(--color-purple));
+    background-size: 400% 400%;
+    animation: gradientShift 20s ease infinite;
+}
+
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(10, 10, 10, 0.8);
+    backdrop-filter: blur(5px);
+    z-index: -1;
+}
+
+/* --- Navbar --- */
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px);
+    padding: 1rem 0;
+    border-bottom: 1px solid rgba(57, 255, 20, 0.2);
+}
+
+.navbar .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar .logo {
+    font-family: var(--font-heading);
+    font-size: 1.8rem;
+    font-weight: 700;
+}
+
+.navbar nav ul {
+    display: flex;
+    list-style: none;
+}
+
+.navbar nav ul li {
+    margin-left: 25px;
+}
+
+.navbar nav ul li a {
+    font-size: 1.1rem;
+    font-weight: 600;
+    padding-bottom: 5px;
+    border-bottom: 2px solid transparent;
+}
+
+.navbar nav ul li a:hover {
+    border-bottom-color: var(--color-green);
+}
+
+/* --- Hero Section --- */
+.hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.hero h1 {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+}
+
+.glow {
+    text-shadow: var(--text-glow);
+}
+
+.hero p {
+    font-size: 1.5rem;
+    max-width: 600px;
+    margin: 0 auto 2rem;
+}
+
+/* --- General Button Styles --- */
+.btn {
+    display: inline-block;
+    padding: 12px 30px;
+    background: var(--color-green);
+    color: var(--color-dark);
+    font-family: var(--font-heading);
+    font-weight: 700;
+    border-radius: 5px;
+    border: 2px solid var(--color-green);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    background: transparent;
+    color: var(--color-green);
+    box-shadow: 0 0 15px var(--color-green);
+    transform: translateY(-3px);
+}
+
+/* --- About & Donate Sections --- */
+.about-section, .donate-section {
+    padding: 80px 0;
+    text-align: center;
+}
+
+.about-section h2, .donate-section h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    text-shadow: 0 0 10px var(--color-purple);
+}
+
+.about-section p, .donate-section > .container > p {
+    font-size: 1.2rem;
+    max-width: 800px;
+    margin: 0 auto 2rem;
+    color: #ccc;
+}
+
+/* --- Donation Tiers --- */
+.tier-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.tier-card {
+    background: rgba(25, 25, 25, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 30px;
+    border-radius: 10px;
+    text-align: left;
+    transition: all 0.3s ease;
+}
+
+.tier-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+    border-color: var(--color-green);
+}
+
+.tier-card.elite {
+    border-color: var(--color-purple);
+}
+
+.tier-card.elite:hover {
+    border-color: var(--color-purple);
+    box-shadow: 0 0 20px var(--color-purple);
+}
+
+.tier-card h3 {
+    font-size: 1.8rem;
+    color: var(--color-green);
+}
+
+.tier-card.elite h3 {
+    color: var(--color-purple);
+}
+
+.tier-card .price {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: var(--color-light);
+}
+
+.tier-card ul {
+    list-style: none;
+    margin-bottom: 30px;
+}
+
+.tier-card ul li {
+    margin-bottom: 10px;
+    padding-left: 20px;
+    position: relative;
+}
+
+.tier-card ul li::before {
+    content: '✓';
+    color: var(--color-green);
+    position: absolute;
+    left: 0;
+}
+
+.btn-select-tier {
+    width: 100%;
+    padding: 12px 0;
+    background: transparent;
+    color: var(--color-green);
+    border: 2px solid var(--color-green);
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    font-weight: 700;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.tier-card.elite .btn-select-tier {
+    color: var(--color-purple);
+    border-color: var(--color-purple);
+}
+
+.btn-select-tier:hover {
+    background: var(--color-green);
+    color: var(--color-dark);
+}
+
+.tier-card.elite .btn-select-tier:hover {
+    background: var(--color-purple);
+}
+
+/* --- Footer --- */
+.footer {
+    background: #000;
+    text-align: center;
+    padding: 2rem 0;
+    border-top: 1px solid rgba(57, 255, 20, 0.2);
+}
+
+.footer p {
+    margin: 5px 0;
+    color: #aaa;
+    font-family: var(--font-heading);
+}
+
+/* --- Modal Styles --- */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    justify-content: center;
+    align-items: center;
+    animation: fadeIn 0.3s;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.modal-content {
+    background: #1a1a1a;
+    padding: 30px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 500px;
+    border: 1px solid var(--color-green);
+    position: relative;
+    animation: slideIn 0.3s;
+}
+
+@keyframes slideIn {
+    from { transform: translateY(-50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.close-button {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    cursor: pointer;
+}
+
+.close-button:hover, .close-button:focus {
+    color: white;
+}
+
+.modal-content h2 {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    font-family: var(--font-body);
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px;
+    background: #333;
+    border: 1px solid #555;
+    border-radius: 5px;
+    color: var(--color-light);
+    font-family: var(--font-body);
+    font-size: 1rem;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: var(--color-green);
+}
+
+.form-group input[readonly] {
+    background: #222;
+    cursor: not-allowed;
+}
+
+.payment-placeholder {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.payment-placeholder p {
+    margin-bottom: 15px;
+}
+
+.payment-btn {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.paystack { background-color: #00BFFF; border-color: #00BFFF; }
+.paystack:hover { color: #00BFFF; background: transparent; box-shadow: 0 0 15px #00BFFF; }
+
+.stripe { background-color: #6772E5; border-color: #6772E5; }
+.stripe:hover { color: #6772E5; background: transparent; box-shadow: 0 0 15px #6772E5; }
+
+/* --- Admin Page Styles --- */
+body.admin-body {
+    background: #111;
+}
+
+.admin-nav {
+    background: #1a1a1a;
+    border-bottom-color: #444;
+}
+
+.admin-main {
+    padding: 40px 0;
+}
+
+.admin-main h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2.2rem;
+}
+
+.table-container {
+    overflow-x: auto;
+    background: #1e1e1e;
+    border-radius: 8px;
+    border: 1px solid #333;
+    padding: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #333;
+}
+
+thead th {
+    font-family: var(--font-heading);
+    color: var(--color-green);
+    text-transform: uppercase;
+}
+
+tbody tr {
+    transition: background-color 0.2s ease;
+}
+
+tbody tr:hover {
+    background-color: #2a2a2a;
+}
+
+.status-select {
+    width: 100%;
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #555;
+    background: #333;
+    color: white;
+    font-family: var(--font-body);
+    font-weight: 600;
+}
+
+.status-select.processed {
+    background-color: rgba(57, 255, 20, 0.2);
+    color: var(--color-green);
+    border-color: var(--color-green);
+}
+
+.status-select.pending {
+    background-color: rgba(255, 165, 0, 0.2);
+    color: orange;
+    border-color: orange;
+}
+
+/* --- Responsive Design --- */
+@media (max-width: 768px) {
+    .navbar .container {
+        flex-direction: column;
+    }
+
+    .navbar nav ul {
+        margin-top: 10px;
+        padding: 0;
+    }
+    
+    .navbar nav ul li {
+        margin: 0 10px;
+    }
+
+    .hero h1 {
+        font-size: 2.5rem;
+    }
+
+    .hero p {
+        font-size: 1.2rem;
+    }
+}

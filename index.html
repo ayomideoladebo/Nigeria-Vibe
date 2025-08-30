@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nigerian Vibe RP - The Ultimate SA-MP Experience</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Custom Tailwind Configuration & Styles */
+        :root {
+            --font-heading: 'Audiowide', sans-serif;
+            --font-body: 'Rajdhani', sans-serif;
+            --color-green-primary: #008000; /* Darker green */
+            --color-green-accent: #39FF14; /* Neon green */
+            --color-cyan-accent: #00FFFF; /* Bright Cyan */
+        }
+
+        @tailwind base;
+        @tailwind components;
+        @tailwind utilities;
+
+        @layer base {
+            html { scroll-behavior: smooth; }
+            body {
+                font-family: var(--font-body);
+                @apply bg-gray-950 text-gray-200 antialiased;
+            }
+            h1, h2, h3, h4 {
+                font-family: var(--font-heading);
+                @apply tracking-wider;
+            }
+        }
+
+        /* Custom glow effects */
+        .text-glow-cyan { text-shadow: 0 0 5px var(--color-cyan-accent), 0 0 10px var(--color-cyan-accent), 0 0 15px var(--color-cyan-accent); }
+        .text-glow-green { text-shadow: 0 0 5px var(--color-green-accent), 0 0 10px var(--color-green-accent), 0 0 15px var(--color-green-accent); }
+
+        /* Animated Gradient Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(45deg, #0d1f02, #011424, #0d1f02); /* Greenish gradient */
+            background-size: 200% 200%;
+            animation: gradientShift 20s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Styling for the featured VIP card */
+        .featured-tier {
+            @apply scale-105 border-[var(--color-cyan-accent)] bg-gray-800/80 shadow-2xl shadow-[var(--color-cyan-accent)]/20 z-10;
+        }
+        .featured-tier .btn-purchase {
+            @apply bg-[var(--color-cyan-accent)] text-black shadow-[0_0_15px_var(--color-cyan-accent)];
+        }
+        .featured-tier .btn-purchase:hover {
+            @apply bg-[var(--color-cyan-accent)]/80 shadow-[0_0_25px_var(--color-cyan-accent)];
+        }
+    </style>
+</head>
+<body class="overflow-x-hidden">
+
+    <header class="sticky top-0 z-50 bg-black/50 backdrop-blur-lg border-b border-gray-700/50">
+        <div class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <h1 class="text-3xl font-black text-white">NV:RP</h1>
+            <nav class="hidden md:flex items-center space-x-8">
+                <a href="#about" class="text-lg font-semibold hover:text-[var(--color-cyan-accent)] transition-colors">About</a>
+                <a href="#why-us" class="text-lg font-semibold hover:text-[var(--color-cyan-accent)] transition-colors">Features</a>
+                <a href="#donate" class="text-lg font-semibold hover:text-[var(--color-cyan-accent)] transition-colors">Donate</a>
+            </nav>
+            <a href="admin.html" class="border-2 border-[var(--color-green-accent)] text-[var(--color-green-accent)] px-5 py-2 rounded-md font-bold text-sm hover:bg-[var(--color-green-accent)] hover:text-black hover:shadow-[0_0_15px_var(--color-green-accent)] transition-all">
+                ADMIN PANEL
+            </a>
+        </div>
+    </header>
+
+    <main>
+        <section id="home" class="relative min-h-screen flex items-center justify-center text-center bg-cover bg-center" style="background-image: url('image.jpg');">
+            <div class="absolute inset-0 bg-black/70"></div>
+            <div class="relative z-10 container mx-auto px-6">
+                <h2 class="text-5xl md:text-8xl font-black text-white text-glow-green uppercase">Nigerian Vibe RP</h2>
+                <p class="text-xl md:text-2xl mt-4 text-gray-300 max-w-4xl mx-auto font-semibold">
+                    The Ultimate SA-MP Roleplay Experience. Join a thriving, ever-evolving world driven by players. Your story, your rules, your legacy.
+                </p>
+                <div class="mt-8 flex flex-col md:flex-row justify-center items-center gap-4">
+                    <a href="#" class="w-full md:w-auto bg-[var(--color-green-primary)] text-white px-10 py-3 rounded-lg font-bold text-lg hover:bg-[var(--color-green-accent)] hover:text-black transition-all transform hover:scale-105 hover:shadow-[0_0_20px_var(--color-green-primary)]">
+                        JOIN OUR DISCORD
+                    </a>
+                    <a href="#" class="w-full md:w-auto border-2 border-[var(--color-cyan-accent)] text-[var(--color-cyan-accent)] px-10 py-3 rounded-lg font-bold text-lg hover:bg-[var(--color-cyan-accent)] hover:text-black transition-all transform hover:scale-105 hover:shadow-[0_0_20px_var(--color-cyan-accent)]">
+                        COPY SERVER IP
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="py-24 bg-black/20">
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="text-4xl md:text-5xl font-extrabold text-white text-glow-green">ABOUT THE SERVER</h2>
+                <p class="mt-4 max-w-3xl mx-auto text-lg text-gray-300">
+                    Nigerian Vibe RP is more than just a server, it's a community where stories unfold. We provide a feature-rich, stable platform for you to immerse yourself in deep roleplay scenarios and forge your own path with endless possibilities.
+                </p>
+                <div class="mt-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div class="bg-gray-900/50 border border-gray-700 p-8 rounded-lg transition-all duration-300 hover:border-[var(--color-green-accent)] hover:-translate-y-2">
+                        <h3 class="text-2xl text-[var(--color-green-accent)]">Immersive Roleplay</h3>
+                        <p class="mt-2 text-gray-400">Player-driven stories in a dynamic, custom-mapped Nigerian environment.</p>
+                    </div>
+                    <div class="bg-gray-900/50 border border-gray-700 p-8 rounded-lg transition-all duration-300 hover:border-[var(--color-green-accent)] hover:-translate-y-2">
+                        <h3 class="text-2xl text-[var(--color-green-accent)]">Custom Features</h3>
+                        <p class="mt-2 text-gray-400">Unique jobs, custom vehicles, advanced economy, and exclusive scripts.</p>
+                    </div>
+                    <div class="bg-gray-900/50 border border-gray-700 p-8 rounded-lg transition-all duration-300 hover:border-[var(--color-green-accent)] hover:-translate-y-2">
+                        <h3 class="text-2xl text-[var(--color-green-accent)]">Active Community</h3>
+                        <p class="mt-2 text-gray-400">A friendly and growing community with active factions and businesses.</p>
+                    </div>
+                    <div class="bg-gray-900/50 border border-gray-700 p-8 rounded-lg transition-all duration-300 hover:border-[var(--color-green-accent)] hover:-translate-y-2">
+                        <h3 class="text-2xl text-[var(--color-green-accent)]">Dedicated Staff</h3>
+                        <p class="mt-2 text-gray-400">Professional and responsive staff team ensuring fair and fun gameplay.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="why-us" class="py-24">
+            <div class="container mx-auto px-6">
+                <div class="bg-black/20 border border-[var(--color-green-primary)]/30 rounded-xl p-8 lg:p-12 grid grid-cols-1 lg:grid-cols-3 gap-12 items-center">
+                    <div class="lg:col-span-2">
+                        <h3 class="text-3xl font-bold text-white text-glow-green">WHY CHOOSE NV:RP?</h3>
+                        <p class="mt-4 text-gray-300 text-lg">
+                            We're dedicated to providing the most authentic and enjoyable roleplay experience. Our developers are constantly working on new features and improvements based on community feedback. We prioritize a balanced economy, fair rule enforcement, and a platform where your character's story truly matters.
+                        </p>
+                    </div>
+                    <div class="text-center">
+                        <h4 class="text-2xl font-semibold text-[var(--color-cyan-accent)] text-glow-cyan mb-4">SERVER STATS</h4>
+                        <div class="space-y-4">
+                            <div><p class="text-5xl font-black text-white">200+</p><p class="text-gray-400 tracking-widest">PLAYERS</p></div>
+                            <div><p class="text-5xl font-black text-white">5K+</p><p class="text-gray-400 tracking-widest">MEMBERS</p></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="donate" class="py-24 bg-black/20">
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="text-4xl md:text-5xl font-extrabold text-white text-glow-cyan">VIP DONATION TIERS</h2>
+                <p class="mt-4 max-w-3xl mx-auto text-lg text-gray-300">
+                    Support the server's growth and enjoy exclusive in-game perks! Choose from the tiers below to get started.
+                </p>
+                <div class="mt-16 flex flex-wrap justify-center gap-8">
+                    <div class="tier-card w-full max-w-sm sm:w-1/2 md:w-1/3 lg:w-1/4 bg-gray-900/50 border border-gray-700 p-6 rounded-lg transition-all duration-300 hover:border-[var(--color-green-accent)] hover:-translate-y-2">
+                        <h4 class="text-xl font-bold text-[var(--color-green-accent)]">VIP Tier 1</h4>
+                        <p class="text-3xl font-black my-4 text-white">₦1,000</p>
+                        <ul class="text-left space-y-2 text-gray-400"><li>✓ ₦3M In-game Cash</li><li>✓ VIP Chat Access</li><li>✓ 3 Days VIP Tag</li></ul>
+                        <button class="btn-purchase mt-6 w-full bg-[var(--color-green-primary)] text-black py-2 rounded-md font-bold hover:bg-[var(--color-green-accent)] hover:shadow-[0_0_15px_var(--color-green-accent)] transition-all" data-tier="VIP Tier 1" data-price="1000">Purchase Now</button>
+                    </div>
+                    <div class="tier-card w-full max-w-sm sm:w-1/2 md:w-1/3 lg:w-1/4 bg-gray-900/50 border border-gray-700 p-6 rounded-lg transition-all duration-300 hover:border-[var(--color-green-accent)] hover:-translate-y-2">
+                        <h4 class="text-xl font-bold text-[var(--color-green-accent)]">VIP Tier 2</h4>
+                        <p class="text-3xl font-black my-4 text-white">₦2,000</p>
+                        <ul class="text-left space-y-2 text-gray-400"><li>✓ ₦10M Cash</li><li>✓ 7 Days Tag</li><li>✓ 5 Repair Kits</li></ul>
+                        <button class="btn-purchase mt-6 w-full bg-[var(--color-green-primary)] text-black py-2 rounded-md font-bold hover:bg-[var(--color-green-accent)] hover:shadow-[0_0_15px_var(--color-green-accent)] transition-all" data-tier="VIP Tier 2" data-price="2000">Purchase Now</button>
+                    </div>
+                    <div class="tier-card featured-tier w-full max-w-sm sm:w-1/2 md:w-1/3 lg:w-1/4 p-6 rounded-lg transition-all duration-300">
+                        <h4 class="text-xl font-bold text-[var(--color-cyan-accent)]">VIP Tier 3</h4>
+                        <p class="text-3xl font-black my-4 text-white">₦4,000</p>
+                        <ul class="text-left space-y-2 text-gray-300"><li>✓ ₦25M Cash</li><li>✓ VIP Outfit</li><li>✓ 14 Days Tag</li><li>✓ 10 Repair Kits</li></ul>
+                        <button class="btn-purchase mt-6 w-full py-2 rounded-md font-bold transition-all" data-tier="VIP Tier 3" data-price="4000">Purchase Now</button>
+                    </div>
+                    <div class="tier-card w-full max-w-sm sm:w-1/2 md:w-1/3 lg:w-1/4 bg-gray-900/50 border border-gray-700 p-6 rounded-lg transition-all duration-300 hover:border-[var(--color-green-accent)] hover:-translate-y-2">
+                        <h4 class="text-xl font-bold text-[var(--color-green-accent)]">VIP Tier 4</h4>
+                        <p class="text-3xl font-black my-4 text-white">₦7,000</p>
+                        <ul class="text-left space-y-2 text-gray-400"><li>✓ ₦50M Cash</li><li>✓ 1 Exclusive Vehicle</li><li>✓ Business Tier 1</li><li>✓ 30 Days Tag</li></ul>
+                        <button class="btn-purchase mt-6 w-full bg-[var(--color-green-primary)] text-black py-2 rounded-md font-bold hover:bg-[var(--color-green-accent)] hover:shadow-[0_0_15px_var(--color-green-accent)] transition-all" data-tier="VIP Tier 4" data-price="7000">Purchase Now</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="purchase-form-section" class="hidden py-24">
+            <div class="container mx-auto px-6 max-w-2xl">
+                <h3 class="text-3xl font-bold text-center text-[var(--color-cyan-accent)] text-glow-cyan">COMPLETE YOUR <span id="purchase-title"></span> PURCHASE</h3>
+                <form class="mt-8 space-y-6 bg-black/20 p-8 rounded-lg border border-gray-700">
+                    <div>
+                        <label for="discord-user" class="block text-sm font-semibold text-gray-300">Discord Username</label>
+                        <input type="text" id="discord-user" placeholder="e.g. username#1234" class="w-full mt-2 bg-gray-800 border border-gray-600 rounded-md p-3 focus:ring-2 focus:ring-[var(--color-cyan-accent)] focus:outline-none transition-all">
+                    </div>
+                    <div>
+                        <label for="ingame-name" class="block text-sm font-semibold text-gray-300">In-Game Name</label>
+                        <input type="text" id="ingame-name" placeholder="e.g. FirstName_LastName" class="w-full mt-2 bg-gray-800 border border-gray-600 rounded-md p-3 focus:ring-2 focus:ring-[var(--color-cyan-accent)] focus:outline-none transition-all">
+                    </div>
+                    <div class="text-center bg-gray-900/50 py-4 rounded-md">
+                        <p class="text-lg text-gray-400">Total Due</p>
+                        <p id="tier-price-display" class="text-4xl font-black text-white">₦4,000</p>
+                    </div>
+                    <button type="submit" class="w-full bg-[var(--color-cyan-accent)] text-black py-3 rounded-md font-bold text-lg hover:bg-[var(--color-cyan-accent)]/80 hover:shadow-[0_0_20px_var(--color-cyan-accent)] transition-all">PROCEED TO PAYMENT</button>
+                </form>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-black/50 border-t border-gray-700/50 py-16">
+        <div class="container mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-12 text-center md:text-left">
+            <div>
+                <h4 class="text-2xl font-black">NIGERIAN VIBE RP</h4>
+                <p class="mt-4 text-gray-400">Crafting the ultimate Nigerian roleplay experience. Your story begins here.</p>
+            </div>
+            <div>
+                <h4 class="text-xl font-bold text-gray-300">QUICK LINKS</h4>
+                <ul class="mt-4 space-y-2">
+                    <li><a href="#" class="text-gray-400 hover:text-[var(--color-cyan-accent)]">Forums</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-[var(--color-cyan-accent)]">Rules</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-xl font-bold text-gray-300">JOIN OUR COMMUNITY</h4>
+                <a href="#" class="mt-4 inline-block bg-[var(--color-green-primary)] text-black px-6 py-2 rounded-md font-bold hover:bg-[var(--color-green-accent)] hover:text-black hover:shadow-[0_0_15px_var(--color-green-accent)] transition-all">
+                    DISCORD SERVER
+                </a>
+            </div>
+        </div>
+        <div class="text-center text-gray-500 mt-12 border-t border-gray-800 pt-8">
+            <p>&copy; 2025 Nigerian Vibe RP. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const purchaseButtons = document.querySelectorAll('.btn-purchase');
+            const purchaseFormSection = document.getElementById('purchase-form-section');
+            const purchaseTitle = document.getElementById('purchase-title');
+            const priceDisplay = document.getElementById('tier-price-display');
+
+            purchaseButtons.forEach(button => {
+                button.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const tier = button.dataset.tier;
+                    const price = button.dataset.price;
+                    
+                    purchaseTitle.textContent = tier.toUpperCase();
+                    priceDisplay.textContent = `₦${parseInt(price).toLocaleString()}`;
+                    
+                    purchaseFormSection.classList.remove('hidden');
+                    purchaseFormSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                });
+            });
+        });
+    </script>
+</body>
+</html>
