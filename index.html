@@ -9,13 +9,12 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        /* Custom Tailwind Configuration & Styles */
         :root {
             --font-heading: 'Audiowide', sans-serif;
             --font-body: 'Rajdhani', sans-serif;
-            --color-green-primary: #008000; /* Darker green */
-            --color-green-accent: #39FF14; /* Neon green */
-            --color-cyan-accent: #00FFFF; /* Bright Cyan */
+            --color-green-primary: #008000;
+            --color-green-accent: #39FF14;
+            --color-cyan-accent: #00FFFF;
         }
 
         @tailwind base;
@@ -34,11 +33,9 @@
             }
         }
 
-        /* Custom glow effects */
         .text-glow-cyan { text-shadow: 0 0 5px var(--color-cyan-accent), 0 0 10px var(--color-cyan-accent), 0 0 15px var(--color-cyan-accent); }
         .text-glow-green { text-shadow: 0 0 5px var(--color-green-accent), 0 0 10px var(--color-green-accent), 0 0 15px var(--color-green-accent); }
 
-        /* Animated Gradient Background */
         body::before {
             content: '';
             position: fixed;
@@ -47,7 +44,7 @@
             width: 100%;
             height: 100%;
             z-index: -1;
-            background: linear-gradient(45deg, #0d1f02, #011424, #0d1f02); /* Greenish gradient */
+            background: linear-gradient(45deg, #0d1f02, #011424, #0d1f02);
             background-size: 200% 200%;
             animation: gradientShift 20s ease infinite;
         }
@@ -57,8 +54,7 @@
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
-
-        /* Styling for the featured VIP card */
+        
         .featured-tier {
             @apply scale-105 border-[var(--color-cyan-accent)] bg-gray-800/80 shadow-2xl shadow-[var(--color-cyan-accent)]/20 z-10;
         }
@@ -95,10 +91,10 @@
                     The Ultimate SA-MP Roleplay Experience. Join a thriving, ever-evolving world driven by players. Your story, your rules, your legacy.
                 </p>
                 <div class="mt-8 flex flex-col md:flex-row justify-center items-center gap-4">
-                    <a href="#" class="w-full md:w-auto bg-[var(--color-green-primary)] text-white px-10 py-3 rounded-lg font-bold text-lg hover:bg-[var(--color-green-accent)] hover:text-black transition-all transform hover:scale-105 hover:shadow-[0_0_20px_var(--color-green-primary)]">
-                        JOIN OUR DISCORD
+                    <a href="YOUR_MODPACK_DOWNLOAD_LINK" target="_blank" class="w-full md:w-auto bg-yellow-500 text-black px-10 py-3 rounded-lg font-bold text-lg hover:bg-yellow-400 transition-all transform hover:scale-105 hover:shadow-[0_0_20px_#f59e0b]">
+                        DOWNLOAD MODPACK
                     </a>
-                    <a href="#" class="w-full md:w-auto border-2 border-[var(--color-cyan-accent)] text-[var(--color-cyan-accent)] px-10 py-3 rounded-lg font-bold text-lg hover:bg-[var(--color-cyan-accent)] hover:text-black transition-all transform hover:scale-105 hover:shadow-[0_0_20px_var(--color-cyan-accent)]">
+                    <a href="#" id="copy-ip-btn" class="w-full md:w-auto border-2 border-[var(--color-cyan-accent)] text-[var(--color-cyan-accent)] px-10 py-3 rounded-lg font-bold text-lg hover:bg-[var(--color-cyan-accent)] hover:text-black transition-all transform hover:scale-105 hover:shadow-[0_0_20px_var(--color-cyan-accent)]">
                         COPY SERVER IP
                     </a>
                 </div>
@@ -171,7 +167,7 @@
                         <ul class="text-left space-y-2 text-gray-400"><li>✓ ₦1.25M Cash</li><li>✓ 7 Days Tag</li><li>✓ 5 Repair Kits</li></ul>
                         <button class="btn-purchase mt-6 w-full bg-[var(--color-green-primary)] text-black py-2 rounded-md font-bold hover:bg-[var(--color-green-accent)] hover:shadow-[0_0_15px_var(--color-green-accent)] transition-all" data-tier="VIP Tier 2" data-price="2000">Purchase Now</button>
                     </div>
-                    <div class="tier-card w-full max-w-sm sm:w-1/2 md:w-1/3 lg:w-1/4 bg-gray-900/50 border border-[var(--color-cyan-accent)] p-6 rounded-lg transition-all duration-300">
+                    <div class="tier-card featured-tier w-full max-w-sm sm:w-1/2 md:w-1/3 lg:w-1/4 bg-gray-900/50 border border-[var(--color-cyan-accent)] p-6 rounded-lg transition-all duration-300">
                         <p class="text-sm font-bold text-black bg-[var(--color-cyan-accent)] rounded-md py-1 px-4 inline-block mb-4">Most Popular</p>
                         <h4 class="text-xl font-bold text-[var(--color-cyan-accent)]">VIP Tier 3</h4>
                         <p class="text-3xl font-black my-4 text-white">₦4,000</p>
@@ -188,34 +184,53 @@
                         <h4 class="text-xl font-bold text-[var(--color-green-accent)]">VIP Tier 5</h4>
                         <p class="text-3xl font-black my-4 text-white">₦10,000</p>
                         <ul class="text-left space-y-2 text-gray-400"><li>✓ ₦12M Cash</li><li>✓ 1 Luxury Vehicle (G-Wargon, Cullinan)</li><li>✓ 15 Repair Kit</li><li>✓ VIP Car Access (Spawn Car Anywhere)</li><li>✓ 60 Days Tag</li><li>✓ Priority Support</li><li>✓ VIP Island Acces</li><li>✓ 2 Free Namechange</li></ul>
-                        <button class="btn-purchase mt-6 w-full bg-[var(--color-green-primary)] text-black py-2 rounded-md font-bold hover:bg-[var(--color-green-accent)] hover:shadow-[0_0_15px_var(--color-green-accent)] transition-all" data-tier="VIP Tier 4" data-price="7000">Purchase Now</button>
+                        <button class="btn-purchase mt-6 w-full bg-[var(--color-green-primary)] text-black py-2 rounded-md font-bold hover:bg-[var(--color-green-accent)] hover:shadow-[0_0_15px_var(--color-green-accent)] transition-all" data-tier="VIP Tier 5" data-price="10000">Purchase Now</button>
                     </div>
                 </div>
             </div>
         </section>
-        
-        <section id="purchase-form-section" class="hidden py-24">
-            <div class="container mx-auto px-6 max-w-2xl">
-                <h3 class="text-3xl font-bold text-center text-[var(--color-cyan-accent)] text-glow-cyan">COMPLETE YOUR <span id="purchase-title"></span> PURCHASE</h3>
-                <form class="mt-8 space-y-6 bg-black/20 p-8 rounded-lg border border-gray-700">
-                    <div>
-                        <label for="discord-user" class="block text-sm font-semibold text-gray-300">Discord Username</label>
-                        <input type="text" id="discord-user" placeholder="e.g. username#1234" class="w-full mt-2 bg-gray-800 border border-gray-600 rounded-md p-3 focus:ring-2 focus:ring-[var(--color-cyan-accent)] focus:outline-none transition-all">
-                    </div>
-                    <div>
-                        <label for="ingame-name" class="block text-sm font-semibold text-gray-300">In-Game Name</label>
-                        <input type="text" id="ingame-name" placeholder="e.g. FirstName_LastName" class="w-full mt-2 bg-gray-800 border border-gray-600 rounded-md p-3 focus:ring-2 focus:ring-[var(--color-cyan-accent)] focus:outline-none transition-all">
-                    </div>
-                    <div class="text-center bg-gray-900/50 py-4 rounded-md">
-                        <p class="text-lg text-gray-400">Total Due</p>
-                        <p id="tier-price-display" class="text-4xl font-black text-white">₦4,000</p>
-                    </div>
-                    <button type="submit" class="w-full bg-[var(--color-cyan-accent)] text-black py-3 rounded-md font-bold text-lg hover:bg-[var(--color-cyan-accent)]/80 hover:shadow-[0_0_20px_var(--color-cyan-accent)] transition-all">PROCEED TO PAYMENT</button>
-                </form>
-            </div>
-        </section>
-
     </main>
+
+    <div id="donation-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 hidden">
+        <div class="bg-gray-900 border border-[var(--color-cyan-accent)] rounded-lg p-6 max-w-3xl w-full m-4 relative">
+            <button id="close-modal-btn" class="absolute top-4 right-4 text-gray-400 hover:text-white text-3xl leading-none">&times;</button>
+            <div class="grid md:grid-cols-2 gap-8 items-center">
+                <div class="text-center md:text-left">
+                    <h3 class="text-2xl font-bold text-[var(--color-cyan-accent)] text-glow-cyan">Complete Your <span id="purchase-title"></span></h3>
+                    <div class="mt-6 text-center bg-gray-800/50 p-4 rounded-lg">
+                        <p class="text-lg text-gray-300">Please transfer to the account below:</p>
+                        <div class="my-3 flex items-center justify-center gap-2 bg-gray-900 p-3 rounded-md">
+                            <p id="account-number" class="text-xl md:text-2xl font-black text-white">0123456789 - Bank Name</p>
+                            <button id="copy-account-btn" class="p-2 bg-gray-700 rounded-md hover:bg-gray-600 flex-shrink-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg>
+                            </button>
+                        </div>
+                        <p class="text-lg text-gray-400">Total Due: <span id="tier-price-display" class="text-2xl font-bold text-white"></span></p>
+                    </div>
+                </div>
+                <div>
+                    <form id="donation-form" class="space-y-4">
+                        <input type="hidden" id="tier-name" name="tier">
+                        <input type="hidden" id="tier-price" name="price">
+                        <div>
+                            <label for="discord-user" class="block text-sm font-semibold text-gray-300 mb-1">Discord Username</label>
+                            <input type="text" id="discord-user" name="discordUser" placeholder="e.g. username#1234" required class="w-full bg-gray-800 border border-gray-600 rounded-md p-3 focus:ring-2 focus:ring-[var(--color-cyan-accent)] focus:outline-none transition-all">
+                        </div>
+                        <div>
+                            <label for="ingame-name" class="block text-sm font-semibold text-gray-300 mb-1">In-Game Name</label>
+                            <input type="text" id="ingame-name" name="inGameName" placeholder="e.g. FirstName_LastName" required class="w-full bg-gray-800 border border-gray-600 rounded-md p-3 focus:ring-2 focus:ring-[var(--color-cyan-accent)] focus:outline-none transition-all">
+                        </div>
+                        <div>
+                            <label for="payment-screenshot" class="block text-sm font-semibold text-gray-300 mb-1">Payment Screenshot</label>
+                            <input type="file" id="payment-screenshot" name="screenshot" required accept="image/*" class="w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-[var(--color-cyan-accent)] file:text-black hover:file:bg-[var(--color-cyan-accent)]/80 cursor-pointer">
+                        </div>
+                        <button type="submit" class="w-full bg-[var(--color-cyan-accent)] text-black py-3 rounded-md font-bold text-lg hover:bg-[var(--color-cyan-accent)]/80 hover:shadow-[0_0_20px_var(--color-cyan-accent)] transition-all mt-2">SUBMIT DONATION</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <footer class="bg-black/50 border-t border-gray-700/50 py-16">
         <div class="container mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-12 text-center md:text-left">
@@ -242,14 +257,48 @@
         </div>
     </footer>
 
-
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            const serverIp = "YOUR_SERVER_IP"; // <-- IMPORTANT: SET YOUR SERVER IP HERE
+            const accountNumber = "0123456789 - Wema Bank"; // <-- IMPORTANT: SET YOUR ACCOUNT NUMBER HERE
+            const backendUrl = "https://nigeria-vibe-backend.onrender.com"; // <-- YOUR LIVE BACKEND URL
+
+            const copyIpBtn = document.getElementById('copy-ip-btn');
             const purchaseButtons = document.querySelectorAll('.btn-purchase');
-            const purchaseFormSection = document.getElementById('purchase-form-section');
+            const modal = document.getElementById('donation-modal');
+            const closeModalBtn = document.getElementById('close-modal-btn');
+            const donationForm = document.getElementById('donation-form');
+            const copyAccountBtn = document.getElementById('copy-account-btn');
+            
             const purchaseTitle = document.getElementById('purchase-title');
             const priceDisplay = document.getElementById('tier-price-display');
+            const tierNameInput = document.getElementById('tier-name');
+            const tierPriceInput = document.getElementById('tier-price');
+            const accountNumberEl = document.getElementById('account-number');
 
+            accountNumberEl.textContent = accountNumber;
+
+            // Copy Server IP
+            copyIpBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                navigator.clipboard.writeText(serverIp).then(() => {
+                    alert('Server IP copied to clipboard!');
+                }, (err) => {
+                    alert('Failed to copy Server IP.');
+                });
+            });
+
+            // Copy Account Number
+            copyAccountBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                navigator.clipboard.writeText(accountNumber).then(() => {
+                    alert('Account Number copied to clipboard!');
+                }, (err) => {
+                    alert('Failed to copy Account Number.');
+                });
+            });
+
+            // Open Modal
             purchaseButtons.forEach(button => {
                 button.addEventListener('click', (e) => {
                     e.preventDefault();
@@ -258,10 +307,51 @@
                     
                     purchaseTitle.textContent = tier.toUpperCase();
                     priceDisplay.textContent = `₦${parseInt(price).toLocaleString()}`;
+                    tierNameInput.value = tier;
+                    tierPriceInput.value = price;
                     
-                    purchaseFormSection.classList.remove('hidden');
-                    purchaseFormSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    modal.classList.remove('hidden');
                 });
+            });
+
+            // Close Modal
+            const closeTheModal = () => modal.classList.add('hidden');
+            closeModalBtn.addEventListener('click', closeTheModal);
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    closeTheModal();
+                }
+            });
+
+            // Handle Form Submission
+            donationForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const formData = new FormData(donationForm);
+                const submitButton = donationForm.querySelector('button[type="submit"]');
+                submitButton.disabled = true;
+                submitButton.textContent = 'SUBMITTING...';
+
+                try {
+                    const response = await fetch(`${backendUrl}/api/donations`, {
+                        method: 'POST',
+                        body: formData,
+                    });
+
+                    if (response.ok) {
+                        alert('Donation submitted successfully! We will review it shortly.');
+                        donationForm.reset();
+                        closeTheModal();
+                    } else {
+                        const errorData = await response.json();
+                        alert(`Error: ${errorData.message || 'Something went wrong.'}`);
+                    }
+                } catch (error) {
+                    console.error('Submission error:', error);
+                    alert('There was a network error. Please try again.');
+                } finally {
+                    submitButton.disabled = false;
+                    submitButton.textContent = 'SUBMIT DONATION';
+                }
             });
         });
     </script>
