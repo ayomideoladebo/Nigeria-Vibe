@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Waitlist Application - Nigerian Vibe RP</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --font-heading: 'Audiowide', sans-serif; --font-body: 'Rajdhani', sans-serif; --color-green-primary: #008000; --color-green-accent: #39FF14; --color-cyan-accent: #00FFFF; }
+        body { font-family: var(--font-body); }
+        h1, h2, h3, h4 { font-family: var(--font-heading); }
+        .text-glow-cyan { text-shadow: 0 0 5px var(--color-cyan-accent), 0 0 10px var(--color-cyan-accent); }
+        body::before { content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background: linear-gradient(45deg, #0d1f02, #011424, #0d1f02); background-size: 200% 200%; animation: gradientShift 20s ease infinite; }
+        @keyframes gradientShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+    </style>
+</head>
+<body class="bg-gray-950 text-gray-200 antialiased">
+
+    <header class="sticky top-0 z-50 bg-black/50 backdrop-blur-lg border-b border-gray-700/50">
+        <div class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <a href="index.html" class="text-3xl font-black text-[var(--color-green-accent)]">NV:RP</a>
+            <a href="index.html" class="border-2 border-[var(--color-cyan-accent)] text-[var(--color-cyan-accent)] px-5 py-2 rounded-md font-bold text-sm hover:bg-[var(--color-cyan-accent)] hover:text-black transition-all">
+                BACK TO HOME
+            </a>
+        </div>
+    </header>
+
+    <main class="py-16 md:py-24">
+        <div class="container mx-auto px-6 max-w-4xl">
+            <div class="text-center">
+                <h2 class="text-4xl md:text-5xl font-extrabold text-white text-glow-cyan">SERVER WAITLIST APPLICATION</h2>
+                <p class="mt-4 max-w-2xl mx-auto text-lg text-gray-300">
+                    Complete the form below to apply for our server. Take your time and answer thoughtfully.
+                </p>
+            </div>
+            
+            <form id="waitlist-form" class="mt-12 space-y-8 bg-black/20 p-8 rounded-lg border border-gray-700">
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div>
+                        <label for="discord-user" class="block text-sm font-semibold text-gray-300">Discord Username</label>
+                        <input type="text" id="discord-user" name="discordUser" placeholder="username#1234" required class="w-full mt-2 bg-gray-800 border border-gray-600 rounded-md p-3 focus:ring-2 focus:ring-[var(--color-cyan-accent)] focus:outline-none">
+                    </div>
+                    <div>
+                        <label for="ingame-name" class="block text-sm font-semibold text-gray-300">In-Game Name</label>
+                        <input type="text" id="ingame-name" name="inGameName" placeholder="FirstName_LastName" required class="w-full mt-2 bg-gray-800 border border-gray-600 rounded-md p-3 focus:ring-2 focus:ring-[var(--color-cyan-accent)] focus:outline-none">
+                    </div>
+                    <div>
+                        <label for="age" class="block text-sm font-semibold text-gray-300">Who Referred You?</label>
+                        <input type="text" id="age" name="age" placeholder="Their Discord Username" required class="w-full mt-2 bg-gray-800 border border-gray-600 rounded-md p-3 focus:ring-2 focus:ring-[var(--color-cyan-accent)] focus:outline-none">
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <div>
+                        <label for="q1" class="block text-lg font-semibold text-gray-300">What is Roleplay (RP)?</label>
+                        <p class="text-sm text-gray-400 mb-2">Explain in your own words what roleplaying means to you.</p>
+                        <textarea id="q1" name="rpDefinition" rows="4" required class="w-full bg-gray-800 border border-gray-600 rounded-md p-3 focus:ring-2 focus:ring-[var(--color-cyan-accent)] focus:outline-none"></textarea>
+                    </div>
+                    <div>
+                        <label for="q2" class="block text-lg font-semibold text-gray-300">Define Powergaming (PG).</label>
+                        <p class="text-sm text-gray-400 mb-2">Provide an example of what would be considered powergaming.</p>
+                        <textarea id="q2" name="powergaming" rows="4" required class="w-full bg-gray-800 border border-gray-600 rounded-md p-3 focus:ring-2 focus:ring-[var(--color-cyan-accent)] focus:outline-none"></textarea>
+                    </div>
+                    <div>
+                        <label for="q3" class="block text-lg font-semibold text-gray-300">Character Backstory</label>
+                        <p class="text-sm text-gray-400 mb-2">Briefly describe the character you plan to roleplay on our server.</p>
+                        <textarea id="q3" name="backstory" rows="5" required class="w-full bg-gray-800 border border-gray-600 rounded-md p-3 focus:ring-2 focus:ring-[var(--color-cyan-accent)] focus:outline-none"></textarea>
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <button type="submit" class="w-full md:w-auto bg-[var(--color-cyan-accent)] text-black px-10 py-3 rounded-lg font-bold text-lg hover:bg-[var(--color-cyan-accent)]/80 hover:shadow-[0_0_20px_var(--color-cyan-accent)] transition-all transform hover:scale-105">SUBMIT APPLICATION</button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <footer class="text-center text-gray-600 py-6 mt-12">
+        <p>&copy; 2025 Nigerian Vibe RP. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        document.getElementById('waitlist-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const form = e.target;
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData.entries());
+            const submitButton = form.querySelector('button[type="submit"]');
+
+            submitButton.disabled = true;
+            submitButton.textContent = 'SUBMITTING...';
+
+            const backendUrl = "https://nigeria-vibe-backend.onrender.com"; // Your live backend URL
+
+            try {
+                const response = await fetch(`${backendUrl}/api/waitlist`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                if (response.ok) {
+                    alert('Application submitted successfully! We will review it shortly.');
+                    form.reset();
+                } else {
+                    const errorData = await response.json();
+                    alert(`Error: ${errorData.message || 'Something went wrong.'}`);
+                }
+            } catch (error) {
+                console.error('Submission error:', error);
+                alert('There was a network error. Please try again.');
+            } finally {
+                submitButton.disabled = false;
+                submitButton.textContent = 'SUBMIT APPLICATION';
+            }
+        });
+    </script>
+</body>
+</html>
