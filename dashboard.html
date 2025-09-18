@@ -16,18 +16,13 @@
             --color-surface: #101811;
             --color-border: rgba(57, 255, 20, 0.1);
         }
-        body { 
-            font-family: var(--font-body);
-            background-color: var(--color-background);
-        }
+        body { font-family: var(--font-body); background-color: var(--color-background); }
         h1, h2, h3, h4, h5, h6 { font-family: var(--font-heading); }
         .text-glow-green { text-shadow: 0 0 8px var(--color-green-accent), 0 0 12px var(--color-green-accent); }
-        
         #sidebar, #main-content { transition: all 0.3s ease-in-out; }
         .sidebar-open #sidebar { transform: translateX(0); }
         .sidebar-open #overlay { opacity: 1; pointer-events: auto; }
         #overlay { transition: opacity 0.3s ease-in-out; }
-
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: var(--color-surface); }
         ::-webkit-scrollbar-thumb { background: #888; border-radius: 4px; }
@@ -102,8 +97,7 @@
                 const hash = window.location.hash;
                 showPage(hash);
                 if (hash.startsWith('#log_')) {
-                    const logType = hash.substring(5);
-                    fetchLogs(logType, 1);
+                    fetchLogs(hash.substring(5), 1);
                 }
             });
             document.getElementById('logout-btn').addEventListener('click', (e) => { e.preventDefault(); localStorage.clear(); window.location.href = 'admin.html'; });
@@ -138,11 +132,16 @@
                 document.getElementById('refresh-players-btn').addEventListener('click', fetchOnlinePlayers);
                 document.getElementById('online-players-list').addEventListener('click', (e) => { const card = e.target.closest('.online-player-card'); if (card) { e.preventDefault(); document.getElementById('player-name-input').value = card.dataset.name; document.getElementById('lookup-form').dispatchEvent(new Event('submit')); window.location.hash = '#lookup'; } });
                 
-                // Load all initial data
+                // Load all initial data for the dashboard
                 fetchDashboardStats();
                 fetchOnlinePlayers();
                 fetchPlayers();
                 fetchDonations();
+
+                // If the initial page is a log page, fetch its content
+                if (hash.startsWith('#log_')) {
+                    fetchLogs(hash.substring(5), 1);
+                }
             }
             initialLoad();
         });
