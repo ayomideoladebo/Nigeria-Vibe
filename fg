@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - NV:RP Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root { 
+            --font-heading: 'Audiowide', sans-serif; 
+            --font-body: 'Rajdhani', sans-serif; 
+            --color-green-accent: #39FF14; 
+            --color-cyan-accent: #00FFFF;
+            --color-background: #0a0f0b;
+            --color-surface: #101811;
+            --color-border: rgba(57, 255, 20, 0.1);
+        }
+        body { 
+            font-family: var(--font-body);
+            background-color: var(--color-background);
+        }
+        h1, h2, h3, h4, h5, h6 { font-family: var(--font-heading); }
+        .text-glow-green { text-shadow: 0 0 8px var(--color-green-accent), 0 0 12px var(--color-green-accent); }
+        
+        #sidebar, #main-content { transition: all 0.3s ease-in-out; }
+        .sidebar-open #sidebar { transform: translateX(0); }
+        .sidebar-open #overlay { opacity: 1; pointer-events: auto; }
+        #overlay { transition: opacity 0.3s ease-in-out; }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--color-surface); }
+        ::-webkit-scrollbar-thumb { background: #888; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #555; }
+        .status-select.processed { @apply bg-green-500/10 text-green-400 border-green-500/30; }
+        .status-select.pending { @apply bg-yellow-500/10 text-yellow-400 border-yellow-500/30; }
+    </style>
+</head>
+<body class="bg-gray-950 text-gray-200 min-h-screen">
+    
+    <aside id="sidebar" class="bg-black/20 backdrop-blur-lg border-r border-[var(--color-border)] text-white w-64 fixed inset-y-0 left-0 transform -translate-x-full md:translate-x-0 z-50 flex flex-col">
+        <div class="p-5 text-center border-b border-[var(--color-border)]">
+            <a href="#dashboard" class="text-3xl font-black text-[var(--color-green-accent)]">NV:RP</a>
+            <p class="text-sm text-gray-400 mt-1">Admin Panel</p>
+        </div>
+        <nav class="mt-8 flex-grow">
+            <a href="#dashboard" class="nav-link flex items-center py-3 px-5 text-lg text-gray-300 hover:bg-[var(--color-surface)] hover:text-white transition-colors"><svg class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>Dashboard</a>
+            <a href="#lookup" class="nav-link flex items-center py-3 px-5 text-lg text-gray-300 hover:bg-[var(--color-surface)] hover:text-white transition-colors"><svg class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>Player Lookup</a>
+            <a href="#players" class="nav-link flex items-center py-3 px-5 text-lg text-gray-300 hover:bg-[var(--color-surface)] hover:text-white transition-colors"><svg class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>Applications</a>
+            <a href="#donations" class="nav-link flex items-center py-3 px-5 text-lg text-gray-300 hover:bg-[var(--color-surface)] hover:text-white transition-colors"><svg class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v.01M12 6v-1m0 1V4m0 2v1m0 0v1m-6 6h12M7 16a5 5 0 01-.894-9.902l-1.01-1.01A7 7 0 005 16m14 0a7 7 0 00-4.096-6.413l-1.01 1.01A5 5 0 0117 16"/></svg>Donations</a>
+            <div class="my-4 px-5"><div class="border-t border-[var(--color-border)]"></div></div>
+            <a href="#log_admin" class="nav-link flex items-center py-3 px-5 text-lg text-gray-300 hover:bg-[var(--color-surface)] hover:text-white transition-colors"><svg class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>Admin Logs</a>
+            <a href="#log_faction" class="nav-link flex items-center py-3 px-5 text-lg text-gray-300 hover:bg-[var(--color-surface)] hover:text-white transition-colors"><svg class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>Faction Logs</a>
+            <a href="#log_gang" class="nav-link flex items-center py-3 px-5 text-lg text-gray-300 hover:bg-[var(--color-surface)] hover:text-white transition-colors"><svg class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M12 14l9-5-9-5-9 5 9 5z"></path><path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-9.998 12.078 12.078 0 01.665-6.479L12 14z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-9.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222 4 2.222V20m-8 0h8"></path></svg>Gang Logs</a>
+        </nav>
+        <div class="p-4 mt-auto border-t border-[var(--color-border)]"><a href="#" id="logout-btn" class="flex items-center py-3 px-5 text-lg text-red-400 hover:bg-red-500/20 hover:text-red-300 rounded-lg transition-colors"><svg class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>Logout</a></div>
+    </aside>
+
+    <div id="overlay" class="fixed inset-0 bg-black bg-opacity-75 z-40 md:hidden opacity-0 pointer-events-none"></div>
+    
+    <div id="main-content" class="md:ml-64">
+        <header class="md:hidden sticky top-0 bg-black/50 backdrop-blur-lg p-4 flex justify-between items-center border-b border-[var(--color-border)]"><a href="#dashboard" class="text-xl font-black text-[var(--color-green-accent)]">NV:RP Admin</a><button id="menu-btn"><svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg></button></header>
+
+        <main class="p-6 md:p-10">
+            <section id="dashboard" class="page-content"></section>
+            <section id="lookup" class="page-content hidden"></section>
+            <section id="players" class="page-content hidden"></section>
+            <section id="donations" class="page-content hidden"></section>
+            <section id="log_admin" class="page-content hidden"></section>
+            <section id="log_faction" class="page-content hidden"></section>
+            <section id="log_gang" class="page-content hidden"></section>
+        </main>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const backendUrl = "https://nigeria-vibe-backend.onrender.com";
+            if (localStorage.getItem('isLoggedIn') !== 'true') { window.location.href = 'admin.html'; return; }
+            
+            // --- UI & NAVIGATION ---
+            const menuBtn = document.getElementById('menu-btn'), overlay = document.getElementById('overlay'), body = document.body;
+            menuBtn.addEventListener('click', () => body.classList.toggle('sidebar-open'));
+            overlay.addEventListener('click', () => body.classList.remove('sidebar-open'));
+            const navLinks = document.querySelectorAll('.nav-link'), pages = document.querySelectorAll('.page-content');
+            
+            function showPage(hash) {
+                const targetId = hash.substring(1) || 'dashboard';
+                pages.forEach(p => p.classList.add('hidden'));
+                const targetPage = document.getElementById(targetId);
+                if (targetPage) targetPage.classList.remove('hidden');
+                navLinks.forEach(link => {
+                    link.classList.remove('bg-[var(--color-surface)]', 'text-white');
+                    if (link.hash === `#${targetId}`) {
+                        link.classList.add('bg-[var(--color-surface)]', 'text-white');
+                    } else {
+                        link.classList.add('text-gray-300');
+                    }
+                });
+                body.classList.remove('sidebar-open');
+            }
+
+            window.addEventListener('hashchange', () => {
+                const hash = window.location.hash;
+                showPage(hash);
+                if (hash.startsWith('#log_')) {
+                    fetchLogs(hash.substring(5), 1);
+                }
+            });
+            document.getElementById('logout-btn').addEventListener('click', (e) => { e.preventDefault(); localStorage.clear(); window.location.href = 'admin.html'; });
+
+            // --- DYNAMIC CONTENT RENDERING ---
+            function renderStaticPageContent() {
+                document.getElementById('dashboard').innerHTML = `<h2 class="text-4xl font-extrabold text-glow-green mb-8">Server Overview</h2><div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"><div class="bg-[var(--color-surface)] border border-[var(--color-border)] p-6 rounded-xl flex items-center gap-4 hover:border-[var(--color-cyan-accent)] transition-all"><svg class="h-10 w-10 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg><div><p class="text-sm text-gray-400">Total Applicants</p><p id="total-players" class="text-3xl font-bold">0</p></div></div><div class="bg-[var(--color-surface)] border border-[var(--color-border)] p-6 rounded-xl flex items-center gap-4 hover:border-[var(--color-cyan-accent)] transition-all"><svg class="h-10 w-10 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg><div><p class="text-sm text-gray-400">Applicants Today</p><p id="players-today" class="text-3xl font-bold">0</p></div></div><div class="bg-[var(--color-surface)] border border-[var(--color-border)] p-6 rounded-xl flex items-center gap-4 hover:border-[var(--color-cyan-accent)] transition-all"><svg class="h-10 w-10 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v.01M12 6v-1m0 1V4m0 2v1m0 0v1m-6 6h12M7 16a5 5 0 01-.894-9.902l-1.01-1.01A7 7 0 005 16m14 0a7 7 0 00-4.096-6.413l-1.01 1.01A5 5 0 0117 16"/></svg><div><p class="text-sm text-gray-400">Total Donations</p><p id="total-donations" class="text-3xl font-bold">0</p></div></div><div class="bg-[var(--color-surface)] border border-[var(--color-border)] p-6 rounded-xl flex items-center gap-4 hover:border-[var(--color-cyan-accent)] transition-all"><svg class="h-10 w-10 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg><div><p class="text-sm text-gray-400">Pending Donations</p><p id="pending-donations" class="text-3xl font-bold text-yellow-400">0</p></div></div></div><div class="mt-12 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-xl p-6"><div class="flex justify-between items-center mb-4"><h3 class="text-3xl font-bold text-white">Online Players (<span id="online-count">0</span>)</h3><button id="refresh-players-btn" class="p-2 bg-gray-700 rounded-md hover:bg-gray-600 disabled:opacity-50"><svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h5M20 20v-5h-5m-9 1l4-4m10 10l-4-4"/></svg></button></div><div id="online-players-list" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4"></div></div>`;
+                document.getElementById('lookup').innerHTML = `<h2 class="text-4xl font-extrabold text-glow-green mb-8">Player In-Game Lookup</h2><form id="lookup-form" class="flex items-center gap-4 mb-8 max-w-2xl"><input type="text" id="player-name-input" placeholder="Enter In-Game Name (e.g., FirstName_LastName)" required class="w-full bg-[var(--color-surface)] border border-[var(--color-border)] rounded-xl p-4 focus:ring-2 focus:ring-[var(--color-cyan-accent)] focus:outline-none focus:border-[var(--color-cyan-accent)]"><button type="submit" class="bg-[var(--color-cyan-accent)] text-black px-8 py-4 rounded-xl font-bold hover:bg-[var(--color-cyan-accent)]/80 flex-shrink-0">Search</button></form><div id="lookup-results" class="hidden"></div>`;
+                document.getElementById('players').innerHTML = `<h2 class="text-4xl font-extrabold text-glow-green mb-8">Player Applications</h2><div class="bg-[var(--color-surface)] border border-[var(--color-border)] rounded-xl p-2 sm:p-4"><div class="overflow-x-auto"><table class="w-full text-left min-w-[800px]"><thead class="border-b-2 border-[var(--color-border)]"><tr><th class="p-4 text-sm font-semibold text-green-400 uppercase tracking-wider">Submitted</th><th class="p-4 text-sm font-semibold text-green-400 uppercase tracking-wider">Discord & In-Game</th><th class="p-4 text-sm font-semibold text-green-400 uppercase tracking-wider">Age</th><th class="p-4 text-sm font-semibold text-green-400 uppercase tracking-wider">Answers</th></tr></thead><tbody id="players-tbody"></tbody></table></div></div>`;
+                document.getElementById('donations').innerHTML = `<h2 class="text-4xl font-extrabold text-glow-green mb-8">Donation History</h2><div class="bg-[var(--color-surface)] border border-[var(--color-border)] rounded-xl p-2 sm:p-4"><div class="overflow-x-auto"><table class="w-full text-left min-w-[800px]"><thead class="border-b-2 border-[var(--color-border)]"><tr><th class="p-4 text-sm font-semibold text-green-400 uppercase tracking-wider">Date</th><th class="p-4 text-sm font-semibold text-green-400 uppercase tracking-wider">Discord & In-Game</th><th class="p-4 text-sm font-semibold text-green-400 uppercase tracking-wider">Tier & Amount</th><th class="p-4 text-sm font-semibold text-green-400 uppercase tracking-wider">Screenshot</th><th class="p-4 text-sm font-semibold text-green-400 uppercase tracking-wider">Status</th></tr></thead><tbody id="donations-tbody"></tbody></table></div></div>`;
+                ['admin', 'faction', 'gang'].forEach(logType => { const page = document.getElementById(`log_${logType}`); if(page) { const title = logType.charAt(0).toUpperCase() + logType.slice(1); page.innerHTML = `<h2 class="text-4xl font-extrabold text-glow-green mb-8">${title} Logs</h2><div class="bg-[var(--color-surface)] border border-[var(--color-border)] rounded-xl p-2 sm:p-4"><div class="overflow-x-auto"><table class="w-full text-left min-w-[700px]"><thead class="border-b-2 border-[var(--color-border)]"><tr><th class="p-4 text-sm font-semibold text-green-400 uppercase tracking-wider w-1/4">Date</th><th class="p-4 text-sm font-semibold text-green-400 uppercase tracking-wider">Description</th></tr></thead><tbody id="${logType}-tbody"></tbody></table></div><div id="${logType}-pagination" class="flex justify-between items-center mt-4 px-4"></div></div>`; } });
+            }
+            
+            // --- DATA FETCHING & LOGIC ---
+            const fetchLogs = async (logType, page) => { const tbody = document.getElementById(`${logType}-tbody`); const paginationContainer = document.getElementById(`${logType}-pagination`); if (!tbody || !paginationContainer) return; tbody.innerHTML = '<tr><td colspan="2" class="text-center p-8 text-gray-400">Loading logs...</td></tr>'; try { const res = await fetch(`${backendUrl}/api/logs/${logType}?page=${page}`); const data = await res.json(); tbody.innerHTML = ''; if (data.logs.length === 0) { tbody.innerHTML = `<tr><td colspan="2" class="text-center p-8 text-gray-400">No ${logType} logs found.</td></tr>`; paginationContainer.innerHTML = ''; return; } data.logs.forEach(log => { const row = document.createElement('tr'); row.className = 'border-b border-[var(--color-border)] hover:bg-gray-800/50'; row.innerHTML = `<td class="p-4 whitespace-nowrap">${new Date(log.date).toLocaleString()}</td><td class="p-4 break-words">${log.description}</td>`; tbody.appendChild(row); }); let paginationHtml = `<span class="text-sm text-gray-400">Page ${data.currentPage} of ${data.totalPages}</span>`; if(data.totalPages > 1) { paginationHtml += `<div class="flex gap-2">`; if (data.currentPage > 1) paginationHtml += `<button data-log-type="${logType}" data-page="${data.currentPage - 1}" class="page-btn bg-gray-700 text-white px-4 py-1 rounded font-bold hover:bg-gray-600">&larr; Previous</button>`; if (data.currentPage < data.totalPages) paginationHtml += `<button data-log-type="${logType}" data-page="${data.currentPage + 1}" class="page-btn bg-gray-700 text-white px-4 py-1 rounded font-bold hover:bg-gray-600">Next &rarr;</button>`; paginationHtml += `</div>`; } paginationContainer.innerHTML = paginationHtml; } catch (error) { tbody.innerHTML = `<tr><td colspan="2" class="text-center p-8 text-red-400">Failed to load ${logType} logs.</td></tr>`; } };
+            document.addEventListener('click', (e) => { if (e.target.classList.contains('page-btn')) { fetchLogs(e.target.dataset.logType, parseInt(e.target.dataset.page, 10)); } });
+            
+            const fetchDashboardStats = async () => { try { const res = await fetch(`${backendUrl}/api/dashboard-stats`); const stats = await res.json(); document.getElementById('total-players').textContent = stats.totalPlayers; document.getElementById('players-today').textContent = stats.playersToday; document.getElementById('total-donations').textContent = stats.totalDonations; document.getElementById('pending-donations').textContent = stats.pendingDonations; } catch (error) { console.error('Failed to fetch stats:', error); } };
+            const fetchPlayers = async () => { const tbody = document.getElementById('players-tbody'); try { const res = await fetch(`${backendUrl}/api/waitlist`); const players = await res.json(); tbody.innerHTML = ''; if (players.length === 0) { tbody.innerHTML = '<tr><td colspan="4" class="text-center p-8 text-gray-400">No applications found.</td></tr>'; return; } players.forEach(p => { const row = document.createElement('tr'); row.className = 'border-b border-[var(--color-border)] hover:bg-gray-800/50'; row.innerHTML = `<td class="p-4 whitespace-nowrap">${new Date(p.date).toLocaleString()}</td><td class="p-4"><p class="font-bold">${p.discordUser}</p><p class="text-sm text-gray-400">${p.inGameName}</p></td><td class="p-4">${p.age}</td><td class="p-4 text-sm text-gray-300"><details><summary class="cursor-pointer hover:text-white">View Answers</summary><div class="mt-2 space-y-2 p-3 bg-gray-900/70 rounded"><p><strong class="text-gray-400">RP Definition:</strong> ${p.rpDefinition}</p><p><strong class="text-gray-400">Powergaming:</strong> ${p.powergaming}</p><p><strong class="text-gray-400">Backstory:</strong> ${p.backstory}</p></div></details></td>`; tbody.appendChild(row); }); } catch (error) { tbody.innerHTML = '<tr><td colspan="4" class="text-center p-8 text-red-400">Failed to load data.</td></tr>'; } };
+            const fetchDonations = async () => { const tbody = document.getElementById('donations-tbody'); try { const response = await fetch(`${backendUrl}/api/donations`); const donations = await response.json(); tbody.innerHTML = ''; if (donations.length === 0) { tbody.innerHTML = '<tr><td colspan="5" class="text-center p-8 text-gray-400">No donations found.</td></tr>'; return; } donations.forEach(d => { const row = document.createElement('tr'); row.className = 'border-b border-[var(--color-border)] hover:bg-gray-800/50'; row.innerHTML = `<td class="p-4 whitespace-nowrap">${new Date(d.date).toLocaleString()}</td><td class="p-4"><p class="font-bold">${d.discordUser}</p><p class="text-sm text-gray-400">${d.inGameName}</p></td><td class="p-4 font-semibold">${d.tier} <span class="text-[var(--color-cyan-accent)] font-bold">${d.price || ''}</span></td><td class="p-4"><a href="${backendUrl}${d.screenshotUrl}" target="_blank" class="text-[var(--color-cyan-accent)] hover:underline">View Image</a></td><td class="p-4"><select class="status-select w-full p-2 rounded-md border text-sm font-semibold bg-gray-700 ${d.status}" data-id="${d._id}"><option value="pending" ${d.status === 'pending' ? 'selected' : ''}>Pending</option><option value="processed" ${d.status === 'processed' ? 'selected' : ''}>Processed</option></select></td>`; tbody.appendChild(row); }); } catch (error) { tbody.innerHTML = '<tr><td colspan="5" class="text-center p-8 text-red-400">Failed to load data.</td></tr>'; } };
+            const onlineCountEl = document.getElementById('online-count'), onlinePlayersList = document.getElementById('online-players-list'), refreshPlayersBtn = document.getElementById('refresh-players-btn');
+            const fetchOnlinePlayers = async () => { refreshPlayersBtn.disabled = true; refreshPlayersBtn.querySelector('svg').classList.add('animate-spin'); onlinePlayersList.innerHTML = '<p class="text-gray-400 col-span-full text-center py-4">Loading players...</p>'; try { const response = await fetch(`${backendUrl}/api/online-players`); const players = await response.json(); onlineCountEl.textContent = players.length; onlinePlayersList.innerHTML = ''; if (players.length === 0) { onlinePlayersList.innerHTML = '<p class="text-gray-400 col-span-full text-center py-4">Server is empty.</p>'; return; } players.forEach(player => { const playerCard = document.createElement('a'); playerCard.href = `#lookup`; playerCard.className = 'online-player-card bg-gray-800/50 p-4 rounded-lg hover:bg-gray-700/50 transition-colors block border border-transparent hover:border-[var(--color-cyan-accent)]'; playerCard.dataset.name = player.name; playerCard.innerHTML = `<p class="font-bold text-lg text-white truncate">${player.name}</p>`; onlinePlayersList.appendChild(playerCard); }); } catch (error) { onlinePlayersList.innerHTML = '<p class="text-red-400 col-span-full text-center py-4">Failed to load online players.</p>'; } finally { refreshPlayersBtn.disabled = false; refreshPlayersBtn.querySelector('svg').classList.remove('animate-spin'); } };
+            const lookupForm = document.getElementById('lookup-form'), lookupResultsContainer = document.getElementById('lookup-results'), playerNameInput = document.getElementById('player-name-input');
+            lookupForm.addEventListener('submit', async (e) => { e.preventDefault(); const playerName = playerNameInput.value.trim(); if (!playerName) return; lookupResultsContainer.classList.remove('hidden'); lookupResultsContainer.innerHTML = '<div class="text-center py-8"><p class="text-lg text-gray-300">Searching for player...</p></div>'; try { const response = await fetch(`${backendUrl}/api/player/${playerName}`); const data = await response.json(); if (!response.ok) { throw new Error(data.message || 'An error occurred'); } const s = data.stats; let vehiclesHtml = '<p class="text-gray-400">No vehicles found.</p>'; if (data.vehicles && data.vehicles.length > 0) { vehiclesHtml = `<div class="overflow-x-auto mt-2"><table class="w-full text-left"><thead class="bg-gray-800/50"><tr><th class="p-3 text-sm font-semibold text-green-400 uppercase">Model ID</th><th class="p-3 text-sm font-semibold text-green-400 uppercase">Tickets</th></tr></thead><tbody>${data.vehicles.map(v => `<tr class="border-b border-[var(--color-border)]"><td class="p-3">${v.modelid}</td><td class="p-3">${v.tickets}</td></tr>`).join('')}</tbody></table></div>`; } let propertyLogsHtml = '<p class="text-gray-400">No property logs found for this player.</p>'; if (data.propertyLogs && data.propertyLogs.length > 0) { propertyLogsHtml = `<ul class="list-disc list-inside mt-2 space-y-1 text-gray-300 text-sm h-48 overflow-y-auto">${data.propertyLogs.map(log => `<li>${log.description}</li>`).join('')}</ul>`; } lookupResultsContainer.innerHTML = `<div class="bg-[var(--color-surface)] border border-[var(--color-border)] rounded-xl p-6 md:p-8"><h3 class="text-2xl font-bold text-white mb-6">Records for <span class="text-[var(--color-cyan-accent)]">${playerName}</span></h3><div class="grid grid-cols-1 lg:grid-cols-2 gap-x-8 gap-y-6"><div class="space-y-4"><div class="bg-gray-800/50 p-4 rounded-lg"><p class="text-sm text-gray-400">Faction</p><p class="text-xl font-bold">${s.factionName} (Rank: ${s.factionrank})</p></div><div class="grid grid-cols-2 gap-4"><div class="bg-gray-800/50 p-4 rounded-lg"><p class="text-sm text-gray-400">Level</p><p class="text-2xl font-bold">${s.level}</p></div><div class="bg-gray-800/50 p-4 rounded-lg"><p class="text-sm text-gray-400">Hours Played</p><p class="text-2xl font-bold">${s.hours}</p></div></div><div class="grid grid-cols-2 gap-4"><div class="bg-gray-800/50 p-4 rounded-lg"><p class="text-sm text-gray-400">Cash</p><p class="text-2xl font-bold text-green-400">$${s.cash.toLocaleString()}</p></div><div class="bg-gray-800/50 p-4 rounded-lg"><p class="text-sm text-gray-400">Bank</p><p class="text-2xl font-bold text-green-400">$${s.bank.toLocaleString()}</p></div></div><div class="grid grid-cols-2 gap-4"><div class="bg-gray-800/50 p-4 rounded-lg"><p class="text-sm text-gray-400">Fleeca Bank</p><p class="text-2xl font-bold text-cyan-400">$${s.fleeca_bank.toLocaleString()}</p></div><div class="bg-gray-800/50 p-4 rounded-lg"><p class="text-sm text-gray-400">Crimes</p><p class="text-2xl font-bold text-red-400">${s.crimes}</p></div></div></div><div class="space-y-6"><div><h4 class="text-xl font-bold text-white">Vehicles</h4>${vehiclesHtml}</div><div><h4 class="text-xl font-bold text-white">Property Logs</h4>${propertyLogsHtml}</div></div></div></div>`; } catch (error) { lookupResultsContainer.innerHTML = `<div class="text-center py-8"><p class="text-lg text-red-400">${error.message}</p></div>`; } });
+            
+            // --- INITIAL PAGE LOAD ---
+            function initialLoad() {
+                renderStaticPageContent();
+                const hash = window.location.hash || '#dashboard';
+                showPage(hash);
+                // Attach event listeners after content is rendered
+                document.getElementById('refresh-players-btn').addEventListener('click', fetchOnlinePlayers);
+                document.getElementById('online-players-list').addEventListener('click', (e) => { const card = e.target.closest('.online-player-card'); if (card) { e.preventDefault(); document.getElementById('player-name-input').value = card.dataset.name; document.getElementById('lookup-form').dispatchEvent(new Event('submit')); window.location.hash = '#lookup'; } });
+                
+                // Load all initial data for the dashboard
+                fetchDashboardStats();
+                fetchOnlinePlayers();
+                fetchPlayers();
+                fetchDonations();
+
+                // If the initial page is a log page, fetch its content
+                if (hash.startsWith('#log_')) {
+                    fetchLogs(hash.substring(5), 1);
+                }
+            }
+            initialLoad();
+        });
+    </script>
+</body>
+</html>
