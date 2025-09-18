@@ -23,17 +23,17 @@
         h1, h2, h3, h4, h5, h6 { font-family: var(--font-heading); }
         .text-glow-green { text-shadow: 0 0 8px var(--color-green-accent), 0 0 12px var(--color-green-accent); }
         
-        /* Transitions for sidebar and content */
         #sidebar, #main-content { transition: all 0.3s ease-in-out; }
         .sidebar-open #sidebar { transform: translateX(0); }
         .sidebar-open #overlay { opacity: 1; pointer-events: auto; }
         #overlay { transition: opacity 0.3s ease-in-out; }
 
-        /* Custom scrollbar for a better look */
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: var(--color-surface); }
         ::-webkit-scrollbar-thumb { background: #888; border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: #555; }
+        .status-select.processed { @apply bg-green-500/10 text-green-400 border-green-500/30; }
+        .status-select.pending { @apply bg-yellow-500/10 text-yellow-400 border-yellow-500/30; }
     </style>
 </head>
 <body class="bg-gray-950 text-gray-200 min-h-screen">
@@ -44,65 +44,29 @@
             <p class="text-sm text-gray-400 mt-1">Admin Panel</p>
         </div>
         <nav class="mt-8 flex-grow">
-            <a href="#dashboard" class="nav-link flex items-center py-3 px-5 text-lg text-gray-300 hover:bg-[var(--color-surface)] hover:text-white transition-colors">
-                <svg class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
-                Dashboard
-            </a>
-            <a href="#lookup" class="nav-link flex items-center py-3 px-5 text-lg text-gray-300 hover:bg-[var(--color-surface)] hover:text-white transition-colors">
-                <svg class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                Player Lookup
-            </a>
-            <a href="#players" class="nav-link flex items-center py-3 px-5 text-lg text-gray-300 hover:bg-[var(--color-surface)] hover:text-white transition-colors">
-                <svg class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                Applications
-            </a>
-            <a href="#donations" class="nav-link flex items-center py-3 px-5 text-lg text-gray-300 hover:bg-[var(--color-surface)] hover:text-white transition-colors">
-                <svg class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v.01M12 6v-1m0 1V4m0 2v1m0 0v1m-6 6h12M7 16a5 5 0 01-.894-9.902l-1.01-1.01A7 7 0 005 16m14 0a7 7 0 00-4.096-6.413l-1.01 1.01A5 5 0 0117 16"/></svg>
-                Donations
-            </a>
+            <a href="#dashboard" class="nav-link flex items-center py-3 px-5 text-lg text-gray-300 hover:bg-[var(--color-surface)] hover:text-white transition-colors"><svg class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>Dashboard</a>
+            <a href="#lookup" class="nav-link flex items-center py-3 px-5 text-lg text-gray-300 hover:bg-[var(--color-surface)] hover:text-white transition-colors"><svg class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>Player Lookup</a>
+            <a href="#players" class="nav-link flex items-center py-3 px-5 text-lg text-gray-300 hover:bg-[var(--color-surface)] hover:text-white transition-colors"><svg class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>Applications</a>
+            <a href="#donations" class="nav-link flex items-center py-3 px-5 text-lg text-gray-300 hover:bg-[var(--color-surface)] hover:text-white transition-colors"><svg class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v.01M12 6v-1m0 1V4m0 2v1m0 0v1m-6 6h12M7 16a5 5 0 01-.894-9.902l-1.01-1.01A7 7 0 005 16m14 0a7 7 0 00-4.096-6.413l-1.01 1.01A5 5 0 0117 16"/></svg>Donations</a>
         </nav>
-        <div class="p-4 mt-auto border-t border-[var(--color-border)]">
-             <a href="#" id="logout-btn" class="flex items-center py-3 px-5 text-lg text-red-400 hover:bg-red-500/20 hover:text-red-300 rounded-lg transition-colors">
-                <svg class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
-                Logout
-            </a>
-        </div>
+        <div class="p-4 mt-auto border-t border-[var(--color-border)]"><a href="#" id="logout-btn" class="flex items-center py-3 px-5 text-lg text-red-400 hover:bg-red-500/20 hover:text-red-300 rounded-lg transition-colors"><svg class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>Logout</a></div>
     </aside>
 
     <div id="overlay" class="fixed inset-0 bg-black bg-opacity-75 z-40 md:hidden opacity-0 pointer-events-none"></div>
     
     <div id="main-content" class="md:ml-64">
-        <header class="md:hidden sticky top-0 bg-black/50 backdrop-blur-lg p-4 flex justify-between items-center border-b border-[var(--color-border)]">
-             <a href="#dashboard" class="text-xl font-black text-[var(--color-green-accent)]">NV:RP Admin</a>
-            <button id="menu-btn"><svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg></button>
-        </header>
+        <header class="md:hidden sticky top-0 bg-black/50 backdrop-blur-lg p-4 flex justify-between items-center border-b border-[var(--color-border)]"><a href="#dashboard" class="text-xl font-black text-[var(--color-green-accent)]">NV:RP Admin</a><button id="menu-btn"><svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg></button></header>
 
         <main class="p-6 md:p-10">
             <section id="dashboard" class="page-content">
                 <h2 class="text-4xl font-extrabold text-glow-green mb-8">Server Overview</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <div class="bg-[var(--color-surface)] border border-[var(--color-border)] p-6 rounded-xl flex items-center gap-4 hover:border-[var(--color-cyan-accent)] transition-all">
-                        <svg class="h-10 w-10 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                        <div><p class="text-sm text-gray-400">Total Applicants</p><p id="total-players" class="text-3xl font-bold">0</p></div>
-                    </div>
-                    <div class="bg-[var(--color-surface)] border border-[var(--color-border)] p-6 rounded-xl flex items-center gap-4 hover:border-[var(--color-cyan-accent)] transition-all">
-                        <svg class="h-10 w-10 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-                        <div><p class="text-sm text-gray-400">Applicants Today</p><p id="players-today" class="text-3xl font-bold">0</p></div>
-                    </div>
-                    <div class="bg-[var(--color-surface)] border border-[var(--color-border)] p-6 rounded-xl flex items-center gap-4 hover:border-[var(--color-cyan-accent)] transition-all">
-                        <svg class="h-10 w-10 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v.01M12 6v-1m0 1V4m0 2v1m0 0v1m-6 6h12M7 16a5 5 0 01-.894-9.902l-1.01-1.01A7 7 0 005 16m14 0a7 7 0 00-4.096-6.413l-1.01 1.01A5 5 0 0117 16"/></svg>
-                        <div><p class="text-sm text-gray-400">Total Donations</p><p id="total-donations" class="text-3xl font-bold">0</p></div>
-                    </div>
-                    <div class="bg-[var(--color-surface)] border border-[var(--color-border)] p-6 rounded-xl flex items-center gap-4 hover:border-[var(--color-cyan-accent)] transition-all">
-                        <svg class="h-10 w-10 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                        <div><p class="text-sm text-gray-400">Pending Donations</p><p id="pending-donations" class="text-3xl font-bold text-yellow-400">0</p></div>
-                    </div>
+                    <div class="bg-[var(--color-surface)] border border-[var(--color-border)] p-6 rounded-xl flex items-center gap-4 hover:border-[var(--color-cyan-accent)] transition-all"><svg class="h-10 w-10 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg><div><p class="text-sm text-gray-400">Total Applicants</p><p id="total-players" class="text-3xl font-bold">0</p></div></div>
+                    <div class="bg-[var(--color-surface)] border border-[var(--color-border)] p-6 rounded-xl flex items-center gap-4 hover:border-[var(--color-cyan-accent)] transition-all"><svg class="h-10 w-10 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg><div><p class="text-sm text-gray-400">Applicants Today</p><p id="players-today" class="text-3xl font-bold">0</p></div></div>
+                    <div class="bg-[var(--color-surface)] border border-[var(--color-border)] p-6 rounded-xl flex items-center gap-4 hover:border-[var(--color-cyan-accent)] transition-all"><svg class="h-10 w-10 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v.01M12 6v-1m0 1V4m0 2v1m0 0v1m-6 6h12M7 16a5 5 0 01-.894-9.902l-1.01-1.01A7 7 0 005 16m14 0a7 7 0 00-4.096-6.413l-1.01 1.01A5 5 0 0117 16"/></svg><div><p class="text-sm text-gray-400">Total Donations</p><p id="total-donations" class="text-3xl font-bold">0</p></div></div>
+                    <div class="bg-[var(--color-surface)] border border-[var(--color-border)] p-6 rounded-xl flex items-center gap-4 hover:border-[var(--color-cyan-accent)] transition-all"><svg class="h-10 w-10 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg><div><p class="text-sm text-gray-400">Pending Donations</p><p id="pending-donations" class="text-3xl font-bold text-yellow-400">0</p></div></div>
                 </div>
-                
-                <div class="mt-12 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-xl p-6">
-                    <div class="flex justify-between items-center mb-4"><h3 class="text-3xl font-bold text-white">Online Players (<span id="online-count">0</span>)</h3><button id="refresh-players-btn" class="p-2 bg-gray-700 rounded-md hover:bg-gray-600 disabled:opacity-50"><svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h5M20 20v-5h-5m-9 1l4-4m10 10l-4-4"/></svg></button></div>
-                    <div id="online-players-list" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4"></div>
-                </div>
+                <div class="mt-12 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-xl p-6"><div class="flex justify-between items-center mb-4"><h3 class="text-3xl font-bold text-white">Online Players (<span id="online-count">0</span>)</h3><button id="refresh-players-btn" class="p-2 bg-gray-700 rounded-md hover:bg-gray-600 disabled:opacity-50"><svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h5M20 20v-5h-5m-9 1l4-4m10 10l-4-4"/></svg></button></div><div id="online-players-list" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4"></div></div>
             </section>
             
             <section id="lookup" class="page-content hidden">
@@ -131,17 +95,20 @@
             menuBtn.addEventListener('click', () => body.classList.toggle('sidebar-open'));
             overlay.addEventListener('click', () => body.classList.remove('sidebar-open'));
             const navLinks = document.querySelectorAll('.nav-link'), pages = document.querySelectorAll('.page-content');
-            function showPage(hash) { const targetId = hash.substring(1) || 'dashboard'; pages.forEach(p => p.classList.add('hidden')); document.getElementById(targetId)?.classList.remove('hidden'); navLinks.forEach(link => { link.classList.remove('bg-[var(--color-surface)]', 'text-white'); if (link.hash === hash) { link.classList.add('bg-[var(--color-surface)]', 'text-white'); } else { link.classList.add('text-gray-300'); } }); body.classList.remove('sidebar-open'); }
+            function showPage(hash) { const targetId = hash.substring(1) || 'dashboard'; pages.forEach(p => p.classList.add('hidden')); document.getElementById(targetId)?.classList.remove('hidden'); navLinks.forEach(link => { link.classList.remove('bg-[var(--color-surface)]', 'text-white'); if (link.hash === hash || (hash === '' && link.hash === '#dashboard')) { link.classList.add('bg-[var(--color-surface)]', 'text-white'); } else { link.classList.add('text-gray-300'); } }); body.classList.remove('sidebar-open'); }
             navLinks.forEach(link => { link.addEventListener('click', (e) => { e.preventDefault(); window.location.hash = link.hash; }); });
             window.addEventListener('hashchange', () => showPage(window.location.hash));
-            const fetchDashboardStats = async () => { /* ... Full function code from previous version ... */ };
-            const fetchPlayers = async () => { /* ... Full function code from previous version ... */ };
-            const fetchDonations = async () => { /* ... Full function code from previous version ... */ };
+
+            // --- CORRECTED & COMPLETE FETCHING FUNCTIONS ---
+            const fetchDashboardStats = async () => { try { const res = await fetch(`${backendUrl}/api/dashboard-stats`); const stats = await res.json(); document.getElementById('total-players').textContent = stats.totalPlayers; document.getElementById('players-today').textContent = stats.playersToday; document.getElementById('total-donations').textContent = stats.totalDonations; document.getElementById('pending-donations').textContent = stats.pendingDonations; } catch (error) { console.error('Failed to fetch stats:', error); } };
+            const fetchPlayers = async () => { const tbody = document.getElementById('players-tbody'); try { const res = await fetch(`${backendUrl}/api/waitlist`); const players = await res.json(); tbody.innerHTML = ''; if (players.length === 0) { tbody.innerHTML = '<tr><td colspan="4" class="text-center p-8 text-gray-400">No applications found.</td></tr>'; return; } players.forEach(p => { const row = document.createElement('tr'); row.className = 'border-b border-[var(--color-border)] hover:bg-gray-800/50'; row.innerHTML = `<td class="p-4 whitespace-nowrap">${new Date(p.date).toLocaleString()}</td><td class="p-4"><p class="font-bold">${p.discordUser}</p><p class="text-sm text-gray-400">${p.inGameName}</p></td><td class="p-4">${p.age}</td><td class="p-4 text-sm text-gray-300"><details><summary class="cursor-pointer hover:text-white">View Answers</summary><div class="mt-2 space-y-2 p-3 bg-gray-900/70 rounded"><p><strong class="text-gray-400">RP Definition:</strong> ${p.rpDefinition}</p><p><strong class="text-gray-400">Powergaming:</strong> ${p.powergaming}</p><p><strong class="text-gray-400">Backstory:</strong> ${p.backstory}</p></div></details></td>`; tbody.appendChild(row); }); } catch (error) { tbody.innerHTML = '<tr><td colspan="4" class="text-center p-8 text-red-400">Failed to load data.</td></tr>'; } };
+            const fetchDonations = async () => { const tbody = document.getElementById('donations-tbody'); try { const response = await fetch(`${backendUrl}/api/donations`); const donations = await response.json(); tbody.innerHTML = ''; if (donations.length === 0) { tbody.innerHTML = '<tr><td colspan="5" class="text-center p-8 text-gray-400">No donations found.</td></tr>'; return; } donations.forEach(d => { const row = document.createElement('tr'); row.className = 'border-b border-[var(--color-border)] hover:bg-gray-800/50'; row.innerHTML = `<td class="p-4 whitespace-nowrap">${new Date(d.date).toLocaleString()}</td><td class="p-4"><p class="font-bold">${d.discordUser}</p><p class="text-sm text-gray-400">${d.inGameName}</p></td><td class="p-4 font-semibold">${d.tier} <span class="text-[var(--color-cyan-accent)] font-bold">${d.price || ''}</span></td><td class="p-4"><a href="${backendUrl}${d.screenshotUrl}" target="_blank" class="text-[var(--color-cyan-accent)] hover:underline">View Image</a></td><td class="p-4"><select class="status-select w-full p-2 rounded-md border text-sm font-semibold bg-gray-700 ${d.status}" data-id="${d._id}"><option value="pending" ${d.status === 'pending' ? 'selected' : ''}>Pending</option><option value="processed" ${d.status === 'processed' ? 'selected' : ''}>Processed</option></select></td>`; tbody.appendChild(row); }); } catch (error) { tbody.innerHTML = '<tr><td colspan="5" class="text-center p-8 text-red-400">Failed to load data.</td></tr>'; } };
+            
             const onlineCountEl = document.getElementById('online-count'), onlinePlayersList = document.getElementById('online-players-list'), refreshPlayersBtn = document.getElementById('refresh-players-btn');
             const fetchOnlinePlayers = async () => {
                 refreshPlayersBtn.disabled = true;
                 refreshPlayersBtn.querySelector('svg').classList.add('animate-spin');
-                onlinePlayersList.innerHTML = '<p class="text-gray-400 col-span-full">Loading players...</p>';
+                onlinePlayersList.innerHTML = '<p class="text-gray-400 col-span-full text-center py-4">Loading players...</p>';
                 try {
                     const response = await fetch(`${backendUrl}/api/online-players`);
                     const players = await response.json();
@@ -189,3 +156,4 @@
     </script>
 </body>
 </html>
+
