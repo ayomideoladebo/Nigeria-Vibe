@@ -353,7 +353,7 @@
                 
                 const topBusinessesList = document.getElementById('top-businesses-list');
                 topBusinessesList.innerHTML = '';
-                data.topBusinesses.forEach((biz, index) => { topBusinessesList.innerHTML += `<div class="flex justify-between items-center text-sm"><div><span class="text-gray-400 mr-2">${index + 1}.</span><span class="font-semibold">${biz.name}</span></div><span class="font-bold text-yellow-400">$${biz.cash.toLocaleString()}</span></div>`; });
+                data.topBusinesses.forEach((biz, index) => { topBusinessesList.innerHTML += `<div class="flex justify-between items-center text-sm"><div><span class="text-gray-400 mr-2">${index + 1}.</span><span class="font-semibold">${biz.biz_desc}</span></div><span class="font-bold text-yellow-400">$${biz.cash.toLocaleString()}</span></div>`; });
 
                 const factionTreasuriesList = document.getElementById('faction-treasuries-list');
                 factionTreasuriesList.innerHTML = '';
