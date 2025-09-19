@@ -7,10 +7,22 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        :root { --font-heading: 'Audiowide', sans-serif; --font-body: 'Rajdhani', sans-serif; --color-green-accent: #39FF14; --color-cyan-accent: #00FFFF;}
-        body { font-family: var(--font-body); background-color: #0a0a0a; }
-        h1, h2, h3, h4 { font-family: var(--font-heading); }
-        .text-glow-green { text-shadow: 0 0 5px var(--color-green-accent), 0 0 10px var(--color-green-accent); }
+        :root { 
+            --font-heading: 'Audiowide', sans-serif; 
+            --font-body: 'Rajdhani', sans-serif; 
+            --color-green-accent: #39FF14; 
+            --color-cyan-accent: #00FFFF;
+        }
+        body { 
+            font-family: var(--font-body); 
+            background-color: #0a0a0a; 
+        }
+        h1, h2, h3, h4 { 
+            font-family: var(--font-heading); 
+        }
+        .text-glow-green { 
+            text-shadow: 0 0 5px var(--color-green-accent), 0 0 10px var(--color-green-accent); 
+        }
     </style>
 </head>
 <body class="bg-gray-950 text-white min-h-screen">
@@ -27,7 +39,7 @@
                 <option value="5">Mechanic</option>
                 <option value="16">EFCC</option>
             </select>
-            <a href="#" id="logout-btn" class="ml-4 text-red-400 hover:text-red-300">Logout</a>
+            <a href="dashboard.html" class="ml-4 text-cyan-400 hover:text-cyan-300">Main Dashboard</a>
         </div>
     </header>
 
@@ -47,7 +59,7 @@
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 <div class="lg:col-span-1 bg-gray-900/50 border border-gray-700 p-6 rounded-lg">
                     <h3 class="text-xl font-bold mb-4">Member Roster</h3>
-                    <div id="member-list" class="space-y-2 h-[60vh] overflow-y-auto"></div>
+                    <div id="member-list" class="space-y-2 h-[60vh] overflow-y-auto pr-2"></div>
                 </div>
                 <div class="lg:col-span-2 bg-gray-900/50 border border-gray-700 p-6 rounded-lg">
                     <h3 class="text-xl font-bold mb-4">Faction Activity Log</h3>
@@ -72,16 +84,11 @@
     document.addEventListener('DOMContentLoaded', () => {
         const backendUrl = "https://nigeria-vibe-backend.onrender.com";
 
-        if (localStorage.getItem('userRole') !== 'faction') {
+        // Security check: Redirect to login if not logged in.
+        if (localStorage.getItem('isLoggedIn') !== 'true') {
             window.location.href = 'admin.html';
             return;
         }
-
-        document.getElementById('logout-btn').addEventListener('click', () => {
-            localStorage.removeItem('isLoggedIn');
-            localStorage.removeItem('userRole');
-            window.location.href = 'dashboard.html';
-        });
 
         const factionSelect = document.getElementById('faction-select');
         const totalMembersEl = document.getElementById('total-members');
@@ -93,7 +100,9 @@
         const fetchFactionData = async (factionId) => {
             try {
                 const res = await fetch(`${backendUrl}/api/faction-data/${factionId}`);
+                if (!res.ok) throw new Error('Failed to fetch data');
                 const data = await res.json();
+                
                 totalMembersEl.textContent = data.totalMembers;
                 factionTreasuryEl.textContent = `₦${data.factionTreasury.toLocaleString()}`;
                 
@@ -110,6 +119,9 @@
                 }
             } catch (error) {
                 console.error('Failed to fetch faction data:', error);
+                totalMembersEl.textContent = 'Error';
+                factionTreasuryEl.textContent = 'Error';
+                memberListEl.innerHTML = '<p class="text-red-400">Could not load members.</p>';
             }
         };
 
@@ -117,11 +129,12 @@
             logsTbody.innerHTML = `<tr><td colspan="2" class="text-center p-8 text-gray-400">Loading logs...</td></tr>`;
             try {
                 const res = await fetch(`${backendUrl}/api/faction-logs/${factionId}?page=${page}`);
+                if (!res.ok) throw new Error('Failed to fetch logs');
                 const data = await res.json();
 
                 logsTbody.innerHTML = '';
                 if (!data.logs || data.logs.length === 0) {
-                    logsTbody.innerHTML = `<tr><td colspan="2" class="text-center p-8 text-gray-400">No logs found.</td></tr>`;
+                    logsTbody.innerHTML = `<tr><td colspan="2" class="text-center p-8 text-gray-400">No logs found for this faction's members.</td></tr>`;
                     paginationContainer.innerHTML = '';
                     return;
                 }
@@ -132,8 +145,14 @@
                     logsTbody.appendChild(row);
                 });
                 
-                paginationContainer.innerHTML = `<span class="text-sm text-gray-400">Page ${data.currentPage} of ${data.totalPages}</span><div class="flex gap-2"><button class="pagination-btn bg-gray-700 px-4 py-2 rounded-md font-bold hover:bg-gray-600" data-page="${data.currentPage - 1}" ${data.currentPage <= 1 ? 'disabled' : ''}>Previous</button><button class="pagination-btn bg-gray-700 px-4 py-2 rounded-md font-bold hover:bg-gray-600" data-page="${data.currentPage + 1}" ${data.currentPage >= data.totalPages ? 'disabled' : ''}>Next</button></div>`;
+                paginationContainer.innerHTML = `
+                    <span class="text-sm text-gray-400">Page ${data.currentPage} of ${data.totalPages}</span>
+                    <div class="flex gap-2">
+                        <button class="pagination-btn bg-gray-700 px-4 py-2 rounded-md font-bold hover:bg-gray-600" data-page="${data.currentPage - 1}" ${data.currentPage <= 1 ? 'disabled' : ''}>Previous</button>
+                        <button class="pagination-btn bg-gray-700 px-4 py-2 rounded-md font-bold hover:bg-gray-600" data-page="${data.currentPage + 1}" ${data.currentPage >= data.totalPages ? 'disabled' : ''}>Next</button>
+                    </div>`;
             } catch (error) {
+                console.error('Failed to fetch faction logs:', error);
                 logsTbody.innerHTML = `<tr><td colspan="2" class="text-center p-8 text-red-400">Failed to load logs.</td></tr>`;
             }
         };
@@ -145,13 +164,13 @@
         });
 
         paginationContainer.addEventListener('click', (e) => {
-            if (e.target.classList.contains('pagination-btn')) {
+            if (e.target.classList.contains('pagination-btn') && !e.target.disabled) {
                 const page = parseInt(e.target.dataset.page);
                 fetchFactionLogs(factionSelect.value, page);
             }
         });
 
-        // Initial load
+        // Initial load for the default selected faction
         const initialFactionId = factionSelect.value;
         fetchFactionData(initialFactionId);
         fetchFactionLogs(initialFactionId, 1);
@@ -159,3 +178,4 @@
     </script>
 </body>
 </html>
+```eof
