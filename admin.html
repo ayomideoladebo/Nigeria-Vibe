@@ -47,7 +47,7 @@
     <div class="form-container w-full max-w-md">
         <div class="text-center mb-8">
             <h1 class="text-6xl font-black text-glow-green">NV:RP</h1>
-            <p class="text-lg text-gray-400 mt-2">Staff Control Panel</p>
+            <p class="text-lg text-gray-400 mt-2">Admin Control Panel</p>
         </div>
 
         <div class="bg-gray-900/50 border border-gray-700 backdrop-blur-sm rounded-xl shadow-2xl shadow-black/30 p-8">
@@ -116,7 +116,6 @@
 
                     if (response.ok && data.success) {
                         localStorage.setItem('isLoggedIn', 'true');
-                        localStorage.setItem('userRole', data.role);
                         window.location.href = 'dashboard.html';
                     } else {
                         throw new Error(data.message || 'Invalid credentials');

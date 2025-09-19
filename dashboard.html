@@ -21,21 +21,6 @@
         #overlay { transition: opacity 0.3s ease-in-out; }
         .pagination-btn:disabled { @apply bg-gray-600 cursor-not-allowed; }
         .online-player-name { @apply cursor-pointer text-gray-200 hover:text-cyan-400 transition-colors duration-150; }
-        .nav-link[data-role] { display: none; }
-        .raffle-modal {
-            animation: fadeIn 0.3s ease-out;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.95); }
-            to { opacity: 1; transform: scale(1); }
-        }
-        #raffle-names {
-            -ms-overflow-style: none;  /* IE and Edge */
-            scrollbar-width: none;  /* Firefox */
-        }
-        #raffle-names::-webkit-scrollbar {
-            display: none; /* Chrome, Safari, Opera*/
-        }
     </style>
 </head>
 <body class="bg-gray-950 text-white min-h-screen">
@@ -46,37 +31,35 @@
             <p class="text-sm text-gray-400">Admin Panel</p>
         </div>
         <nav class="mt-8">
-            <a href="#dashboard" class="nav-link flex items-center py-3 px-5 text-lg text-gray-300 hover:bg-gray-800 hover:text-white" data-role="admin">
+            <a href="#dashboard" class="nav-link flex items-center py-3 px-5 text-lg text-gray-300 hover:bg-gray-800 hover:text-white">
                 <svg class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg> Dashboard
             </a>
-            <a href="#economy" class="nav-link flex items-center py-3 px-5 text-lg text-gray-300 hover:bg-gray-800 hover:text-white" data-role="admin economy">
+            <a href="#economy" class="nav-link flex items-center py-3 px-5 text-lg text-gray-300 hover:bg-gray-800 hover:text-white">
                 <svg class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg> Economy
             </a>
-            <a href="#events" class="nav-link flex items-center py-3 px-5 text-lg text-gray-300 hover:bg-gray-800 hover:text-white" data-role="admin event">
+            <a href="#events" class="nav-link flex items-center py-3 px-5 text-lg text-gray-300 hover:bg-gray-800 hover:text-white">
                 <svg class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg> Events
             </a>
-            <a href="#lookup" class="nav-link flex items-center py-3 px-5 text-lg text-gray-300 hover:bg-gray-800 hover:text-white" data-role="admin event economy">
+            <a href="#lookup" class="nav-link flex items-center py-3 px-5 text-lg text-gray-300 hover:bg-gray-800 hover:text-white">
                 <svg class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg> Player Lookup
             </a>
-            <a href="#players" class="nav-link flex items-center py-3 px-5 text-lg text-gray-300 hover:bg-gray-800 hover:text-white" data-role="admin">
+            <a href="#players" class="nav-link flex items-center py-3 px-5 text-lg text-gray-300 hover:bg-gray-800 hover:text-white">
                 <svg class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg> Applications
             </a>
-            <a href="#donations" class="nav-link flex items-center py-3 px-5 text-lg text-gray-300 hover:bg-gray-800 hover:text-white" data-role="admin">
+            <a href="#donations" class="nav-link flex items-center py-3 px-5 text-lg text-gray-300 hover:bg-gray-800 hover:text-white">
                 <svg class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v.01M12 6v-1m0 1V4m0 2v1m0 0v1m-6 6h12M7 16a5 5 0 01-.894-9.902l-1.01-1.01A7 7 0 005 16m14 0a7 7 0 00-4.096-6.413l-1.01 1.01A5 5 0 0117 16"/></svg> Donations
             </a>
-            <div data-role="admin">
-                <hr class="border-gray-700 my-4">
-                <p class="px-5 text-xs uppercase text-gray-500 font-semibold">Game Logs</p>
-                <a href="#admin-logs" class="nav-link flex items-center py-3 px-5 text-lg text-gray-300 hover:bg-gray-800 hover:text-white">
-                    <svg class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg> Admin Logs
-                </a>
-                <a href="#faction-logs" class="nav-link flex items-center py-3 px-5 text-lg text-gray-300 hover:bg-gray-800 hover:text-white">
-                    <svg class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M12 14l9-5-9-5-9 5 9 5z" /><path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-5.998 12.078 12.078 0 01.665-6.479L12 14z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-5.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222 4 2.222V20" /></svg> Faction Logs
-                </a>
-                <a href="#gang-logs" class="nav-link flex items-center py-3 px-5 text-lg text-gray-300 hover:bg-gray-800 hover:text-white">
-                     <svg class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12.066 8.958L13 7.5a5.963 5.963 0 00-6 0l.934 1.458M12 21v-3.333M6.4 18.356l2.1-2.1M17.6 18.356l-2.1-2.1M3.644 12H7m10 0h3.356M15.5 5.644l-2.1 2.1M8.5 5.644l2.1 2.1M12 3a9 9 0 100 18 9 9 0 000-18z"/></svg> Gang Logs
-                </a>
-            </div>
+            <hr class="border-gray-700 my-4">
+            <p class="px-5 text-xs uppercase text-gray-500 font-semibold">Game Logs</p>
+            <a href="#admin-logs" class="nav-link flex items-center py-3 px-5 text-lg text-gray-300 hover:bg-gray-800 hover:text-white">
+                <svg class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg> Admin Logs
+            </a>
+            <a href="#faction-logs" class="nav-link flex items-center py-3 px-5 text-lg text-gray-300 hover:bg-gray-800 hover:text-white">
+                <svg class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M12 14l9-5-9-5-9 5 9 5z" /><path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-5.998 12.078 12.078 0 01.665-6.479L12 14z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-5.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222 4 2.222V20" /></svg> Faction Logs
+            </a>
+            <a href="#gang-logs" class="nav-link flex items-center py-3 px-5 text-lg text-gray-300 hover:bg-gray-800 hover:text-white">
+                 <svg class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12.066 8.958L13 7.5a5.963 5.963 0 00-6 0l.934 1.458M12 21v-3.333M6.4 18.356l2.1-2.1M17.6 18.356l-2.1-2.1M3.644 12H7m10 0h3.356M15.5 5.644l-2.1 2.1M8.5 5.644l2.1 2.1M12 3a9 9 0 100 18 9 9 0 000-18z"/></svg> Gang Logs
+            </a>
             <a href="#" id="logout-btn" class="flex items-center py-3 px-5 text-lg text-red-400 hover:bg-red-500/20 hover:text-red-300 mt-10">
                 <svg class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg> Logout
             </a>
@@ -93,7 +76,7 @@
 
         <main class="p-6 md:p-12">
             <section id="dashboard" class="page-content">
-                 <h2 class="text-4xl font-extrabold text-glow-green mb-8">Dashboard</h2>
+                <h2 class="text-4xl font-extrabold text-glow-green mb-8">Dashboard</h2>
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div class="bg-gray-900/50 border border-gray-700 p-6 rounded-lg"><p class="text-sm text-gray-400">Total Applicants</p><p id="total-players" class="text-4xl font-bold">0</p></div>
@@ -124,7 +107,7 @@
                         <p class="text-sm text-gray-400">7 Days Ago</p>
                         <p id="week-ago-circulation" class="text-4xl font-bold text-gray-300">₦0</p>
                     </div>
-                     <div class="bg-gray-900/50 border border-gray-700 p-6 rounded-lg col-span-1 md:col-span-2 lg:col-span-1">
+                    <div class="bg-gray-900/50 border border-gray-700 p-6 rounded-lg col-span-1 md:col-span-2 lg:col-span-1">
                         <p class="text-sm text-gray-400">Government Treasury</p>
                         <p id="government-treasury" class="text-4xl font-bold text-cyan-400">₦0</p>
                     </div>
@@ -153,7 +136,7 @@
                 </div>
             </section>
 
-             <section id="events" class="page-content hidden">
+            <section id="events" class="page-content hidden">
                 <h2 class="text-4xl font-extrabold text-glow-green mb-8">Event Management</h2>
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                     <div>
@@ -174,7 +157,7 @@
                                         <input type="datetime-local" id="event-date" required class="w-full bg-gray-800 border border-gray-600 rounded-md p-3 focus:ring-2 focus:ring-[var(--color-cyan-accent)] focus:outline-none">
                                     </div>
                                     <div>
-                                        <label for="announcement-date" class="block text-sm font-semibold text-gray-400 mb-2">Announcement Date & Time (Optional)</label>
+                                        <label for="announcement-date" class="block text-sm font-semibold text-gray-400 mb-2">Announcement Date & Time</label>
                                         <input type="datetime-local" id="announcement-date" class="w-full bg-gray-800 border border-gray-600 rounded-md p-3 focus:ring-2 focus:ring-[var(--color-cyan-accent)] focus:outline-none">
                                     </div>
                                 </div>
@@ -185,11 +168,19 @@
                             <h3 class="text-xl font-bold mb-4">Quick Tools</h3>
                             <div class="space-y-4">
                                 <div>
+                                    <h4 class="font-semibold text-gray-300 mb-2">Quick Announcement</h4>
+                                    <form id="quick-announcement-form" class="flex items-center gap-4">
+                                        <input type="text" id="quick-announcement-input" placeholder="Announcement text" required class="w-full bg-gray-800 border border-gray-600 rounded-md p-3 focus:ring-2 focus:ring-[var(--color-cyan-accent)] focus:outline-none">
+                                        <button type="submit" class="bg-[var(--color-cyan-accent)] text-black px-6 py-3 rounded-md font-bold hover:bg-[var(--color-cyan-accent)]/80 flex-shrink-0">Send</button>
+                                    </form>
+                                </div>
+                                <hr class="border-gray-700">
+                                <div>
                                     <h4 class="font-semibold text-gray-300 mb-2">Pay Winner</h4>
                                     <form id="pay-winner-form" class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                        <input type="text" id="pay-winner-name" placeholder="Player Name" required class="md:col-span-3 w-full bg-gray-800 border border-gray-600 rounded-md p-3 focus:ring-2 focus:ring-[var(--color-cyan-accent)] focus:outline-none">
+                                        <input type="text" id="pay-winner-name" placeholder="Player Name" required class="w-full bg-gray-800 border border-gray-600 rounded-md p-3 focus:ring-2 focus:ring-[var(--color-cyan-accent)] focus:outline-none">
                                         <input type="number" id="pay-winner-amount" placeholder="Amount" required class="w-full bg-gray-800 border border-gray-600 rounded-md p-3 focus:ring-2 focus:ring-[var(--color-cyan-accent)] focus:outline-none">
-                                        <input type="text" id="pay-winner-reason" placeholder="Reason" required class="md:col-span-2 w-full bg-gray-800 border border-gray-600 rounded-md p-3 focus:ring-2 focus:ring-[var(--color-cyan-accent)] focus:outline-none">
+                                        <input type="text" id="pay-winner-reason" placeholder="Reason" required class="w-full bg-gray-800 border border-gray-600 rounded-md p-3 focus:ring-2 focus:ring-[var(--color-cyan-accent)] focus:outline-none">
                                         <div class="md:col-span-3">
                                             <button type="submit" class="w-full bg-[var(--color-green-accent)] text-black px-6 py-3 rounded-md font-bold hover:bg-[var(--color-green-accent)]/80">Pay</button>
                                         </div>
@@ -207,6 +198,7 @@
                                 <div>
                                     <h4 class="font-semibold text-gray-300 mb-2">Participant Raffle</h4>
                                     <button id="raffle-btn" class="w-full bg-[var(--color-cyan-accent)] text-black px-6 py-3 rounded-md font-bold hover:bg-[var(--color-cyan-accent)]/80">Draw Random Player</button>
+                                    <div id="raffle-winner" class="mt-4 text-center text-lg font-bold"></div>
                                 </div>
                             </div>
                         </div>
@@ -214,16 +206,16 @@
                     <div>
                         <div class="bg-gray-900/50 border border-gray-700 p-6 rounded-lg mb-8">
                             <h3 class="text-xl font-bold mb-4">Scheduled Events</h3>
-                            <div id="events-list" class="space-y-4 h-96 overflow-y-auto pr-2"></div>
+                            <div id="events-list" class="space-y-4"></div>
                         </div>
                         <div class="bg-gray-900/50 border border-gray-700 p-6 rounded-lg">
                             <h3 class="text-xl font-bold mb-4">Recent Event Logs</h3>
-                            <div id="event-logs-list" class="space-y-4 h-96 overflow-y-auto pr-2"></div>
+                            <div id="event-logs-list" class="space-y-4"></div>
                         </div>
                     </div>
                 </div>
             </section>
-
+            
             <section id="lookup" class="page-content hidden">
                  <h2 class="text-4xl font-extrabold text-glow-green mb-8">Player In-Game Lookup</h2>
                  <form id="lookup-form" class="flex items-center gap-4 mb-8">
@@ -263,49 +255,13 @@
             </section>
         </main>
     </div>
-    
-    <!-- Raffle Modal -->
-    <div id="raffle-modal" class="hidden fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 raffle-modal">
-        <div class="bg-gray-900 border-2 border-[var(--color-cyan-accent)] rounded-lg p-8 text-center w-full max-w-md relative">
-            <button id="close-raffle-modal" class="absolute top-4 right-4 text-gray-400 hover:text-white">&times;</button>
-            <h3 class="text-3xl font-bold mb-6 text-glow-green">Player Raffle</h3>
-            <div class="relative h-20 overflow-hidden mb-6 bg-gray-950 rounded-lg p-4">
-                <div id="raffle-names" class="absolute inset-0 flex flex-col items-center justify-center transition-transform duration-100 ease-linear">
-                    <!-- Names will be injected here -->
-                </div>
-                <div class="absolute inset-0 bg-gradient-to-b from-gray-950 via-transparent to-gray-950"></div>
-                 <div class="absolute inset-y-0 left-0 w-full h-full flex items-center justify-center border-y-2 border-[var(--color-cyan-accent)]">
-                    <div id="winner-display" class="text-2xl font-bold text-white transition-opacity duration-300 opacity-0"></div>
-                 </div>
-            </div>
-            <p id="raffle-status" class="text-gray-400 min-h-[1.5rem]">Click "Draw" to start the raffle!</p>
-        </div>
-    </div>
-
 
     <script>
     document.addEventListener('DOMContentLoaded', () => {
         const backendUrl = "https://nigeria-vibe-backend.onrender.com";
-        const userRole = localStorage.getItem('userRole');
 
-        if (!userRole) { window.location.href = 'admin.html'; return; }
-
-        const setupUIAccess = (role) => {
-            document.querySelectorAll('.nav-link[data-role], [data-role="admin"] > a').forEach(el => {
-                if (el.dataset.role.split(' ').includes(role)) {
-                    el.style.display = 'flex';
-                }
-            });
-            if (role !== 'admin') {
-                document.querySelectorAll('[data-role="admin"]').forEach(el => el.style.display = 'none');
-            }
-        };
-
-        document.getElementById('logout-btn').addEventListener('click', () => {
-             localStorage.removeItem('isLoggedIn');
-             localStorage.removeItem('userRole');
-             window.location.href = 'admin.html'; 
-        });
+        if (localStorage.getItem('isLoggedIn') !== 'true') { window.location.href = 'admin.html'; return; }
+        document.getElementById('logout-btn').addEventListener('click', () => { localStorage.removeItem('isLoggedIn'); window.location.href = 'admin.html'; });
         
         const menuBtn = document.getElementById('menu-btn'), overlay = document.getElementById('overlay'), body = document.body;
         menuBtn.addEventListener('click', () => body.classList.toggle('sidebar-open'));
@@ -313,13 +269,11 @@
         
         const navLinks = document.querySelectorAll('.nav-link'), pages = document.querySelectorAll('.page-content');
         function showPage(hash) {
-            const defaultPage = userRole === 'admin' ? 'dashboard' : (userRole === 'event' ? 'events' : 'economy');
-            const targetId = hash.substring(1) || defaultPage;
+            const targetId = hash.substring(1) || 'dashboard';
             pages.forEach(p => p.classList.add('hidden'));
             document.getElementById(targetId)?.classList.remove('hidden');
             navLinks.forEach(link => link.classList.toggle('bg-gray-800', link.hash === hash));
             body.classList.remove('sidebar-open');
-             window.location.hash = targetId;
         }
         navLinks.forEach(link => { link.addEventListener('click', (e) => { e.preventDefault(); window.location.hash = link.hash; }); });
         window.addEventListener('hashchange', () => showPage(window.location.hash));
@@ -336,10 +290,8 @@
                 lookupForm.dispatchEvent(new Event('submit', {cancelable: true, bubbles: true}));
             }
         };
-        
-        // --- DATA FETCHING (with role checks) ---
+
         const fetchDashboardStats = async () => {
-             if (userRole !== 'admin') return;
              try {
                 const res = await fetch(`${backendUrl}/api/dashboard-stats`);
                 const stats = await res.json();
@@ -351,7 +303,6 @@
         };
 
         const fetchPlayers = async () => {
-            if (userRole !== 'admin') return;
             const tbody = document.getElementById('players-tbody');
             try {
                 const res = await fetch(`${backendUrl}/api/waitlist`);
@@ -369,7 +320,6 @@
         
         const donationsTbody = document.getElementById('donations-tbody');
         const fetchDonations = async () => {
-            if (userRole !== 'admin') return;
             try {
                 const response = await fetch(`${backendUrl}/api/donations`);
                 const donations = await response.json();
@@ -396,7 +346,6 @@
         });
 
         const fetchAndDisplayLogs = async (logType, page = 1) => {
-            if(userRole !== 'admin') return;
             const tbody = document.getElementById(`${logType}-logs-tbody`);
             const paginationContainer = document.getElementById(`${logType}-logs-pagination`);
             if (!tbody || !paginationContainer) return;
@@ -453,7 +402,6 @@
 
         let wealthChart, vehiclesChart, circulationHistoryChart;
         const fetchAndDisplayEconomyStats = async () => {
-            if(userRole !== 'admin' && userRole !== 'economy') return;
             try {
                 const response = await fetch(`${backendUrl}/api/economy-stats`);
                 const data = await response.json();
@@ -462,6 +410,7 @@
                 document.getElementById('yesterday-circulation').textContent = `₦${data.yesterdayCirculation.toLocaleString()}`;
                 document.getElementById('week-ago-circulation').textContent = `₦${data.weekAgoCirculation.toLocaleString()}`;
                 document.getElementById('government-treasury').textContent = `₦${data.governmentTreasury.toLocaleString()}`;
+
 
                 const changeElement = document.getElementById('circulation-change');
                 if (data.yesterdayCirculation > 0) {
@@ -530,7 +479,7 @@
                 lookupResultsContainer.innerHTML = `<div class="bg-gray-900/50 border border-gray-700 rounded-lg p-6"><h3 class="text-2xl font-bold text-white mb-6">Records for <span class="text-[var(--color-cyan-accent)]">${playerName}</span></h3><div class="grid grid-cols-1 lg:grid-cols-2 gap-x-8 gap-y-6"><div class="space-y-4"><div class="bg-gray-800 p-4 rounded-lg"><p class="text-sm text-gray-400">Faction</p><p class="text-xl font-bold">${s.factionName} (Rank: ${s.factionrank})</p></div><div class="grid grid-cols-2 gap-4"><div class="bg-gray-800 p-4 rounded-lg"><p class="text-sm text-gray-400">Level</p><p class="text-2xl font-bold">${s.level}</p></div><div class="bg-gray-800 p-4 rounded-lg"><p class="text-sm text-gray-400">Hours Played</p><p class="text-2xl font-bold">${s.hours}</p></div></div><div class="grid grid-cols-2 gap-4"><div class="bg-gray-800 p-4 rounded-lg"><p class="text-sm text-gray-400">Cash</p><p class="text-2xl font-bold text-green-400">₦${s.cash.toLocaleString()}</p></div><div class="bg-gray-800 p-4 rounded-lg"><p class="text-sm text-gray-400">Bank</p><p class="text-2xl font-bold text-green-400">₦${s.bank.toLocaleString()}</p></div></div><div class="grid grid-cols-2 gap-4"><div class="bg-gray-800 p-4 rounded-lg"><p class="text-sm text-gray-400">Fleeca Bank</p><p class="text-2xl font-bold text-cyan-400">₦${s.fleeca_bank.toLocaleString()}</p></div><div class="bg-gray-800 p-4 rounded-lg"><p class="text-sm text-gray-400">Crimes</p><p class="text-2xl font-bold text-red-400">${s.crimes}</p></div></div></div><div class="space-y-6"><div><h4 class="text-xl font-bold text-white">Vehicles</h4>${vehiclesHtml}</div><div><h4 class="text-xl font-bold text-white">Property Logs</h4>${propertyLogsHtml}</div></div></div></div>`;
             } catch (error) { lookupResultsContainer.innerHTML = `<p class="text-center text-lg text-red-400">${error.message}</p>`; }
         });
-        
+
         const fetchEvents = async () => {
             const eventsList = document.getElementById('events-list');
             try {
@@ -544,7 +493,15 @@
                 events.forEach(event => {
                     const eventEl = document.createElement('div');
                     eventEl.className = 'bg-gray-800 p-4 rounded-lg';
-                    eventEl.innerHTML = `<div class="flex justify-between items-start"><div class="flex-grow"><p class="font-bold">${event.title}</p><p class="text-sm text-gray-400">${event.description}</p><p class="text-xs text-gray-500 mt-2">Event Date: ${new Date(event.event_date).toLocaleString()}</p><p class="text-xs text-gray-500">Announcement Date: ${event.announcement_date ? new Date(event.announcement_date).toLocaleString() : 'Not set'}</p></div><button class="text-red-400 hover:text-red-300 delete-event-btn" data-id="${event.id}">&times;</button></div>`;
+                    eventEl.innerHTML = `
+                        <div class="flex justify-between items-center">
+                            <p class="font-bold">${event.title}</p>
+                            <button class="text-red-400 hover:text-red-300 delete-event-btn" data-id="${event.id}">&times;</button>
+                        </div>
+                        <p class="text-sm text-gray-400">${event.description}</p>
+                        <p class="text-xs text-gray-500 mt-2">Event Date: ${new Date(event.event_date).toLocaleString()}</p>
+                        <p class="text-xs text-gray-500">Announcement Date: ${new Date(event.announcement_date).toLocaleString()}</p>
+                    `;
                     eventsList.appendChild(eventEl);
                 });
             } catch (error) {
@@ -566,7 +523,10 @@
                 eventLogs.forEach(log => {
                     const logEl = document.createElement('div');
                     logEl.className = 'bg-gray-800 p-4 rounded-lg';
-                    logEl.innerHTML = `<p class="text-sm text-gray-400">${log.summary}</p><p class="text-xs text-gray-500 mt-2">${new Date(log.date).toLocaleString()}</p>`;
+                    logEl.innerHTML = `
+                        <p class="text-sm text-gray-400">${log.summary}</p>
+                        <p class="text-xs text-gray-500 mt-2">${new Date(log.date).toLocaleString()}</p>
+                    `;
                     eventLogsList.appendChild(logEl);
                 });
             } catch (error) {
@@ -577,56 +537,72 @@
 
         document.getElementById('event-form').addEventListener('submit', async (e) => {
             e.preventDefault();
-            const form = e.target;
             const title = document.getElementById('event-title').value;
             const description = document.getElementById('event-description').value;
             const event_date = document.getElementById('event-date').value;
             const announcement_date = document.getElementById('announcement-date').value;
             try {
-                const res = await fetch(`${backendUrl}/api/events`, {
+                await fetch(`${backendUrl}/api/events`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ title, description, event_date, announcement_date: announcement_date || null })
+                    body: JSON.stringify({ title, description, event_date, announcement_date })
                 });
-                if(!res.ok) throw new Error("Server error");
-                form.reset();
                 fetchEvents();
-            } catch (error) { alert('Failed to schedule event.'); }
+            } catch (error) {
+                alert('Failed to schedule event.');
+            }
         });
         
         document.getElementById('events-list').addEventListener('click', async (e) => {
             if (e.target.classList.contains('delete-event-btn')) {
                 const id = e.target.dataset.id;
-                if(confirm("Are you sure you want to delete this event?")){
-                    try {
-                        await fetch(`${backendUrl}/api/events/${id}`, { method: 'DELETE' });
-                        fetchEvents();
-                    } catch (error) { alert('Failed to delete event.'); }
+                try {
+                    await fetch(`${backendUrl}/api/events/${id}`, { method: 'DELETE' });
+                    fetchEvents();
+                } catch (error) {
+                    alert('Failed to delete event.');
                 }
             }
         });
 
+        document.getElementById('quick-announcement-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const text = document.getElementById('quick-announcement-input').value;
+            const embed = {
+                title: 'Announcement',
+                description: text,
+                color: 0x00BFFF
+            };
+            try {
+                await fetch(`${backendUrl}/api/quick-announcement`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ embed })
+                });
+            } catch (error) {
+                alert('Failed to send announcement.');
+            }
+        });
+        
         document.getElementById('pay-winner-form').addEventListener('submit', async (e) => {
             e.preventDefault();
-            const form = e.target;
             const playerName = document.getElementById('pay-winner-name').value;
             const amount = document.getElementById('pay-winner-amount').value;
             const reason = document.getElementById('pay-winner-reason').value;
             try {
-                const res = await fetch(`${backendUrl}/api/pay-winner`, {
+                await fetch(`${backendUrl}/api/pay-winner`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ playerName, amount, reason })
                 });
-                const result = await res.json();
-                alert(result.message);
-                if(res.ok) form.reset();
-            } catch (error) { alert('Failed to pay winner.'); }
+                alert('Payment successful!');
+            } catch (error) {
+                alert('Failed to pay winner.');
+            }
         });
 
         document.getElementById('event-log-form').addEventListener('submit', async (e) => {
             e.preventDefault();
-            const form = e.target;
             const summary = document.getElementById('event-log-summary').value;
             try {
                 await fetch(`${backendUrl}/api/event-log`, {
@@ -634,91 +610,35 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ summary })
                 });
-                form.reset();
                 fetchEventLogs();
-            } catch (error) { alert('Failed to save event log.'); }
-        });
-
-        // --- New Raffle Logic ---
-        const raffleModal = document.getElementById('raffle-modal');
-        const openRaffleBtn = document.getElementById('raffle-btn');
-        const closeRaffleBtn = document.getElementById('close-raffle-modal');
-        const raffleNamesContainer = document.getElementById('raffle-names');
-        const winnerDisplay = document.getElementById('winner-display');
-        const raffleStatus = document.getElementById('raffle-status');
-        let allPlayers = [];
-
-        openRaffleBtn.addEventListener('click', async () => {
-            raffleModal.classList.remove('hidden');
-            winnerDisplay.style.opacity = 0;
-            winnerDisplay.textContent = '';
-            raffleStatus.textContent = 'Fetching players...';
-            try {
-                const res = await fetch(`${backendUrl}/api/all-players`);
-                allPlayers = await res.json();
-                if(allPlayers.length < 1) {
-                    raffleStatus.textContent = 'No players in database!';
-                    return;
-                }
-                raffleStatus.textContent = 'Ready to draw!';
-                raffleNamesContainer.innerHTML = allPlayers.map(name => `<div class="text-2xl p-2">${name}</div>`).join('');
-                startRaffle();
-            } catch (e) {
-                raffleStatus.textContent = 'Could not load players.';
+            } catch (error) {
+                alert('Failed to save event log.');
             }
         });
-
-        closeRaffleBtn.addEventListener('click', () => {
-            raffleModal.classList.add('hidden');
+        
+        document.getElementById('raffle-btn').addEventListener('click', async () => {
+            try {
+                const response = await fetch(`${backendUrl}/api/random-player`);
+                const player = await response.json();
+                document.getElementById('raffle-winner').textContent = `Winner: ${player.username}`;
+            } catch (error) {
+                alert('Failed to draw a winner.');
+            }
         });
-        
-        async function startRaffle() {
-            if (allPlayers.length === 0) return;
-            
-            raffleStatus.textContent = 'Drawing...';
-            winnerDisplay.style.opacity = 0;
-        
-            // Spinning animation
-            let shuffleInterval = setInterval(() => {
-                allPlayers.sort(() => Math.random() - 0.5);
-                raffleNamesContainer.innerHTML = allPlayers.slice(0, 50).map(name => `<div class="text-2xl p-2">${name}</div>`).join('');
-            }, 100);
-
-            // Fetch the actual winner while the animation is running
-            const winnerRes = await fetch(`${backendUrl}/api/random-player`);
-            const winner = await winnerRes.json();
-            
-            setTimeout(() => {
-                clearInterval(shuffleInterval);
-                raffleNamesContainer.innerHTML = `<div class="text-2xl p-2 text-[var(--color-green-accent)]">${winner.username}</div>`;
-                winnerDisplay.textContent = winner.username;
-                winnerDisplay.style.opacity = 1;
-                raffleStatus.textContent = 'We have a winner!';
-            }, 3000); 
-        }
 
         const initialLoad = () => {
-            setupUIAccess(userRole);
-            showPage(window.location.hash);
-
-            // Fetch data based on role
-            if(userRole === 'admin') {
-                fetchDashboardStats();
-                fetchPlayers();
-                fetchDonations();
-                fetchAndDisplayLogs('admin');
-                fetchAndDisplayLogs('faction');
-                fetchAndDisplayLogs('gang');
-                fetchOnlinePlayers();
-                setInterval(fetchOnlinePlayers, 30000);
-            }
-            if (userRole === 'admin' || userRole === 'economy'){
-                 fetchAndDisplayEconomyStats();
-            }
-            if (userRole === 'admin' || userRole === 'event'){
-                fetchEvents();
-                fetchEventLogs();
-            }
+            showPage(window.location.hash || '#dashboard');
+            fetchDashboardStats();
+            fetchPlayers();
+            fetchDonations();
+            fetchAndDisplayLogs('admin');
+            fetchAndDisplayLogs('faction');
+            fetchAndDisplayLogs('gang');
+            fetchOnlinePlayers();
+            fetchAndDisplayEconomyStats();
+            fetchEvents();
+            fetchEventLogs();
+            setInterval(fetchOnlinePlayers, 30000);
         };
         initialLoad();
     });
