@@ -45,7 +45,7 @@
 
     <main class="p-6 md:p-12">
         <section id="faction-dashboard">
-            <div id="stats-cards" class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <div id="stats-cards" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                 <div class="bg-gray-900/50 border border-gray-700 p-6 rounded-lg">
                     <p class="text-sm text-gray-400">Total Members</p>
                     <p id="total-members" class="text-4xl font-bold">0</p>
@@ -54,12 +54,34 @@
                     <p class="text-sm text-gray-400">Faction Bank Balance</p>
                     <p id="faction-treasury" class="text-4xl font-bold text-green-400">₦0</p>
                 </div>
+                <div class="bg-gray-900/50 border border-gray-700 p-6 rounded-lg">
+                    <p class="text-sm text-gray-400">Total Faction Crimes</p>
+                    <p id="total-crimes" class="text-4xl font-bold text-red-400">0</p>
+                </div>
+                <div class="bg-gray-900/50 border border-gray-700 p-6 rounded-lg">
+                    <p class="text-sm text-gray-400">Avg. Crimes Per Member</p>
+                    <p id="average-crimes" class="text-4xl font-bold text-yellow-400">0.00</p>
+                </div>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 <div class="lg:col-span-1 bg-gray-900/50 border border-gray-700 p-6 rounded-lg">
                     <h3 class="text-xl font-bold mb-4">Member Roster</h3>
-                    <div id="member-list" class="space-y-2 h-[60vh] overflow-y-auto pr-2"></div>
+                    <div class="h-[60vh] overflow-y-auto">
+                        <table class="w-full text-left">
+                            <thead class="bg-gray-800 sticky top-0">
+                                <tr>
+                                    <th class="p-3 text-sm font-semibold text-green-400 uppercase">Name</th>
+                                    <th class="p-3 text-sm font-semibold text-green-400 uppercase text-center">Rank</th>
+                                    <th class="p-3 text-sm font-semibold text-green-400 uppercase text-center">Lvl</th>
+                                    <th class="p-3 text-sm font-semibold text-green-400 uppercase text-center">Hours</th>
+                                    <th class="p-3 text-sm font-semibold text-green-400 uppercase text-center">Crimes</th>
+                                    <th class="p-3 text-sm font-semibold text-green-400 uppercase text-center">XP</th>
+                                </tr>
+                            </thead>
+                            <tbody id="member-list-tbody"></tbody>
+                        </table>
+                    </div>
                 </div>
                 <div class="lg:col-span-2 bg-gray-900/50 border border-gray-700 p-6 rounded-lg">
                     <h3 class="text-xl font-bold mb-4">Faction Activity Log</h3>
@@ -84,7 +106,6 @@
     document.addEventListener('DOMContentLoaded', () => {
         const backendUrl = "https://nigeria-vibe-backend.onrender.com";
 
-        // Security check: Redirect to login if not logged in.
         if (localStorage.getItem('isLoggedIn') !== 'true') {
             window.location.href = 'admin.html';
             return;
@@ -93,7 +114,9 @@
         const factionSelect = document.getElementById('faction-select');
         const totalMembersEl = document.getElementById('total-members');
         const factionTreasuryEl = document.getElementById('faction-treasury');
-        const memberListEl = document.getElementById('member-list');
+        const totalCrimesEl = document.getElementById('total-crimes');
+        const averageCrimesEl = document.getElementById('average-crimes');
+        const memberListTbody = document.getElementById('member-list-tbody');
         const logsTbody = document.getElementById('faction-logs-tbody');
         const paginationContainer = document.getElementById('faction-logs-pagination');
 
@@ -105,23 +128,32 @@
                 
                 totalMembersEl.textContent = data.totalMembers;
                 factionTreasuryEl.textContent = `₦${data.factionTreasury.toLocaleString()}`;
+                totalCrimesEl.textContent = data.totalFactionCrimes.toLocaleString();
+                averageCrimesEl.textContent = parseFloat(data.averageCrimesPerMember).toFixed(2);
                 
-                memberListEl.innerHTML = '';
+                memberListTbody.innerHTML = '';
                 if(data.memberList.length === 0){
-                     memberListEl.innerHTML = '<p class="text-gray-400">No members found in this faction.</p>';
+                     memberListTbody.innerHTML = '<tr><td colspan="6" class="p-4 text-center text-gray-400">No members found</td></tr>';
                 } else {
                     data.memberList.forEach(member => {
-                        const memberDiv = document.createElement('div');
-                        memberDiv.className = 'flex justify-between items-center bg-gray-800 p-3 rounded';
-                        memberDiv.innerHTML = `<span class="font-semibold">${member.username}</span><span class="text-gray-400 text-sm">Rank ${member.factionrank}</span>`;
-                        memberListEl.appendChild(memberDiv);
+                        const row = document.createElement('tr');
+                        row.className = 'border-b border-gray-800';
+                        row.innerHTML = `
+                            <td class="p-3 font-semibold">${member.username}</td>
+                            <td class="p-3 text-center">${member.factionrank}</td>
+                            <td class="p-3 text-center">${member.level}</td>
+                            <td class="p-3 text-center">${member.hours}</td>
+                            <td class="p-3 text-center text-red-400">${member.crimes}</td>
+                            <td class="p-3 text-center text-cyan-400">${member.pdxp}</td>
+                        `;
+                        memberListTbody.appendChild(row);
                     });
                 }
             } catch (error) {
                 console.error('Failed to fetch faction data:', error);
                 totalMembersEl.textContent = 'Error';
                 factionTreasuryEl.textContent = 'Error';
-                memberListEl.innerHTML = '<p class="text-red-400">Could not load members.</p>';
+                memberListTbody.innerHTML = '<tr><td colspan="6" class="p-4 text-center text-red-400">Could not load members.</td></tr>';
             }
         };
 
@@ -178,4 +210,3 @@
     </script>
 </body>
 </html>
-```eof
