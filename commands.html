@@ -37,10 +37,10 @@
             4%,60% { transform: translate(-2px,0) skew(0deg); }
             62% { transform: translate(0,0) skew(5deg); }
         }
-        @keyframes pulse-glow {
+        /* @keyframes pulse-glow {
             0%, 100% { box-shadow: 0 0 10px -5px var(--color-cyan-accent); }
             50% { box-shadow: 0 0 20px 0px var(--color-cyan-accent); }
-        }
+        } */
 
         .glitch-text {
             animation: glitch 1s linear infinite;
@@ -107,8 +107,37 @@
 <body class="bg-gray-950 text-gray-200 min-h-screen">
     <div id="cursor-glow" class="fixed pointer-events-none -translate-x-1/2 -translate-y-1/2 rounded-full blur-3xl" style="width: 300px; height: 300px; background: radial-gradient(circle, rgba(0, 255, 255, 0.1), transparent 70%);"></div>
 
+    <header class="sticky top-0 z-50 bg-black/50 backdrop-blur-lg border-b border-gray-700/50">
+        <div class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <h1 class="text-3xl font-black text-[var(--color-green-accent)]">NV:RP</h1>
+            
+            <nav class="hidden md:flex items-center space-x-8">
+                <a href="rules.html" class="text-[var(--color-cyan-accent)] text-lg font-semibold hover:text-[var(--color-green-accent)] transition-colors">Rules</a>
+                <a href="waitlist.html" class="text-[var(--color-cyan-accent)] text-lg font-semibold hover:text-[var(--color-green-accent)] transition-colors">Waitlist</a>
+            </nav>
+
+            <a href="index.html" target="_blank" class="hidden md:inline-block border-2 border-[var(--color-green-accent)] text-[var(--color-green-accent)] px-5 py-2 rounded-md font-bold text-sm hover:bg-[var(--color-green-accent)] hover:text-black hover:shadow-[0_0_15px_var(--color-green-accent)] transition-all">
+                BACK TO HOME
+            </a>
+
+            <button id="mobile-menu-button" class="md:hidden text-white">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+        </div>
+        
+        <nav id="mobile-menu" class="hidden md:hidden bg-black/70">
+            <a href="rules.html" class="block text-center text-lg font-semibold text-[var(--color-cyan-accent)] py-3 border-b border-gray-800">Rules</a>
+            <a href="waitlist.html" class="block text-center text-lg font-semibold text-[var(--color-cyan-accent)] py-3 border-b border-gray-800">Waitlist</a>
+            <div class="p-4">
+                 <a href="index.html" target="_blank" class="block text-center border-2 border-[var(--color-green-accent)] text-[var(--color-green-accent)] px-5 py-2 rounded-md font-bold text-sm hover:bg-[var(--color-green-accent)] hover:text-black transition-all">
+                    BACK TO HOME
+                </a>
+            </div>
+        </nav>
+    </header>
+
     <div class="container mx-auto px-4 py-12 md:py-20">
-        <header class="text-center mb-12 relative">
+        <header class="text-center mb-12">
             <h1 class="glitch-text text-6xl font-black text-glow-green" data-text="COMMANDS">COMMANDS</h1>
             <p class="text-2xl text-gray-400 mt-2">Your Guide to Nigeria Vibe RP</p>
         </header>
@@ -128,9 +157,9 @@
                 </main>
         </div>
 
-        <footer class="text-center mt-12">
-             <a href="admin.html" class="text-cyan-400 hover:text-cyan-200 transition-colors">Return to Login</a>
-        </footer>
+        <div class="text-center text-gray-500 mt-12 border-t border-gray-800 pt-8">
+            <p>&copy; 2025 Nigerian Vibe RP. All Rights Reserved.</p>
+        </div>
     </div>
 
     <script>
@@ -189,11 +218,11 @@
             if (commandList) {
                 commandList.forEach((command, index) => {
                     const row = document.createElement('div');
-                    row.className = 'command-row grid grid-cols-1 md:grid-cols-3 gap-4 items-center p-4 rounded-lg bg-gray-900/50 border border-gray-800';
+                    row.className = 'command-row grid grid-cols-1 md:grid-cols-3 gap-4 items-center p-4 border-b border-gray-800';
                     row.style.animationDelay = `${index * 50}ms`;
                     row.innerHTML = `
                         <div class="md:col-span-1">
-                            <code class="command-text text-lg font-bold text-cyan-400 bg-gray-800 px-3 py-1 rounded" data-original="${command.cmd}">${command.cmd}</code>
+                            <code class="text-lg font-bold text-cyan-400 bg-gray-900 px-3 py-1 rounded">${command.cmd}</code>
                         </div>
                         <div class="md:col-span-2">
                             <p class="text-gray-300 text-lg">${command.desc}</p>
@@ -215,12 +244,13 @@
         // Initial render
         renderCommands('general');
 
-        // Mouse move effect for cursor glow
+        // Mouse move effect
         const cursorGlow = document.getElementById('cursor-glow');
         window.addEventListener('mousemove', (e) => {
             cursorGlow.style.left = e.clientX + 'px';
             cursorGlow.style.top = e.clientY + 'px';
         });
+
 
         // Mouse move effect for rotating gradient on borders
         document.body.addEventListener('mousemove', e => {
@@ -228,33 +258,26 @@
                 el.style.setProperty('--angle', `${(e.clientX + e.clientY) / 10}deg`);
             });
         });
-        
-        // --- Live Typing Effect ---
-        let typingInterval;
-        commandContainer.addEventListener('mouseover', (e) => {
-            if (e.target.classList.contains('command-text')) {
-                const el = e.target;
-                const originalText = el.dataset.original;
-                let i = 0;
-                clearInterval(typingInterval);
-                el.textContent = '';
+
+        // 3D Tilt effect for cards
+        document.querySelector('.container').addEventListener('mousemove', (e) => {
+            document.querySelectorAll('.command-row').forEach(card => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const { width, height } = rect;
                 
-                typingInterval = setInterval(() => {
-                    if (i < originalText.length) {
-                        el.textContent += originalText.charAt(i);
-                        i++;
-                    } else {
-                        clearInterval(typingInterval);
-                    }
-                }, 50); // Typing speed
-            }
+                const rotateX = (y / height - 0.5) * -10; // Max 5deg rotation
+                const rotateY = (x / width - 0.5) * 10;  // Max 5deg rotation
+                
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+            });
         });
 
-        commandContainer.addEventListener('mouseout', (e) => {
-            if (e.target.classList.contains('command-text')) {
-                clearInterval(typingInterval);
-                e.target.textContent = e.target.dataset.original;
-            }
+        document.querySelector('.container').addEventListener('mouseleave', () => {
+            document.querySelectorAll('.command-row').forEach(card => {
+                card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)';
+            });
         });
     });
     </script>

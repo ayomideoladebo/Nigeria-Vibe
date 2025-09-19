@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Server Rules - NV:RP</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root { 
+            --font-heading: 'Audiowide', sans-serif; 
+            --font-body: 'Rajdhani', sans-serif; 
+            --color-green-accent: #39FF14; 
+            --color-cyan-accent: #00FFFF;
+        }
+        body { 
+            font-family: var(--font-body); 
+            background-color: #0a0a0a;
+            background-image:
+                radial-gradient(at 10% 20%, hsla(172, 100%, 50%, 0.1) 0px, transparent 50%),
+                radial-gradient(at 80% 0%, hsla(128, 100%, 54%, 0.08) 0px, transparent 50%),
+                radial-gradient(at 90% 90%, hsla(172, 100%, 50%, 0.15) 0px, transparent 50%);
+        }
+        h1, h2, h3, h4 { 
+            font-family: var(--font-heading); 
+        }
+        .text-glow-green { 
+            text-shadow: 0 0 5px var(--color-green-accent), 0 0 10px var(--color-green-accent); 
+        }
+        .rule-card {
+            background-color: rgba(17, 24, 39, 0.5);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(55, 65, 81, 0.5);
+            transition: all 0.3s ease-in-out;
+        }
+        .rule-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--color-cyan-accent);
+        }
+        .rule-icon {
+            filter: drop-shadow(0 0 8px var(--color-cyan-accent));
+        }
+    </style>
+</head>
+<body class="bg-gray-950 text-gray-200">
+
+    <header class="sticky top-0 z-50 bg-black/50 backdrop-blur-lg border-b border-gray-700/50">
+        <div class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <h1 class="text-3xl font-black text-[var(--color-green-accent)]">NV:RP</h1>
+            
+            <nav class="hidden md:flex items-center space-x-8">
+                <a href="index.html" class="text-[var(--color-cyan-accent)] text-lg font-semibold hover:text-[var(--color-green-accent)] transition-colors">Home</a>
+                <a href="waitlist.html" class="text-[var(--color-cyan-accent)] text-lg font-semibold hover:text-[var(--color-green-accent)] transition-colors">Waitlist</a>
+            </nav>
+
+            <a href="https://drive.google.com/file/d/1icfnCffDx_kgzTgEgrtKXFZoUhVwAB4N/view?usp=drivesdk" target="_blank" class="hidden md:inline-block border-2 border-[var(--color-green-accent)] text-[var(--color-green-accent)] px-5 py-2 rounded-md font-bold text-sm hover:bg-[var(--color-green-accent)] hover:text-black hover:shadow-[0_0_15px_var(--color-green-accent)] transition-all">
+                DOWNLOAD MODPACK
+            </a>
+
+            <button id="mobile-menu-button" class="md:hidden text-white">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+        </div>
+        
+        <nav id="mobile-menu" class="hidden md:hidden bg-black/70">
+            <a href="index.html" class="block text-center text-lg font-semibold text-[var(--color-cyan-accent)] py-3 border-b border-gray-800">Home</a>
+            <a href="waitlist.html" class="block text-center text-lg font-semibold text-[var(--color-cyan-accent)] py-3 border-b border-gray-800">Waitlist</a>
+            <div class="p-4">
+                 <a href="https://drive.google.com/file/d/1icfnCffDx_kgzTgEgrtKXFZoUhVwAB4N/view?usp=drivesdk" target="_blank" class="block text-center border-2 border-[var(--color-green-accent)] text-[var(--color-green-accent)] px-5 py-2 rounded-md font-bold text-sm hover:bg-[var(--color-green-accent)] hover:text-black transition-all">
+                    DOWNLOAD MODPACK
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container mx-auto px-4 py-12 md:py-20">
+        <header class="text-center mb-12">
+            <h1 class="text-6xl font-black text-glow-green">NV:RP</h1>
+            <p class="text-2xl text-gray-400 mt-2">Official Server Rules</p>
+            <p class="max-w-3xl mx-auto mt-4 text-gray-500">
+                Welcome to Nigeria Vibe RP. To ensure a fair and immersive experience for everyone, all players are required to read and adhere to the following rules. Ignorance is not an excuse for breaking them.
+            </p>
+        </header>
+
+        <main class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            
+            <div class="rule-card rounded-xl p-6">
+                <div class="flex items-center mb-4">
+                    <svg class="rule-icon h-8 w-8 text-cyan-400 mr-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    <h2 class="text-2xl font-bold">Roleplay & Immersion</h2>
+                </div>
+                <ul class="space-y-3 text-gray-300 text-lg">
+                    <li><strong class="text-white">Stay In-Character:</strong> No mixing OOC/IC chat during active RP. Use designated OOC channels for non-RP talk.</li>
+                    <li><strong class="text-white">No Powergaming:</strong> Do not force actions on others without giving them a chance to respond or react.</li>
+                    <li><strong class="text-white">No Metagaming:</strong> Do not use information gained outside of roleplay (e.g., Discord, streams) to influence in-character actions.</li>
+                    <li><strong class="text-white">No Fail RP:</strong> Act realistically. Drive, speak, and react as a real person would in the situation.</li>
+                    <li><strong class="text-white">Value Your Life (Fear RP):</strong> Respect dangerous situations. Do not act recklessly when your character's life is threatened.</li>
+                    <li><strong class="text-white">Realistic Names:</strong> Character names must be realistic. No celebrity names, meme names, or random letters.</li>
+                </ul>
+            </div>
+
+            <div class="rule-card rounded-xl p-6">
+                <div class="flex items-center mb-4">
+                    <svg class="rule-icon h-8 w-8 text-cyan-400 mr-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                    <h2 class="text-2xl font-bold">Crime & Violence</h2>
+                </div>
+                <ul class="space-y-3 text-gray-300 text-lg">
+                    <li><strong class="text-white">No RDM (Random Deathmatch):</strong> Killing another player must be preceded by high-quality roleplay and a valid reason.</li>
+                    <li><strong class="text-white">No VDM (Vehicle Deathmatch):</strong> Do not use your vehicle as a weapon to ram or kill others outside of a valid and escalated RP scenario.</li>
+                    <li><strong class="text-white">High-Tier Crime:</strong> Robberies, kidnappings, or hits require significant planning, dialogue, and a valid reason. Low-effort crime is forbidden.</li>
+                    <li><strong class="text-white">Gang Initiation:</strong> Gang activity and formation must be approved by server management before being established in-character.</li>
+                </ul>
+            </div>
+            
+            <div class="rule-card rounded-xl p-6">
+                <div class="flex items-center mb-4">
+                     <svg class="rule-icon h-8 w-8 text-cyan-400 mr-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" /></svg>
+                    <h2 class="text-2xl font-bold">Communication</h2>
+                </div>
+                <ul class="space-y-3 text-gray-300 text-lg">
+                    <li><strong class="text-white">Primary Language:</strong> English is the primary language for all public communications, both IC and OOC.</li>
+                    <li><strong class="text-white">No Harassment:</strong> Hate speech, racism, discrimination, or personal attacks on other players are strictly forbidden.</li>
+                    <li><strong class="text-white">Keep it Civil:</strong> In-character insults are part of RP, but OOC toxicity will not be tolerated.</li>
+                </ul>
+            </div>
+
+            <div class="rule-card rounded-xl p-6">
+                 <div class="flex items-center mb-4">
+                     <svg class="rule-icon h-8 w-8 text-cyan-400 mr-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v.01M12 6v-1m0 1V4m0 2v1m0 0v1m-6 6h12M7 16a5 5 0 01-.894-9.902l-1.01-1.01A7 7 0 005 16m14 0a7 7 0 00-4.096-6.413l-1.01 1.01A5 5 0 0117 16" /></svg>
+                    <h2 class="text-2xl font-bold">Gameplay & Economy</h2>
+                </div>
+                <ul class="space-y-3 text-gray-300 text-lg">
+                    <li><strong class="text-white">No Exploiting:</strong> Abusing bugs, glitches, or unintended game mechanics for personal gain is a bannable offense.</li>
+                    <li><strong class="text-white">No Scripting/Macros:</strong> Using third-party software to automate actions (e.g., AFK farming, macros) is forbidden.</li>
+                    <li><strong class="text-white">No Real-Money Trading (RMT):</strong> Trading in-game assets for real money or assets on other servers is strictly prohibited.</li>
+                    <li><strong class="text-white">Economic RP:</strong> All significant money transfers and sales must have a legitimate roleplay reason.</li>
+                </ul>
+            </div>
+
+            <div class="rule-card rounded-xl p-6">
+                <div class="flex items-center mb-4">
+                    <svg class="rule-icon h-8 w-8 text-cyan-400 mr-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V8.618a1 1 0 01.553-.894L9 5l6 3m-6-3v15m6-15l5.447 2.724A1 1 0 0121 8.618v7.764a1 1 0 01-.553.894L15 20m-6-3l6-3m-6 3V5m6 15V8m0 0l-6-3" /></svg>
+                    <h2 class="text-2xl font-bold">Vehicles & Property</h2>
+                </div>
+                <ul class="space-y-3 text-gray-300 text-lg">
+                    <li><strong class="text-white">Realistic Parking:</strong> Park vehicles in legal or designated areas. Do not block roads, entrances, or spawn points.</li>
+                    <li><strong class="text-white">Respect Ownership:</strong> Do not steal, damage, or destroy another player's vehicle or property without a strong roleplay justification.</li>
+                    <li><strong class="text-white">Safe Zones:</strong> Certain areas (like hospitals or police stations) may be designated safe zones. Combat is prohibited in these areas.</li>
+                </ul>
+            </div>
+
+            <div class="rule-card rounded-xl p-6">
+                <div class="flex items-center mb-4">
+                    <svg class="rule-icon h-8 w-8 text-cyan-400 mr-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                    <h2 class="text-2xl font-bold">Jobs & Factions</h2>
+                </div>
+                 <ul class="space-y-3 text-gray-300 text-lg">
+                    <li><strong class="text-white">Follow Commands:</strong> Adhere to your job or faction's chain of command and roleplay duties.</li>
+                    <li><strong class="text-white">No Impersonation:</strong> Do not impersonate members of official factions or use their equipment without authorization.</li>
+                    <li><strong class="text-white">No Corruption (Unless Approved):</strong> Corrupt roleplay within factions must be pre-approved by server staff to ensure it fits the server's narrative.</li>
+                 </ul>
+            </div>
+
+            <div class="rule-card rounded-xl p-6">
+                <div class="flex items-center mb-4">
+                     <svg class="rule-icon h-8 w-8 text-cyan-400 mr-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
+                    <h2 class="text-2xl font-bold">General Conduct</h2>
+                </div>
+                 <ul class="space-y-3 text-gray-300 text-lg">
+                    <li><strong class="text-white">Respect Staff:</strong> Always respect decisions made by admins and staff. Use the proper channels to appeal if you disagree.</li>
+                    <li><strong class="text-white">No Advertising:</strong> Do not advertise other servers, websites, or communities in-game or on Discord.</li>
+                    <li><strong class="text-white">No Alt Accounts:</strong> Using alternate accounts to bypass bans, gain an unfair advantage, or disrupt roleplay is forbidden.</li>
+                    <li><strong class="text-white">Donations are Perks:</strong> Donations support the server and provide cosmetic perks, but do not grant immunity from the rules.</li>
+                 </ul>
+            </div>
+
+        </main>
+
+        <footer class="text-center mt-16">
+            <p class="text-gray-500">Rules are subject to change. Last updated: September 19, 2025.</p>
+            <div class="mt-4">
+                <a href="index.html" class="inline-block border-2 border-cyan-500 text-cyan-400 px-6 py-2 rounded-md font-bold hover:bg-cyan-500 hover:text-black hover:shadow-[0_0_15px_var(--color-cyan-accent)] transition-all">
+                    Return to Home
+                </a>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+        });
+    </script>
+</body>
+</html>
