@@ -3,106 +3,133 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Panel - Nigerian Vibe RP</title>
+    <title>Admin Login - NV:RP</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        :root { 
-            --font-heading: 'Audiowide', sans-serif; 
-            --font-body: 'Rajdhani', sans-serif; 
-            --color-green-primary: #008000; 
-            --color-green-accent: #39FF14; 
-            --color-cyan-accent: #00FFFF; 
+        :root {
+            --font-heading: 'Audiowide', sans-serif;
+            --font-body: 'Rajdhani', sans-serif;
+            --color-green-accent: #39FF14;
+            --color-cyan-accent: #00FFFF;
         }
-        body { font-family: var(--font-body); }
-        h1, h2, h3, h4 { font-family: var(--font-heading); }
-        .text-glow-green { text-shadow: 0 0 5px var(--color-green-accent), 0 0 10px var(--color-green-accent), 0 0 15px var(--color-green-accent); }
-        body::before { 
-            content: ''; 
-            position: fixed; 
-            top: 0; 
-            left: 0; 
-            width: 100%; 
-            height: 100%; 
-            z-index: -1; 
-            background: linear-gradient(45deg, #0d1f02, #011424, #0d1f02); 
-            background-size: 200% 200%; 
-            animation: gradientShift 20s ease infinite; 
+        body {
+            font-family: var(--font-body);
+            background-color: #0a0a0a;
+            background-image:
+                radial-gradient(at 10% 20%, hsla(172, 100%, 50%, 0.15) 0px, transparent 50%),
+                radial-gradient(at 80% 0%, hsla(128, 100%, 54%, 0.1) 0px, transparent 50%),
+                radial-gradient(at 90% 90%, hsla(172, 100%, 50%, 0.2) 0px, transparent 50%);
         }
-        @keyframes gradientShift { 
-            0% { background-position: 0% 50%; } 
-            50% { background-position: 100% 50%; } 
-            100% { background-position: 0% 50%; } 
+        h1, h2, h3, h4 {
+            font-family: var(--font-heading);
+        }
+        .text-glow-green {
+            text-shadow: 0 0 5px var(--color-green-accent), 0 0 10px var(--color-green-accent);
+        }
+        .form-container {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
     </style>
 </head>
-<body class="bg-gray-950 text-gray-200 flex flex-col min-h-screen">
+<body class="bg-gray-950 text-white min-h-screen flex items-center justify-center p-4">
 
-    <main class="flex-grow flex items-center justify-center p-4">
-        <div class="w-full max-w-4xl bg-black/20 border border-gray-700/50 rounded-lg shadow-2xl shadow-black/50 overflow-hidden">
-            <div class="grid md:grid-cols-2">
-                <div class="p-8 md:p-12 bg-gray-900/30 hidden md:flex flex-col justify-center">
-                    <h2 class="text-4xl font-black text-[var(--color-green-accent)]">NV:RP</h2>
-                    <p class="mt-4 text-lg text-gray-300">Admin Control Panel</p>
-                    <p class="mt-2 text-gray-400">Access is restricted to authorized personnel. All actions are monitored.</p>
-                </div>
-
-                <div class="p-8 md:p-12">
-                    <h2 class="text-3xl font-bold text-center text-white text-glow-green">STAFF LOGIN</h2>
-                    <form id="login-form" class="mt-8 space-y-6">
-                        <div>
-                            <label for="username" class="block text-sm font-semibold text-gray-300">Username</label>
-                            <div class="relative mt-2">
-                                <span class="absolute inset-y-0 left-0 flex items-center pl-3">
-                                    <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                        <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
-                                    </svg>
-                                </span>
-                                <input type="text" id="username" required class="w-full pl-10 bg-gray-800 border border-gray-600 rounded-md p-3 focus:ring-2 focus:ring-[var(--color-green-accent)] focus:outline-none transition-all">
-                            </div>
-                        </div>
-                        <div>
-                            <label for="password" class="block text-sm font-semibold text-gray-300">Password</label>
-                             <div class="relative mt-2">
-                                <span class="absolute inset-y-0 left-0 flex items-center pl-3">
-                                    <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                      <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" />
-                                    </svg>
-                                </span>
-                                <input type="password" id="password" required class="w-full pl-10 bg-gray-800 border border-gray-600 rounded-md p-3 focus:ring-2 focus:ring-[var(--color-green-accent)] focus:outline-none transition-all">
-                            </div>
-                        </div>
-                        <button type="submit" class="w-full bg-[var(--color-green-primary)] text-white py-3 rounded-md font-bold text-lg hover:bg-[var(--color-green-accent)] hover:text-black hover:shadow-[0_0_20px_var(--color-green-accent)] transition-all transform hover:scale-105">SECURE LOGIN</button>
-                    </form>
-                </div>
-            </div>
+    <div class="form-container w-full max-w-md">
+        <div class="text-center mb-8">
+            <h1 class="text-6xl font-black text-glow-green">NV:RP</h1>
+            <p class="text-lg text-gray-400 mt-2">Staff Control Panel</p>
         </div>
-    </main>
-    
-    <script>
-        document.getElementById('login-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            const backendUrl = "https://nigeria-vibe-backend.onrender.com";
 
-            try {
-                const response = await fetch(`${backendUrl}/api/login`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ username, password })
-                });
-                const data = await response.json();
-                if (data.success) {
-                    localStorage.setItem('isLoggedIn', 'true');
-                    window.location.href = 'dashboard.html';
-                } else {
-                    alert('Error: ' + data.message);
-                }
-            } catch (error) {
-                alert('An error occurred. Please try again.');
+        <div class="bg-gray-900/50 border border-gray-700 backdrop-blur-sm rounded-xl shadow-2xl shadow-black/30 p-8">
+            <form id="login-form">
+                <div class="space-y-6">
+                    <div>
+                        <label for="username" class="block text-sm font-semibold text-gray-400 mb-2">Username</label>
+                        <input type="text" id="username" name="username" required
+                               class="w-full bg-gray-800 border border-gray-600 rounded-md p-3 text-white placeholder-gray-500 focus:ring-2 focus:ring-[var(--color-cyan-accent)] focus:border-[var(--color-cyan-accent)] focus:outline-none transition-all">
+                    </div>
+                    <div>
+                        <label for="password" class="block text-sm font-semibold text-gray-400 mb-2">Password</label>
+                        <input type="password" id="password" name="password" required
+                               class="w-full bg-gray-800 border border-gray-600 rounded-md p-3 text-white placeholder-gray-500 focus:ring-2 focus:ring-[var(--color-cyan-accent)] focus:border-[var(--color-cyan-accent)] focus:outline-none transition-all">
+                    </div>
+                </div>
+                <div id="error-message" class="text-red-400 text-sm font-semibold text-center mt-6 h-5"></div>
+                <button type="submit" id="login-btn"
+                        class="w-full bg-[var(--color-green-accent)] text-black mt-2 px-6 py-3 rounded-md font-bold text-lg hover:bg-opacity-80 transition-all duration-300 transform hover:scale-105 flex items-center justify-center">
+                    <span id="login-btn-text">Secure Login</span>
+                    <svg id="login-spinner" class="animate-spin -ml-1 mr-3 h-5 w-5 text-black hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                </button>
+            </form>
+        </div>
+        <p class="text-center text-xs text-gray-600 mt-6">
+            Login attempt from your IP will be logged for security purposes.
+        </p>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const backendUrl = "https://nigeria-vibe-backend.onrender.com";
+            const loginForm = document.getElementById('login-form');
+            const errorMessage = document.getElementById('error-message');
+            const loginBtn = document.getElementById('login-btn');
+            const loginBtnText = document.getElementById('login-btn-text');
+            const loginSpinner = document.getElementById('login-spinner');
+
+            if (localStorage.getItem('isLoggedIn') === 'true') {
+                window.location.href = 'dashboard.html';
             }
+
+            loginForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                errorMessage.textContent = '';
+                loginBtn.disabled = true;
+                loginBtnText.textContent = 'Authenticating...';
+                loginSpinner.classList.remove('hidden');
+
+                const username = loginForm.username.value;
+                const password = loginForm.password.value;
+
+                try {
+                    const response = await fetch(`${backendUrl}/api/login`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ username, password })
+                    });
+
+                    const data = await response.json();
+
+                    if (response.ok && data.success) {
+                        localStorage.setItem('isLoggedIn', 'true');
+                        localStorage.setItem('userRole', data.role);
+                        window.location.href = 'dashboard.html';
+                    } else {
+                        throw new Error(data.message || 'Invalid credentials');
+                    }
+                } catch (error) {
+                    errorMessage.textContent = error.message;
+                    loginBtn.disabled = false;
+                    loginBtnText.textContent = 'Secure Login';
+                    loginSpinner.classList.add('hidden');
+                }
+            });
         });
     </script>
+
 </body>
 </html>
