@@ -297,6 +297,7 @@
                                 <th class="p-4 text-sm font-semibold text-green-400 uppercase">Level</th>
                                 <th class="p-4 text-sm font-semibold text-green-400 uppercase">Hours</th>
                                 <th class="p-4 text-sm font-semibold text-green-400 uppercase">Faction</th>
+                                <th class="p-4 text-sm font-semibold text-green-400 uppercase">IP Address</th>
                             </tr>
                         </thead>
                         <tbody id="all-players-tbody"></tbody>
@@ -677,7 +678,7 @@
                 const players = await res.json();
                 tbody.innerHTML = '';
                 if (players.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="4" class="text-center p-8 text-gray-400">No players found.</td></tr>';
+                    tbody.innerHTML = '<tr><td colspan="5" class="text-center p-8 text-gray-400">No players found.</td></tr>';
                     return;
                 }
                 players.forEach(player => {
@@ -689,6 +690,7 @@
                         <td class="p-4">${player.level}</td>
                         <td class="p-4">${player.hours}</td>
                         <td class="p-4">${getFactionName(player.faction)}</td>
+                        <td class="p-4">${player.ip}</td>
                     `;
                     row.addEventListener('click', () => {
                         lookupPlayer(player.username);
@@ -696,7 +698,7 @@
                     tbody.appendChild(row);
                 });
             } catch (error) {
-                tbody.innerHTML = '<tr><td colspan="4" class="text-center p-8 text-red-400">Failed to load players.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="5" class="text-center p-8 text-red-400">Failed to load players.</td></tr>';
             }
         };
 
