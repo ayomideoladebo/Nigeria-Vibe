@@ -49,6 +49,39 @@
         #sidebar nav::-webkit-scrollbar-thumb:hover {
           background: #6b7280; /* bg-gray-500 */
         }
+        .slot-machine-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 150px;
+            background: #111;
+            border-radius: 10px;
+            border: 2px solid var(--color-cyan-accent);
+            overflow: hidden;
+            padding: 0 20px;
+        }
+        .slot-reel {
+            overflow: hidden;
+            height: 100px;
+            position: relative;
+        }
+        .slot-reel-inner {
+            display: flex;
+            flex-direction: column;
+            transition: transform 5s cubic-bezier(0.25, 0.1, 0.25, 1);
+        }
+        .slot-item {
+            height: 100px;
+            line-height: 100px;
+            font-size: 2.5rem;
+            font-weight: bold;
+            text-align: center;
+            color: #fff;
+        }
+        .winner .slot-item {
+            color: var(--color-green-accent);
+            text-shadow: 0 0 10px var(--color-green-accent);
+        }
     </style>
 </head>
 <body class="bg-gray-950 text-white min-h-screen">
@@ -301,18 +334,12 @@
             </section>
         </main>
     </div>
-
+    
     <div id="raffle-modal" class="hidden fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 raffle-modal">
-        <div class="bg-gray-900 border-2 border-[var(--color-cyan-accent)] rounded-lg p-8 text-center w-full max-w-md relative">
+        <div class="bg-gray-900 border-2 border-[var(--color-cyan-accent)] rounded-lg p-8 text-center w-full max-w-lg relative">
             <button id="close-raffle-modal" class="absolute top-4 right-4 text-gray-400 hover:text-white">&times;</button>
             <h3 class="text-3xl font-bold mb-6 text-glow-green">Player Raffle</h3>
-            <div class="relative h-20 overflow-hidden mb-6 bg-gray-950 rounded-lg p-4">
-                <div id="raffle-names" class="absolute inset-0 flex flex-col items-center justify-center transition-transform duration-100 ease-linear">
-                    </div>
-                <div class="absolute inset-0 bg-gradient-to-b from-gray-950 via-transparent to-gray-950"></div>
-                 <div class="absolute inset-y-0 left-0 w-full h-full flex items-center justify-center border-y-2 border-[var(--color-cyan-accent)]">
-                    <div id="winner-display" class="text-2xl font-bold text-white transition-opacity duration-300 opacity-0"></div>
-                 </div>
+            <div id="raffle-slot-machine" class="slot-machine-container mb-6">
             </div>
             <p id="raffle-status" class="text-gray-400 min-h-[1.5rem]">Click "Draw" to start the raffle!</p>
         </div>
@@ -814,15 +841,12 @@
         const raffleModal = document.getElementById('raffle-modal');
         const openRaffleBtn = document.getElementById('raffle-btn');
         const closeRaffleBtn = document.getElementById('close-raffle-modal');
-        const raffleNamesContainer = document.getElementById('raffle-names');
-        const winnerDisplay = document.getElementById('winner-display');
+        const raffleSlotMachine = document.getElementById('raffle-slot-machine');
         const raffleStatus = document.getElementById('raffle-status');
         let allPlayers = [];
 
         openRaffleBtn.addEventListener('click', async () => {
             raffleModal.classList.remove('hidden');
-            winnerDisplay.style.opacity = 0;
-            winnerDisplay.textContent = '';
             raffleStatus.textContent = 'Fetching players...';
             try {
                 const res = await fetch(`${backendUrl}/api/all-players`);
@@ -832,13 +856,12 @@
                     return;
                 }
                 raffleStatus.textContent = 'Ready to draw!';
-                raffleNamesContainer.innerHTML = allPlayers.map(name => `<div class="text-2xl p-2">${name}</div>`).join('');
                 startRaffle();
             } catch (e) {
                 raffleStatus.textContent = 'Could not load players.';
             }
         });
-
+        
         closeRaffleBtn.addEventListener('click', () => {
             raffleModal.classList.add('hidden');
         });
@@ -847,25 +870,46 @@
             if (allPlayers.length === 0) return;
             
             raffleStatus.textContent = 'Drawing...';
-            winnerDisplay.style.opacity = 0;
-        
-            // Spinning animation
-            let shuffleInterval = setInterval(() => {
-                allPlayers.sort(() => Math.random() - 0.5);
-                raffleNamesContainer.innerHTML = allPlayers.slice(0, 50).map(name => `<div class="text-2xl p-2">${name}</div>`).join('');
-            }, 100);
-
-            // Fetch the actual winner while the animation is running
-            const winnerRes = await fetch(`${backendUrl}/api/random-player`);
-            const winner = await winnerRes.json();
             
+            // Fetch the actual winner
+            const winnerRes = await fetch(`${backendUrl}/api/random-player`);
+            const winnerData = await winnerRes.json();
+            const winner = winnerData.username;
+            
+            raffleSlotMachine.innerHTML = '';
+            const reel = document.createElement('div');
+            reel.className = 'slot-reel';
+            const reelInner = document.createElement('div');
+            reelInner.className = 'slot-reel-inner';
+
+            const shuffledPlayers = [...allPlayers].sort(() => 0.5 - Math.random());
+            const displayPlayers = shuffledPlayers.slice(0, 30);
+            
+            if (!displayPlayers.includes(winner)) {
+                displayPlayers[Math.floor(Math.random() * displayPlayers.length)] = winner;
+            }
+
+            displayPlayers.forEach(player => {
+                const item = document.createElement('div');
+                item.className = 'slot-item';
+                item.textContent = player;
+                reelInner.appendChild(item);
+            });
+            
+            reel.appendChild(reelInner);
+            raffleSlotMachine.appendChild(reel);
+
             setTimeout(() => {
-                clearInterval(shuffleInterval);
-                raffleNamesContainer.innerHTML = `<div class="text-2xl p-2 text-[var(--color-green-accent)]">${winner.username}</div>`;
-                winnerDisplay.textContent = winner.username;
-                winnerDisplay.style.opacity = 1;
-                raffleStatus.textContent = 'We have a winner!';
-            }, 3000); 
+                const winnerIndex = displayPlayers.indexOf(winner);
+                const itemHeight = 100;
+                const offset = -winnerIndex * itemHeight;
+                reelInner.style.transform = `translateY(${offset}px)`;
+
+                setTimeout(() => {
+                    raffleStatus.textContent = `Winner: ${winner}`;
+                    reelInner.childNodes[winnerIndex].parentNode.classList.add('winner');
+                }, 5000);
+            }, 100);
         }
 
         const initialLoad = () => {
