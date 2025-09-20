@@ -163,20 +163,25 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
                     <div class="bg-gray-900/50 border border-gray-700 p-6 rounded-lg">
                         <p class="text-sm text-gray-400">Live Total Circulation</p>
-                        <p id="total-circulation" class="text-4xl font-bold text-green-400">₦0</p>
+                        <p id="total-circulation" class="text-3xl lg:text-4xl font-bold text-green-400">₦0</p>
                         <p id="circulation-change" class="text-sm font-semibold mt-1">&nbsp;</p>
                     </div>
                     <div class="bg-gray-900/50 border border-gray-700 p-6 rounded-lg">
                         <p class="text-sm text-gray-400">Yesterday's Circulation</p>
-                        <p id="yesterday-circulation" class="text-4xl font-bold text-gray-300">₦0</p>
+                        <p id="yesterday-circulation" class="text-3xl lg:text-4xl font-bold text-gray-300">₦0</p>
                     </div>
                     <div class="bg-gray-900/50 border border-gray-700 p-6 rounded-lg">
-                        <p class="text-sm text-gray-400">7 Days Ago</p>
-                        <p id="week-ago-circulation" class="text-4xl font-bold text-gray-300">₦0</p>
+                        <p class="text-sm text-gray-400">Total Server Asset Value</p>
+                        <p id="server-asset-value" class="text-3xl lg:text-4xl font-bold text-cyan-400">₦0</p>
+                    </div>
+                    <div class="bg-gray-900/50 border border-gray-700 p-6 rounded-lg">
+                        <p class="text-sm text-gray-400">Government Treasury</p>
+                        <p id="government-treasury" class="text-3xl lg:text-4xl font-bold text-cyan-400">₦0</p>
                     </div>
                     <div class="bg-gray-900/50 border border-gray-700 p-6 rounded-lg col-span-1 md:col-span-2 lg:col-span-1">
-                        <p class="text-sm text-gray-400">Government Treasury</p>
-                        <p id="government-treasury" class="text-4xl font-bold text-cyan-400">₦0</p>
+                        <p class="text-sm text-gray-400">Gemini Prediction (24h)</p>
+                        <p id="gemini-prediction" class="text-3xl lg:text-4xl font-bold text-yellow-400">0%</p>
+                        <button id="gemini-explanation-btn" class="text-xs text-gray-400 hover:text-white mt-1">Why?</button>
                     </div>
                 </div>
                 <div class="bg-gray-900/50 border border-gray-700 p-6 rounded-lg mb-8">
@@ -348,6 +353,14 @@
             <p id="raffle-status" class="text-gray-400 min-h-[1.5rem]">Click "Draw" to start the raffle!</p>
         </div>
     </div>
+
+    <div id="gemini-explanation-modal" class="hidden fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
+        <div class="bg-gray-900 border-2 border-[var(--color-cyan-accent)] rounded-lg p-8 w-full max-w-lg relative">
+            <button id="close-gemini-modal" class="absolute top-4 right-4 text-gray-400 hover:text-white">&times;</button>
+            <h3 class="text-2xl font-bold mb-4 text-glow-green">Gemini Prediction Analysis</h3>
+            <p id="gemini-explanation-text" class="text-gray-300"></p>
+        </div>
+    </div>
     
     <script>
     document.addEventListener('DOMContentLoaded', () => {
@@ -505,6 +518,8 @@
         });
 
         let wealthChart, vehiclesChart, circulationHistoryChart;
+        let geminiExplanation = '';
+
         const fetchAndDisplayEconomyStats = async () => {
             try {
                 const response = await fetch(`${backendUrl}/api/economy-stats`);
@@ -512,9 +527,20 @@
 
                 document.getElementById('total-circulation').textContent = `₦${data.totalCirculation.toLocaleString()}`;
                 document.getElementById('yesterday-circulation').textContent = `₦${data.yesterdayCirculation.toLocaleString()}`;
-                document.getElementById('week-ago-circulation').textContent = `₦${data.weekAgoCirculation.toLocaleString()}`;
+                document.getElementById('server-asset-value').textContent = `₦${data.serverAssetValue.toLocaleString()}`;
                 document.getElementById('government-treasury').textContent = `₦${data.governmentTreasury.toLocaleString()}`;
 
+                const predictionResponse = await fetch(`${backendUrl}/api/gemini-analysis`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        circulationHistory: data.circulationHistory,
+                        serverAssetValue: data.serverAssetValue
+                    })
+                });
+                const predictionData = await predictionResponse.json();
+                document.getElementById('gemini-prediction').textContent = `${predictionData.prediction}%`;
+                geminiExplanation = predictionData.explanation;
 
                 const changeElement = document.getElementById('circulation-change');
                 if (data.yesterdayCirculation > 0) {
@@ -558,6 +584,15 @@
 
             } catch (error) { console.error("Failed to fetch economy stats:", error); }
         };
+        
+        document.getElementById('gemini-explanation-btn').addEventListener('click', () => {
+            document.getElementById('gemini-explanation-text').textContent = geminiExplanation;
+            document.getElementById('gemini-explanation-modal').classList.remove('hidden');
+        });
+
+        document.getElementById('close-gemini-modal').addEventListener('click', () => {
+            document.getElementById('gemini-explanation-modal').classList.add('hidden');
+        });
 
         const lookupForm = document.getElementById('lookup-form');
         const lookupResultsContainer = document.getElementById('lookup-results');
