@@ -82,6 +82,9 @@
             color: var(--color-green-accent);
             text-shadow: 0 0 10px var(--color-green-accent);
         }
+        .duplicate-ip {
+            color: #FF5733; /* A reddish-orange color */
+        }
     </style>
 </head>
 <body class="bg-gray-950 text-white min-h-screen">
@@ -674,8 +677,13 @@
         const fetchAllPlayers = async () => {
             const tbody = document.getElementById('all-players-tbody');
             try {
-                const res = await fetch(`${backendUrl}/api/all-players-list`);
-                const players = await res.json();
+                const [playersRes, duplicateIpsRes] = await Promise.all([
+                    fetch(`${backendUrl}/api/all-players-list`),
+                    fetch(`${backendUrl}/api/duplicate-ips`)
+                ]);
+                const players = await playersRes.json();
+                const duplicateIps = await duplicateIpsRes.json();
+                
                 tbody.innerHTML = '';
                 if (players.length === 0) {
                     tbody.innerHTML = '<tr><td colspan="5" class="text-center p-8 text-gray-400">No players found.</td></tr>';
@@ -683,7 +691,8 @@
                 }
                 players.forEach(player => {
                     const row = document.createElement('tr');
-                    row.className = 'border-b border-gray-800 hover:bg-gray-800/50 cursor-pointer';
+                    const isDuplicate = duplicateIps.includes(player.ip);
+                    row.className = `border-b border-gray-800 hover:bg-gray-800/50 cursor-pointer ${isDuplicate ? 'text-red-400' : ''}`;
                     row.dataset.playername = player.username;
                     row.innerHTML = `
                         <td class="p-4">${player.username}</td>
