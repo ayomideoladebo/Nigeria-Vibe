@@ -521,69 +521,69 @@
         let geminiExplanation = '';
 
         const fetchAndDisplayEconomyStats = async () => {
-            try {
-                const response = await fetch(`${backendUrl}/api/economy-stats`);
-                const data = await response.json();
+        try {
+            const response = await fetch(`${backendUrl}/api/economy-stats`);
+            const data = await response.json();
 
-                document.getElementById('total-circulation').textContent = `₦${data.totalCirculation.toLocaleString()}`;
-                document.getElementById('yesterday-circulation').textContent = `₦${data.yesterdayCirculation.toLocaleString()}`;
-                document.getElementById('server-asset-value').textContent = `₦${data.serverAssetValue.toLocaleString()}`;
-                document.getElementById('government-treasury').textContent = `₦${data.governmentTreasury.toLocaleString()}`;
+            document.getElementById('total-circulation').textContent = `₦${data.totalCirculation.toLocaleString()}`;
+            document.getElementById('yesterday-circulation').textContent = `₦${data.yesterdayCirculation.toLocaleString()}`;
+            document.getElementById('server-asset-value').textContent = `₦${data.serverAssetValue.toLocaleString()}`;
+            document.getElementById('government-treasury').textContent = `₦${data.governmentTreasury.toLocaleString()}`;
 
-                const predictionResponse = await fetch(`${backendUrl}/api/gemini-analysis`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        circulationHistory: data.circulationHistory,
-                        totalPlayerHours: data.totalPlayerHours // This line is now correctly passing the player hours
-                    })
-                });
-                const predictionData = await predictionResponse.json();
-                document.getElementById('gemini-prediction').textContent = `${predictionData.prediction}%`;
-                geminiExplanation = predictionData.explanation;
+            const predictionResponse = await fetch(`${backendUrl}/api/gemini-analysis`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    circulationHistory: data.circulationHistory,
+                    playerStats: data.playerStats // Pass the new playerStats object
+                })
+            });
+            const predictionData = await predictionResponse.json();
+            document.getElementById('gemini-prediction').textContent = `${predictionData.prediction}%`;
+            geminiExplanation = predictionData.explanation;
 
-                const changeElement = document.getElementById('circulation-change');
-                if (data.yesterdayCirculation > 0) {
-                    const change = ((data.totalCirculation - data.yesterdayCirculation) / data.yesterdayCirculation) * 100;
-                    changeElement.textContent = `${change >= 0 ? '+' : ''}${change.toFixed(2)}% vs Yesterday`;
-                    changeElement.className = `text-sm font-semibold mt-1 ${change >= 0 ? 'text-green-400' : 'text-red-400'}`;
-                } else {
-                    changeElement.textContent = 'Awaiting yesterday\'s data';
-                    changeElement.className = 'text-sm font-semibold mt-1 text-gray-400';
-                }
+            const changeElement = document.getElementById('circulation-change');
+            if (data.yesterdayCirculation > 0) {
+                const change = ((data.totalCirculation - data.yesterdayCirculation) / data.yesterdayCirculation) * 100;
+                changeElement.textContent = `${change >= 0 ? '+' : ''}${change.toFixed(2)}% vs Yesterday`;
+                changeElement.className = `text-sm font-semibold mt-1 ${change >= 0 ? 'text-green-400' : 'text-red-400'}`;
+            } else {
+                changeElement.textContent = 'Awaiting yesterday\'s data';
+                changeElement.className = 'text-sm font-semibold mt-1 text-gray-400';
+            }
 
-                const historyCtx = document.getElementById('circulation-history-chart').getContext('2d');
-                if(circulationHistoryChart) circulationHistoryChart.destroy();
-                const reversedHistory = data.circulationHistory.slice().reverse();
-                circulationHistoryChart = new Chart(historyCtx, { type: 'line', data: { labels: reversedHistory.map(d => new Date(d.snapshot_date).toLocaleDateString()), datasets: [{ label: 'Total Circulation', data: reversedHistory.map(d => d.total_circulation), borderColor: '#00FFFF', backgroundColor: 'rgba(0, 255, 255, 0.1)', fill: true, tension: 0.3 }] }, options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { ticks: { color: '#D1D5DB' } }, x: { ticks: { color: '#D1D5DB' } } } } });
+            const historyCtx = document.getElementById('circulation-history-chart').getContext('2d');
+            if(circulationHistoryChart) circulationHistoryChart.destroy();
+            const reversedHistory = data.circulationHistory.slice().reverse();
+            circulationHistoryChart = new Chart(historyCtx, { type: 'line', data: { labels: reversedHistory.map(d => new Date(d.snapshot_date).toLocaleDateString()), datasets: [{ label: 'Total Circulation', data: reversedHistory.map(d => d.total_circulation), borderColor: '#00FFFF', backgroundColor: 'rgba(0, 255, 255, 0.1)', fill: true, tension: 0.3 }] }, options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { ticks: { color: '#D1D5DB' } }, x: { ticks: { color: '#D1D5DB' } } } } });
 
-                const wealthCtx = document.getElementById('wealth-chart').getContext('2d');
-                if(wealthChart) wealthChart.destroy();
-                wealthChart = new Chart(wealthCtx, { type: 'doughnut', data: { labels: data.wealthDistribution.map(d => d.wealthBracket), datasets: [{ data: data.wealthDistribution.map(d => d.playerCount), backgroundColor: ['#10B981', '#3B82F6', '#F59E0B', '#EF4444'], borderColor: '#1f2937' }] }, options: { responsive: true, plugins: { legend: { position: 'top', labels: { color: '#D1D5DB' } } } } });
+            const wealthCtx = document.getElementById('wealth-chart').getContext('2d');
+            if(wealthChart) wealthChart.destroy();
+            wealthChart = new Chart(wealthCtx, { type: 'doughnut', data: { labels: data.wealthDistribution.map(d => d.wealthBracket), datasets: [{ data: data.wealthDistribution.map(d => d.playerCount), backgroundColor: ['#10B981', '#3B82F6', '#F59E0B', '#EF4444'], borderColor: '#1f2937' }] }, options: { responsive: true, plugins: { legend: { position: 'top', labels: { color: '#D1D5DB' } } } } });
 
-                const vehicleNames = { 411: 'Infernus', 560: 'Sultan', 476: 'Bullet', 559: 'Slamvan', 494: 'Hotring', 541: 'Cheetah', 487: 'Maverick', 562: 'Elegy', 460: 'NRG-500', 522: 'FCR-900' };
-                const vehiclesCtx = document.getElementById('vehicles-chart').getContext('2d');
-                if(vehiclesChart) vehiclesChart.destroy();
-                vehiclesChart = new Chart(vehiclesCtx, { type: 'bar', data: { labels: data.topVehicles.map(v => vehicleNames[v.modelid] || `ID: ${v.modelid}`), datasets: [{ data: data.topVehicles.map(v => v.vehicleCount), backgroundColor: '#00FFFF' }] }, options: { indexAxis: 'y', responsive: true, plugins: { legend: { display: false } }, scales: { y: { ticks: { color: '#D1D5DB' } }, x: { ticks: { color: '#D1D5DB' } } } } });
+            const vehicleNames = { 411: 'Infernus', 560: 'Sultan', 476: 'Bullet', 559: 'Slamvan', 494: 'Hotring', 541: 'Cheetah', 487: 'Maverick', 562: 'Elegy', 460: 'NRG-500', 522: 'FCR-900' };
+            const vehiclesCtx = document.getElementById('vehicles-chart').getContext('2d');
+            if(vehiclesChart) vehiclesChart.destroy();
+            vehiclesChart = new Chart(vehiclesCtx, { type: 'bar', data: { labels: data.topVehicles.map(v => vehicleNames[v.modelid] || `ID: ${v.modelid}`), datasets: [{ data: data.topVehicles.map(v => v.vehicleCount), backgroundColor: '#00FFFF' }] }, options: { indexAxis: 'y', responsive: true, plugins: { legend: { display: false } }, scales: { y: { ticks: { color: '#D1D5DB' } }, x: { ticks: { color: '#D1D5DB' } } } } });
 
-                const wealthiestPlayersList = document.getElementById('wealthiest-players-list');
-                wealthiestPlayersList.innerHTML = '';
-                data.wealthiestPlayers.forEach((player, index) => { wealthiestPlayersList.innerHTML += `<div class="flex justify-between items-center text-sm"><div><span class="text-gray-400 mr-2">${index + 1}.</span><span class="online-player-name font-semibold" data-playername="${player.username}">${player.username}</span></div><span class="font-bold text-green-400">₦${parseInt(player.total_wealth).toLocaleString()}</span></div>`; });
-                
-                const topBusinessesList = document.getElementById('top-businesses-list');
-                topBusinessesList.innerHTML = '';
-                data.topBusinesses.forEach((biz, index) => { topBusinessesList.innerHTML += `<div class="flex justify-between items-center text-sm"><div><span class="text-gray-400 mr-2">${index + 1}.</span><span class="font-semibold">${biz.biz_desc}</span></div><span class="font-bold text-yellow-400">₦${biz.cash.toLocaleString()}</span></div>`; });
+            const wealthiestPlayersList = document.getElementById('wealthiest-players-list');
+            wealthiestPlayersList.innerHTML = '';
+            data.wealthiestPlayers.forEach((player, index) => { wealthiestPlayersList.innerHTML += `<div class="flex justify-between items-center text-sm"><div><span class="text-gray-400 mr-2">${index + 1}.</span><span class="online-player-name font-semibold" data-playername="${player.username}">${player.username}</span></div><span class="font-bold text-green-400">₦${parseInt(player.total_wealth).toLocaleString()}</span></div>`; });
+            
+            const topBusinessesList = document.getElementById('top-businesses-list');
+            topBusinessesList.innerHTML = '';
+            data.topBusinesses.forEach((biz, index) => { topBusinessesList.innerHTML += `<div class="flex justify-between items-center text-sm"><div><span class="text-gray-400 mr-2">${index + 1}.</span><span class="font-semibold">${biz.biz_desc}</span></div><span class="font-bold text-yellow-400">₦${biz.cash.toLocaleString()}</span></div>`; });
 
-                const factionTreasuriesList = document.getElementById('faction-treasuries-list');
-                factionTreasuriesList.innerHTML = '';
-                data.factionTreasuries.forEach((faction) => { factionTreasuriesList.innerHTML += `<div class="flex justify-between items-center text-sm"><span class="font-semibold">${faction.name}</span><span class="font-bold text-cyan-400">₦${faction.faction_treasury.toLocaleString()}</span></div>`; });
+            const factionTreasuriesList = document.getElementById('faction-treasuries-list');
+            factionTreasuriesList.innerHTML = '';
+            data.factionTreasuries.forEach((faction) => { factionTreasuriesList.innerHTML += `<div class="flex justify-between items-center text-sm"><span class="font-semibold">${faction.name}</span><span class="font-bold text-cyan-400">₦${faction.faction_treasury.toLocaleString()}</span></div>`; });
 
-                wealthiestPlayersList.addEventListener('click', (e) => {
-                    if (e.target && e.target.classList.contains('online-player-name')) { lookupPlayer(e.target.dataset.playername); }
-                });
+            wealthiestPlayersList.addEventListener('click', (e) => {
+                if (e.target && e.target.classList.contains('online-player-name')) { lookupPlayer(e.target.dataset.playername); }
+            });
 
-            } catch (error) { console.error("Failed to fetch economy stats:", error); }
-        };
+        } catch (error) { console.error("Failed to fetch economy stats:", error); }
+    };
         
         document.getElementById('gemini-explanation-btn').addEventListener('click', () => {
             document.getElementById('gemini-explanation-text').textContent = geminiExplanation;
