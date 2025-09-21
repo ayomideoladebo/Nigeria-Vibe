@@ -381,7 +381,7 @@
                 const mouseX = e.clientX - mapContainer.getBoundingClientRect().left;
                 const mouseY = e.clientY - mapContainer.getBoundingClientRect().top;
                 let newScale = e.deltaY < 0 ? scale * scaleAmount : scale / scaleAmount;
-                newScale = Math.max(0.1, Math.min(9.0, newScale)); // Increased max zoom to 7.0
+                newScale = Math.max(0.1, Math.min(19.0, newScale)); // Increased max zoom to 7.0
                 const scaleRatio = newScale / scale;
                 currentTranslate.x = mouseX - (mouseX - currentTranslate.x) * scaleRatio;
                 currentTranslate.y = mouseY - (mouseY - currentTranslate.y) * scaleRatio;
