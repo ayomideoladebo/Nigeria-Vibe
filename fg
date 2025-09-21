@@ -1,262 +1,93 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Server Commands - NV:RP</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
-    <style>
-        :root { 
-            --font-heading: 'Audiowide', sans-serif; 
-            --font-body: 'Rajdhani', sans-serif; 
-            --color-green-accent: #39FF14; 
-            --color-cyan-accent: #00FFFF;
-        }
-        body { 
-            font-family: var(--font-body); 
-            background-color: #0a0a0a;
-            background-image:
-                radial-gradient(at 10% 20%, hsla(172, 100%, 50%, 0.1) 0px, transparent 50%),
-                radial-gradient(at 80% 0%, hsla(128, 100%, 54%, 0.08) 0px, transparent 50%),
-                radial-gradient(at 50% 90%, hsla(172, 100%, 50%, 0.15) 0px, transparent 50%);
-        }
-        h1, h2, h3, h4 { 
-            font-family: var(--font-heading); 
-        }
-        .text-glow-green { 
-            text-shadow: 0 0 5px var(--color-green-accent), 0 0 10px var(--color-green-accent); 
-        }
-        
-        /* --- New Animations --- */
-        @keyframes rotate {
-            100% { transform: rotate(360deg); }
-        }
-        @keyframes glitch {
-            2%,64% { transform: translate(2px,0) skew(0deg); }
-            4%,60% { transform: translate(-2px,0) skew(0deg); }
-            62% { transform: translate(0,0) skew(5deg); }
-        }
-        @keyframes pulse-glow {
-            0%, 100% { box-shadow: 0 0 10px -5px var(--color-cyan-accent); }
-            50% { box-shadow: 0 0 20px 0px var(--color-cyan-accent); }
-        }
-
-        .glitch-text {
-            animation: glitch 1s linear infinite;
-        }
-        .glitch-text:before, .glitch-text:after {
-            content: attr(data-text);
-            position: absolute;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: transparent;
-            overflow: hidden;
-            clip: rect(0, 900px, 0, 0);
-        }
-        .glitch-text:before {
-            left: 2px;
-            text-shadow: -2px 0 var(--color-green-accent);
-            animation: glitch-anim-2 1.5s linear infinite reverse;
-        }
-        .glitch-text:after {
-            left: -2px;
-            text-shadow: -2px 0 var(--color-cyan-accent), 2px 2px var(--color-green-accent);
-            animation: glitch-anim-1 2.5s linear infinite reverse;
-        }
-        @keyframes glitch-anim-1 {
-            0% { clip: rect(42px, 9999px, 44px, 0); }
-            5% { clip: rect(12px, 9999px, 60px, 0); }
-            /* ... add more steps for a complex glitch */
-        }
-        @keyframes glitch-anim-2 {
-            0% { clip: rect(2px, 9999px, 90px, 0); }
-            3% { clip: rect(40px, 9999px, 40px, 0); }
-            /* ... add more steps */
-        }
-
-        .animated-border-wrapper {
-            position: relative;
-            padding: 2px;
-            overflow: hidden;
-        }
-        .animated-border-wrapper::before {
-            content: '';
-            position: absolute;
-            top: -50%; left: -50%;
-            width: 200%; height: 200%;
-            background: conic-gradient(from var(--angle), transparent 0%, var(--color-cyan-accent), var(--color-green-accent), var(--color-cyan-accent), transparent 25%);
-            animation: rotate 6s linear infinite;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        .tab-button.active .animated-border-wrapper::before,
-        .tab-button:hover .animated-border-wrapper::before {
-            opacity: 1;
-        }
-
-        .command-row {
-            transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
-        }
-        .command-row:hover {
-            animation: pulse-glow 1.5s ease-in-out infinite;
-        }
-    </style>
-</head>
-<body class="bg-gray-950 text-gray-200 min-h-screen">
-    <div id="cursor-glow" class="fixed pointer-events-none -translate-x-1/2 -translate-y-1/2 rounded-full blur-3xl" style="width: 300px; height: 300px; background: radial-gradient(circle, rgba(0, 255, 255, 0.1), transparent 70%);"></div>
-
-    <div class="container mx-auto px-4 py-12 md:py-20">
-        <header class="text-center mb-12 relative">
-            <h1 class="glitch-text text-6xl font-black text-glow-green" data-text="COMMANDS">COMMANDS</h1>
-            <p class="text-2xl text-gray-400 mt-2">Your Guide to Nigeria Vibe RP</p>
-        </header>
-
-        <div class="bg-black/20 border border-gray-800 rounded-xl p-4 md:p-6">
-            <div class="flex flex-wrap justify-center gap-2 md:gap-4 mb-8">
-                <button class="tab-button active" data-tab="general"><div class="animated-border-wrapper rounded-md"><span class="block bg-gray-900 rounded-md px-4 py-2 text-lg font-bold">GENERAL</span></div></button>
-                <button class="tab-button" data-tab="police"><div class="animated-border-wrapper rounded-md"><span class="block bg-gray-900 rounded-md px-4 py-2 text-lg font-bold">POLICE</span></div></button>
-                <button class="tab-button" data-tab="ems"><div class="animated-border-wrapper rounded-md"><span class="block bg-gray-900 rounded-md px-4 py-2 text-lg font-bold">EMS</span></div></button>
-                <button class="tab-button" data-tab="mechanic"><div class="animated-border-wrapper rounded-md"><span class="block bg-gray-900 rounded-md px-4 py-2 text-lg font-bold">MECHANIC</span></div></button>
-                <button class="tab-button" data-tab="government"><div class="animated-border-wrapper rounded-md"><span class="block bg-gray-900 rounded-md px-4 py-2 text-lg font-bold">GOVERNMENT</span></div></button>
-                <button class="tab-button" data-tab="efcc"><div class="animated-border-wrapper rounded-md"><span class="block bg-gray-900 rounded-md px-4 py-2 text-lg font-bold">EFCC</span></div></button>
-                <button class="tab-button" data-tab="restaurant"><div class="animated-border-wrapper rounded-md"><span class="block bg-gray-900 rounded-md px-4 py-2 text-lg font-bold">RESTAURANT</span></div></button>
-            </div>
-
-            <main id="command-container" class="space-y-4">
-                </main>
-        </div>
-
-        <footer class="text-center mt-12">
-             <a href="admin.html" class="text-cyan-400 hover:text-cyan-200 transition-colors">Return to Login</a>
-        </footer>
-    </div>
-
-    <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const commands = {
-            general: [
-                { cmd: '/me [action]', desc: 'Describe a custom action your character is doing.' },
-                { cmd: '/do [action]', desc: 'Describe an outcome or environmental effect.' },
-                { cmd: '/pay [id] [amount]', desc: 'Give money to a nearby player.' },
-                { cmd: '/showid [id]', desc: 'Show your ID card to another player.' },
-                { cmd: '/engine', desc: 'Toggle your vehicle\'s engine on or off.' },
-                { cmd: '/lock', desc: 'Lock or unlock the nearest vehicle.' },
-            ],
-            police: [
-                { cmd: '/m [message]', desc: 'Broadcast a message over the department megaphone.' },
-                { cmd: '/r [message]', desc: 'Talk over the police radio.' },
-                { cmd: '/cuff [id]', desc: 'Place handcuffs on a suspect.' },
-                { cmd: '/ticket [id] [amount] [reason]', desc: 'Issue a traffic ticket to a player.' },
-                { cmd: '/mdc', desc: 'Open the Mobile Data Computer to search for records.' },
-            ],
-            ems: [
-                { cmd: '/r [message]', desc: 'Talk over the EMS radio.' },
-                { cmd: '/heal [id] [amount]', desc: 'Heal a player for a specific amount.' },
-                { cmd: '/revive [id]', desc: 'Revive a downed player.' },
-                { cmd: '/treatment [id]', desc: 'Check a player for injuries.' },
-            ],
-            mechanic: [
-                { cmd: '/r [message]', desc: 'Talk over the mechanic radio.' },
-                { cmd: '/repair [id]', desc: 'Repair a player\'s vehicle.' },
-                { cmd: '/refuel [id]', desc: 'Refuel a player\'s vehicle.' },
-                { cmd: '/tow', desc: 'Attach or detach the nearest vehicle to your tow truck.' },
-            ],
-            government: [
-                { cmd: '/gov [message]', desc: 'Broadcast a global announcement from the government.' },
-                { cmd: '/speech [message]', desc: 'Begin a public speech that is displayed to nearby players.' },
-            ],
-            efcc: [
-                { cmd: '/r [message]', desc: 'Talk over the EFCC radio.' },
-                { cmd: '/seize [property]', desc: 'Seize an illegal property or asset.' },
-                { cmd: '/investigate [id]', desc: 'Begin an official investigation on a player.' },
-            ],
-            restaurant: [
-                { cmd: '/cook [item]', desc: 'Cook a food item from the menu.' },
-                { cmd: '/serve [id]', desc: 'Serve a food item to a customer.' },
-                { cmd: '/bill [id] [amount]', desc: 'Give a bill to a customer for their order.' },
-            ]
-        };
-
-        const tabButtons = document.querySelectorAll('.tab-button');
-        const commandContainer = document.getElementById('command-container');
-
-        const renderCommands = (category) => {
-            commandContainer.innerHTML = ''; // Clear previous commands
-            const commandList = commands[category];
-
-            if (commandList) {
-                commandList.forEach((command, index) => {
-                    const row = document.createElement('div');
-                    row.className = 'command-row grid grid-cols-1 md:grid-cols-3 gap-4 items-center p-4 rounded-lg bg-gray-900/50 border border-gray-800';
-                    row.style.animationDelay = `${index * 50}ms`;
-                    row.innerHTML = `
-                        <div class="md:col-span-1">
-                            <code class="command-text text-lg font-bold text-cyan-400 bg-gray-800 px-3 py-1 rounded" data-original="${command.cmd}">${command.cmd}</code>
-                        </div>
-                        <div class="md:col-span-2">
-                            <p class="text-gray-300 text-lg">${command.desc}</p>
-                        </div>
-                    `;
-                    commandContainer.appendChild(row);
-                });
-            }
-        };
-
-        tabButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                tabButtons.forEach(btn => btn.classList.remove('active'));
-                button.classList.add('active');
-                renderCommands(button.dataset.tab);
-            });
-        });
-
-        // Initial render
-        renderCommands('general');
-
-        // Mouse move effect for cursor glow
-        const cursorGlow = document.getElementById('cursor-glow');
-        window.addEventListener('mousemove', (e) => {
-            cursorGlow.style.left = e.clientX + 'px';
-            cursorGlow.style.top = e.clientY + 'px';
-        });
-
-        // Mouse move effect for rotating gradient on borders
-        document.body.addEventListener('mousemove', e => {
-            document.querySelectorAll('.animated-border-wrapper').forEach(el => {
-                el.style.setProperty('--angle', `${(e.clientX + e.clientY) / 10}deg`);
-            });
-        });
-        
-        // --- Live Typing Effect ---
-        let typingInterval;
-        commandContainer.addEventListener('mouseover', (e) => {
-            if (e.target.classList.contains('command-text')) {
-                const el = e.target;
-                const originalText = el.dataset.original;
-                let i = 0;
-                clearInterval(typingInterval);
-                el.textContent = '';
-                
-                typingInterval = setInterval(() => {
-                    if (i < originalText.length) {
-                        el.textContent += originalText.charAt(i);
-                        i++;
-                    } else {
-                        clearInterval(typingInterval);
-                    }
-                }, 50); // Typing speed
-            }
-        });
-
-        commandContainer.addEventListener('mouseout', (e) => {
-            if (e.target.classList.contains('command-text')) {
-                clearInterval(typingInterval);
-                e.target.textContent = e.target.dataset.original;
-            }
-        });
-    });
-    </script>
-</body>
-</html>
+["The Big Ear",-410,1403.3,-3,-137.9,1681.2,200],["Aldea Malvada",-1372.1,2498.5,0,-1277.5,2615.3,200],["Angel Pine",-2324.9,-2584.2,-6.1,-1964.2,-2212.1,200],["Arco del Oeste",-901.1,2221.8,0,-592,2571.9,200],
+                ["Avispa Country Club",-2646.4,-355.4,0,-2270,-222.5,200],["Avispa Country Club",-2831.8,-430.2,-6.1,-2646.4,-222.5,200],["Avispa Country Club",-2361.5,-417.1,0,-2270,-355.4,200],["Avispa Country Club",-2667.8,-302.1,-28.8,-2646.4,-262.3,71.1],
+                ["Avispa Country Club",-2470,-355.4,0,-2270,-318.4,46.1],["Avispa Country Club",-2550,-355.4,0,-2470,-318.4,39.7],["Back o Beyond",-1166.9,-2641.1,0,-321.7,-1856,200],["Battery Point",-2741,1268.4,-4.5,-2533,1490.4,200],
+                ["Bayside",-2741,2175.1,0,-2353.1,2722.7,200],["Bayside Marina",-2353.1,2275.7,0,-2153.1,2475.7,200],["Beacon Hill",-399.6,-1075.5,-1.4,-319,-977.5,198.5],["Blackfield",964.3,1203.2,-89,1197.3,1403.2,110.9],
+                ["Blackfield",964.3,1403.2,-89,1197.3,1726.2,110.9],["Blackfield Chapel",1375.6,596.3,-89,1558,823.2,110.9],["Blackfield Chapel",1325.6,596.3,-89,1375.6,795,110.9],["Blackfield Intersection",1197.3,1044.6,-89,1277,1163.3,110.9],
+                ["Blackfield Intersection",1166.5,795,-89,1375.6,1044.6,110.9],["Blackfield Intersection",1277,1044.6,-89,1315.3,1087.6,110.9],["Blackfield Intersection",1375.6,823.2,-89,1457.3,919.4,110.9],["Blueberry",104.5,-220.1,2.3,349.6,152.2,200],
+                ["Blueberry",19.6,-404.1,3.8,349.6,-220.1,200],["Blueberry Acres",-319.6,-220.1,0,104.5,293.3,200],["Caligula's Palace",2087.3,1543.2,-89,2437.3,1703.2,110.9],["Caligula's Palace",2137.4,1703.2,-89,2437.3,1783.2,110.9],
+                ["Calton Heights",-2274.1,744.1,-6.1,-1982.3,1358.9,200],["Chinatown",-2274.1,578.3,-7.6,-2078.6,744.1,200],["City Hall",-2867.8,277.4,-9.1,-2593.4,458.4,200],["Come-A-Lot",2087.3,943.2,-89,2623.1,1203.2,110.9],
+                ["Commerce",1323.9,-1842.2,-89,1701.9,-1722.2,110.9],["Commerce",1323.9,-1722.2,-89,1440.9,-1577.5,110.9],["Commerce",1370.8,-1577.5,-89,1463.9,-1384.9,110.9],["Commerce",1463.9,-1577.5,-89,1667.9,-1430.8,110.9],
+                ["Commerce",1583.5,-1722.2,-89,1758.9,-1577.5,110.9],["Commerce",1667.9,-1577.5,-89,1812.6,-1430.8,110.9],["Badagry",1046.1,-1804.2,-89,1323.9,-1722.2,110.9],["Badagry",1073.2,-1842.2,-89,1323.9,-1804.2,110.9],
+                ["Cranberry Station",-2007.8,56.3,0,-1922,224.7,100],["Creek",2749.9,1937.2,-89,2921.6,2669.7,110.9],["Dillimore",580.7,-674.8,-9.5,861,-404.7,200],["Doherty",-2270,-324.1,-0,-1794.9,-222.5,200],
+                ["Doherty",-2173,-222.5,-0,-1794.9,265.2,200],["Downtown",-1982.3,744.1,-6.1,-1871.7,1274.2,200],["Downtown",-1871.7,1176.4,-4.5,-1620.3,1274.2,200],["Downtown",-1700,744.2,-6.1,-1580,1176.5,200],
+                ["Downtown",-1580,744.2,-6.1,-1499.8,1025.9,200],["Downtown",-2078.6,578.3,-7.6,-1499.8,744.2,200],["Downtown",-1993.2,265.2,-9.1,-1794.9,578.3,200],["Downtown Los Santos",1463.9,-1430.8,-89,1724.7,-1290.8,110.9],
+                ["Downtown Los Santos",1724.7,-1430.8,-89,1812.6,-1250.9,110.9],["Downtown Los Santos",1463.9,-1290.8,-89,1724.7,-1150.8,110.9],["Downtown Los Santos",1370.8,-1384.9,-89,1463.9,-1170.8,110.9],
+                ["Downtown Los Santos",1724.7,-1250.9,-89,1812.6,-1150.8,110.9],["Downtown Los Santos",1370.8,-1170.8,-89,1463.9,-1130.8,110.9],["Downtown Los Santos",1378.3,-1130.8,-89,1463.9,-1026.3,110.9],
+                ["Downtown Los Santos",1391,-1026.3,-89,1463.9,-926.9,110.9],["Downtown Los Santos",1507.5,-1385.2,110.9,1582.5,-1325.3,335.9],["East Beach",2632.8,-1852.8,-89,2959.3,-1668.1,110.9],
+                ["East Beach",2632.8,-1668.1,-89,2747.7,-1393.4,110.9],["East Beach",2747.7,-1668.1,-89,2959.3,-1498.6,110.9],["East Beach",2747.7,-1498.6,-89,2959.3,-1120,110.9],["East Los Santos",2421,-1628.5,-89,2632.8,-1454.3,110.9],
+                ["East Los Santos",2222.5,-1628.5,-89,2421,-1494,110.9],["East Los Santos",2266.2,-1494,-89,2381.6,-1372,110.9],["East Los Santos",2381.6,-1494,-89,2421,-1454.3,110.9],["East Los Santos",2281.4,-1372,-89,2381.6,-1135,110.9],
+                ["East Los Santos",2381.6,-1454.3,-89,2462.1,-1135,110.9],["East Los Santos",2462.1,-1454.3,-89,2581.7,-1135,110.9],["Easter Basin",-1794.9,249.9,-9.1,-1242.9,578.3,200],["Easter Basin",-1794.9,-50,-0,-1499.8,249.9,200],
+                ["Easter Bay Airport",-1499.8,-50,-0,-1242.9,249.9,200],["Easter Bay Airport",-1794.9,-730.1,-3,-1213.9,-50,200],["Easter Bay Airport",-1213.9,-730.1,0,-1132.8,-50,200],["Easter Bay Airport",-1242.9,-50,0,-1213.9,578.3,200],
+                ["Easter Bay Airport",-1213.9,-50,-4.5,-947.9,578.3,200],["Easter Bay Airport",-1315.4,-405.3,15.4,-1264.4,-209.5,25.4],["Easter Bay Airport",-1354.3,-287.3,15.4,-1315.4,-209.5,25.4],
+                ["Easter Bay Airport",-1490.3,-209.5,15.4,-1264.4,-148.3,25.4],["Easter Bay Chemicals",-1132.8,-768,0,-956.4,-578.1,200],["Easter Bay Chemicals",-1132.8,-787.3,0,-956.4,-768,200],["El Castillo del Diablo",-464.5,2217.6,0,-208.5,2580.3,200],
+                ["El Castillo del Diablo",-208.5,2123,-7.6,114,2337.1,200],["El Castillo del Diablo",-208.5,2337.1,0,8.4,2487.1,200],["El Corona",1812.6,-2179.2,-89,1970.6,-1852.8,110.9],["El Corona",1692.6,-2179.2,-89,1812.6,-1842.2,110.9],
+                ["El Quebrados",-1645.2,2498.5,0,-1372.1,2777.8,200],["Esplanade East",-1620.3,1176.5,-4.5,-1580,1274.2,200],["Esplanade East",-1580,1025.9,-6.1,-1499.8,1274.2,200],["Esplanade East",-1499.8,578.3,-79.6,-1339.8,1274.2,20.3],
+                ["Esplanade North",-2533,1358.9,-4.5,-1996.6,1501.2,200],["Esplanade North",-1996.6,1358.9,-4.5,-1524.2,1592.5,200],["Esplanade North",-1982.3,1274.2,-4.5,-1524.2,1358.9,200],["Fallen Tree",-792.2,-698.5,-5.3,-452.4,-380,200],
+                ["Fallow Bridge",434.3,366.5,0,603,555.6,200],["Fern Ridge",508.1,-139.2,0,1306.6,119.5,200],["Financial",-1871.7,744.1,-6.1,-1701.3,1176.4,300],["Fisher's Lagoon",1916.9,-233.3,-100,2131.7,13.8,200],
+                ["Flint Intersection",-187.7,-1596.7,-89,17,-1276.6,110.9],["Flint Range",-594.1,-1648.5,0,-187.7,-1276.6,200],["Fort Carson",-376.2,826.3,-3,123.7,1220.4,200],["Foster Valley",-2270,-430.2,-0,-2178.6,-324.1,200],
+                ["Foster Valley",-2178.6,-599.8,-0,-1794.9,-324.1,200],["Foster Valley",-2178.6,-1115.5,0,-1794.9,-599.8,200],["Foster Valley",-2178.6,-1250.9,0,-1794.9,-1115.5,200],["Frederick Bridge",2759.2,296.5,0,2774.2,594.7,200],
+                ["Gant Bridge",-2741.4,1659.6,-6.1,-2616.4,2175.1,200],["Gant Bridge",-2741,1490.4,-6.1,-2616.4,1659.6,200],["Ganton",2222.5,-1852.8,-89,2632.8,-1722.3,110.9],["Ganton",2222.5,-1722.3,-89,2632.8,-1628.5,110.9],
+                ["Garcia",-2411.2,-222.5,-0,-2173,265.2,200],["Garcia",-2395.1,-222.5,-5.3,-2354,-204.7,200],["Garver Bridge",-1339.8,828.1,-89,-1213.9,1057,110.9],["Garver Bridge",-1213.9,950,-89,-1087.9,1178.9,110.9],
+                ["Garver Bridge",-1499.8,696.4,-179.6,-1339.8,925.3,20.3],["Glen Park",1812.6,-1449.6,-89,1996.9,-1350.7,110.9],["Glen Park",1812.6,-1100.8,-89,1994.3,-973.3,110.9],["Glen Park",1812.6,-1350.7,-89,2056.8,-1100.8,110.9],
+                ["Green Palms",176.5,1305.4,-3,338.6,1520.7,200],["Greenglass College",964.3,1044.6,-89,1197.3,1203.2,110.9],["Greenglass College",964.3,930.8,-89,1166.5,1044.6,110.9],["Hampton Barns",603,264.3,0,761.9,366.5,200],
+                ["Hankypanky Point",2576.9,62.1,0,2759.2,385.5,200],["Harry Gold Parkway",1777.3,863.2,-89,1817.3,2342.8,110.9],["Hashbury",-2593.4,-222.5,-0,-2411.2,54.7,200],["Hilltop Farm",967.3,-450.3,-3,1176.7,-217.9,200],
+                ["Hunter Quarry",337.2,710.8,-115.2,860.5,1031.7,203.7],["Idlewood",1812.6,-1852.8,-89,1971.6,-1742.3,110.9],["Idlewood",1812.6,-1742.3,-89,1951.6,-1602.3,110.9],["Idlewood",1951.6,-1742.3,-89,2124.6,-1602.3,110.9],
+                ["Idlewood",1812.6,-1602.3,-89,2124.6,-1449.6,110.9],["Idlewood",2124.6,-1742.3,-89,2222.5,-1494,110.9],["Idlewood",1971.6,-1852.8,-89,2222.5,-1742.3,110.9],["Jefferson",1996.9,-1449.6,-89,2056.8,-1350.7,110.9],
+                ["Jefferson",2124.6,-1494,-89,2266.2,-1449.6,110.9],["Jefferson",2056.8,-1372,-89,2281.4,-1210.7,110.9],["Jefferson",2056.8,-1210.7,-89,2185.3,-1126.3,110.9],["Jefferson",2185.3,-1210.7,-89,2281.4,-1154.5,110.9],
+                ["Jefferson",2056.8,-1449.6,-89,2266.2,-1372,110.9],["Julius Thruway East",2623.1,943.2,-89,2749.9,1055.9,110.9],["Julius Thruway East",2685.1,1055.9,-89,2749.9,2626.5,110.9],["Julius Thruway East",2536.4,2442.5,-89,2685.1,2542.5,110.9],
+                ["Julius Thruway East",2625.1,2202.7,-89,2685.1,2442.5,110.9],["Julius Thruway North",2498.2,2542.5,-89,2685.1,2626.5,110.9],["Julius Thruway North",2237.4,2542.5,-89,2498.2,2663.1,110.9],["Julius Thruway North",2121.4,2508.2,-89,2237.4,2663.1,110.9],
+                ["Julius Thruway North",1938.8,2508.2,-89,2121.4,2624.2,110.9],["Julius Thruway North",1534.5,2433.2,-89,1848.4,2583.2,110.9],["Julius Thruway North",1848.4,2478.4,-89,1938.8,2553.4,110.9],["Julius Thruway North",1704.5,2342.8,-89,1848.4,2433.2,110.9],
+                ["Julius Thruway North",1377.3,2433.2,-89,1534.5,2507.2,110.9],["Julius Thruway South",1457.3,823.2,-89,2377.3,863.2,110.9],["Julius Thruway South",2377.3,788.8,-89,2537.3,897.9,110.9],["Julius Thruway West",1197.3,1163.3,-89,1236.6,2243.2,110.9],
+                ["Julius Thruway West",1236.6,2142.8,-89,1297.4,2243.2,110.9],["Juniper Hill",-2533,578.3,-7.6,-2274.1,968.3,200],["Juniper Hollow",-2533,968.3,-6.1,-2274.1,1358.9,200],["K.A.C.C. Military Fuels",2498.2,2626.5,-89,2749.9,2861.5,110.9],
+                ["Kincaid Bridge",-1339.8,599.2,-89,-1213.9,828.1,110.9],["Kincaid Bridge",-1213.9,721.1,-89,-1087.9,950,110.9],["Kincaid Bridge",-1087.9,855.3,-89,-961.9,986.2,110.9],["King's",-2329.3,458.4,-7.6,-1993.2,578.3,200],
+                ["King's",-2411.2,265.2,-9.1,-1993.2,373.5,200],["King's",-2253.5,373.5,-9.1,-1993.2,458.4,200],["LVA Freight Depot",1457.3,863.2,-89,1777.4,1143.2,110.9],["LVA Freight Depot",1375.6,919.4,-89,1457.3,1203.2,110.9],
+                ["LVA Freight Depot",1277,1087.6,-89,1375.6,1203.2,110.9],["LVA Freight Depot",1315.3,1044.6,-89,1375.6,1087.6,110.9],["LVA Freight Depot",1236.6,1163.4,-89,1277,1203.2,110.9],["Las Barrancas",-926.1,1398.7,-3,-719.2,1634.6,200],
+                ["Las Brujas",-365.1,2123,-3,-208.5,2217.6,200],["Las Colinas",1994.3,-1100.8,-89,2056.8,-920.8,110.9],["Las Colinas",2056.8,-1126.3,-89,2126.8,-920.8,110.9],["Las Colinas",2185.3,-1154.5,-89,2281.4,-934.4,110.9],
+                ["Las Colinas",2126.8,-1126.3,-89,2185.3,-934.4,110.9],["Las Colinas",2747.7,-1120,-89,2959.3,-945,110.9],["Las Colinas",2632.7,-1135,-89,2747.7,-945,110.9],["Las Colinas",2281.4,-1135,-89,2632.7,-945,110.9],
+                ["Las Payasadas",-354.3,2580.3,2,-133.6,2816.8,200],["Las Venturas Airport",1236.6,1203.2,-89,1457.3,1883.1,110.9],["Las Venturas Airport",1457.3,1203.2,-89,1777.3,1883.1,110.9],["Las Venturas Airport",1457.3,1143.2,-89,1777.4,1203.2,110.9],
+                ["Las Venturas Airport",1515.8,1586.4,-12.5,1729.9,1714.5,87.5],["Last Dime Motel",1823,596.3,-89,1997.2,823.2,110.9],["Leafy Hollow",-1166.9,-1856,0,-815.6,-1602,200],["Liberty City",-1000,400,1300,-700,600,1400],
+                ["Lil' Probe Inn",-90.2,1286.8,-3,153.8,1554.1,200],["Linden Side",2749.9,943.2,-89,2923.3,1198.9,110.9],["Linden Station",2749.9,1198.9,-89,2923.3,1548.9,110.9],["Linden Station",2811.2,1229.5,-39.5,2861.2,1407.5,60.4],
+                ["Little Mexico",1701.9,-1842.2,-89,1812.6,-1722.2,110.9],["Little Mexico",1758.9,-1722.2,-89,1812.6,-1577.5,110.9],["Los Flores",2581.7,-1454.3,-89,2632.8,-1393.4,110.9],["Los Flores",2581.7,-1393.4,-89,2747.7,-1135,110.9],
+                ["Los Santos International",1249.6,-2394.3,-89,1852,-2179.2,110.9],["Los Santos International",1852,-2394.3,-89,2089,-2179.2,110.9],["Los Santos International",1382.7,-2730.8,-89,2201.8,-2394.3,110.9],["Los Santos International",1974.6,-2394.3,-39,2089,-2256.5,60.9],
+                ["Los Santos International",1400.9,-2669.2,-39,2189.8,-2597.2,60.9],["Los Santos International",2051.6,-2597.2,-39,2152.4,-2394.3,60.9],["Ikoyi",647.7,-1804.2,-89,851.4,-1577.5,110.9],["Ikoyi",647.7,-1577.5,-89,807.9,-1416.2,110.9],
+                ["Ikoyi",807.9,-1577.5,-89,926.9,-1416.2,110.9],["Computer Village",787.4,-1416.2,-89,1072.6,-1310.2,110.9],["Computer Village",952.6,-1310.2,-89,1072.6,-1130.8,110.9],["Computer Village",1072.6,-1416.2,-89,1370.8,-1130.8,110.9],
+                ["Computer Village",926.9,-1577.5,-89,1370.8,-1416.2,110.9],["Ajah Station",787.4,-1410.9,-34.1,866,-1310.2,65.8],["Martin Bridge",-222.1,293.3,0,-122.1,476.4,200],["Missionary Hill",-2994.4,-811.2,0,-2178.6,-430.2,200],
+                ["Montgomery",1119.5,119.5,-3,1451.4,493.3,200],["Montgomery",1451.4,347.4,-6.1,1582.4,420.8,200],["Montgomery Intersection",1546.6,208.1,0,1745.8,347.4,200],["Montgomery Intersection",1582.4,347.4,0,1664.6,401.7,200],
+                ["Mulholland",1414,-768,-89,1667.6,-452.4,110.9],["Mulholland",1281.1,-452.4,-89,1641.1,-290.9,110.9],["Mulholland",1269.1,-768,-89,1414,-452.4,110.9],["Mulholland",1357,-926.9,-89,1463.9,-768,110.9],
+                ["Mulholland",1318.1,-910.1,-89,1357,-768,110.9],["Mulholland",1169.1,-910.1,-89,1318.1,-768,110.9],["Mulholland",768.6,-954.6,-89,952.6,-860.6,110.9],["Mulholland",687.8,-860.6,-89,911.8,-768,110.9],
+                ["Mulholland",737.5,-768,-89,1142.2,-674.8,110.9],["Mulholland",1096.4,-910.1,-89,1169.1,-768,110.9],["Mulholland",952.6,-937.1,-89,1096.4,-860.6,110.9],["Mulholland",911.8,-860.6,-89,1096.4,-768,110.9],
+                ["Mulholland",861,-674.8,-89,1156.5,-600.8,110.9],["Mulholland Intersection",1463.9,-1150.8,-89,1812.6,-768,110.9],["North Rock",2285.3,-768,0,2770.5,-269.7,200],["Ocean Docks",2373.7,-2697,-89,2809.2,-2330.4,110.9],
+                ["Ocean Docks",2201.8,-2418.3,-89,2324,-2095,110.9],["Ocean Docks",2324,-2302.3,-89,2703.5,-2145.1,110.9],["Ocean Docks",2089,-2394.3,-89,2201.8,-2235.8,110.9],["Ocean Docks",2201.8,-2730.8,-89,2324,-2418.3,110.9],
+                ["Ocean Docks",2703.5,-2302.3,-89,2959.3,-2126.9,110.9],["Ocean Docks",2324,-2145.1,-89,2703.5,-2059.2,110.9],["Ocean Flats",-2994.4,277.4,-9.1,-2867.8,458.4,200],["Ocean Flats",-2994.4,-222.5,-0,-2593.4,277.4,200],
+                ["Ocean Flats",-2994.4,-430.2,-0,-2831.8,-222.5,200],["Octane Springs",338.6,1228.5,0,664.3,1655,200],["Old Venturas Strip",2162.3,2012.1,-89,2685.1,2202.7,110.9],["Palisades",-2994.4,458.4,-6.1,-2741,1339.6,200],
+                ["Palomino Creek",2160.2,-149,0,2576.9,228.3,200],["Paradiso",-2741,793.4,-6.1,-2533,1268.4,200],["Pershing Square",1440.9,-1722.2,-89,1583.5,-1577.5,110.9],["Pilgrim",2437.3,1383.2,-89,2624.4,1783.2,110.9],
+                ["Pilgrim",2624.4,1383.2,-89,2685.1,1783.2,110.9],["Pilson Intersection",1098.3,2243.2,-89,1377.3,2507.2,110.9],["Pirates in Men's Pants",1817.3,1469.2,-89,2027.4,1703.2,110.9],["Playa del Seville",2703.5,-2126.9,-89,2959.3,-1852.8,110.9],
+                ["Prickle Pine",1534.5,2583.2,-89,1848.4,2863.2,110.9],["Prickle Pine",1117.4,2507.2,-89,1534.5,2723.2,110.9],["Prickle Pine",1848.4,2553.4,-89,1938.8,2863.2,110.9],["Prickle Pine",1938.8,2624.2,-89,2121.4,2861.5,110.9],
+                ["Queens",-2533,458.4,0,-2329.3,578.3,200],["Queens",-2593.4,54.7,0,-2411.2,458.4,200],["Queens",-2411.2,373.5,0,-2253.5,458.4,200],["Randolph Industrial Estate",1558,596.3,-89,1823,823.2,110.9],
+                ["Redsands East",1817.3,2011.8,-89,2106.7,2202.7,110.9],["Redsands East",1817.3,2202.7,-89,2011.9,2342.8,110.9],["Redsands East",1848.4,2342.8,-89,2011.9,2478.4,110.9],["Redsands West",1236.6,1883.1,-89,1777.3,2142.8,110.9],
+                ["Redsands West",1297.4,2142.8,-89,1777.3,2243.2,110.9],["Redsands West",1377.3,2243.2,-89,1704.5,2433.2,110.9],["Redsands West",1704.5,2243.2,-89,1777.3,2342.8,110.9],["Regular Tom",-405.7,1712.8,-3,-276.7,1892.7,200],
+                ["Richman",647.5,-1118.2,-89,787.4,-954.6,110.9],["Richman",647.5,-954.6,-89,768.6,-860.6,110.9],["Richman",225.1,-1369.6,-89,334.5,-1292,110.9],["Richman",225.1,-1292,-89,466.2,-1235,110.9],
+                ["Richman",72.6,-1404.9,-89,225.1,-1235,110.9],["Richman",72.6,-1235,-89,321.3,-1008.1,110.9],["Richman",321.3,-1235,-89,647.5,-1044,110.9],["Richman",321.3,-1044,-89,647.5,-860.6,110.9],
+                ["Richman",321.3,-860.6,-89,687.8,-768,110.9],["Richman",321.3,-768,-89,700.7,-674.8,110.9],["Robada Intersection",-1119,1178.9,-89,-862,1351.4,110.9],["Roca Escalante",2237.4,2202.7,-89,2536.4,2542.5,110.9],
+                ["Roca Escalante",2536.4,2202.7,-89,2625.1,2442.5,110.9],["Rockshore East",2537.3,676.5,-89,2902.3,943.2,110.9],["Rockshore West",1997.2,596.3,-89,2377.3,823.2,110.9],["Rockshore West",2377.3,596.3,-89,2537.3,788.8,110.9],
+                ["Ikeja",72.6,-1684.6,-89,225.1,-1544.1,110.9],["Ikeja",72.6,-1544.1,-89,225.1,-1404.9,110.9],["Ikeja",225.1,-1684.6,-89,312.8,-1501.9,110.9],["Ikeja",225.1,-1501.9,-89,334.5,-1369.6,110.9],
+                ["Ikeja",334.5,-1501.9,-89,422.6,-1406,110.9],["Ikeja",312.8,-1684.6,-89,422.6,-1501.9,110.9],["Ikeja",422.6,-1684.6,-89,558,-1570.2,110.9],["Ikeja",558,-1684.6,-89,647.5,-1384.9,110.9],
+                ["Ikeja",466.2,-1570.2,-89,558,-1385,110.9],["Ikeja",422.6,-1570.2,-89,466.2,-1406,110.9],["Ikeja",466.2,-1385,-89,647.5,-1235,110.9],["Ikeja",334.5,-1406,-89,466.2,-1292,110.9],
+                ["Royal Casino",2087.3,1383.2,-89,2437.3,1543.2,110.9],["San Andreas Sound",2450.3,385.5,-100,2759.2,562.3,200],["Santa Flora",-2741,458.4,-7.6,-2533,793.4,200],["Santa Maria Beach",342.6,-2173.2,-89,647.7,-1684.6,110.9],
+                ["Santa Maria Beach",72.6,-2173.2,-89,342.6,-1684.6,110.9],["Shady Cabin",-1632.8,-2263.4,-3,-1601.3,-2231.7,200],["Shady Creeks",-1820.6,-2643.6,-8,-1226.7,-1771.6,200],["Shady Creeks",-2030.1,-2174.8,-6.1,-1820.6,-1771.6,200],
+                ["Sobell Rail Yards",2749.9,1548.9,-89,2923.3,1937.2,110.9],["Spinybed",2121.4,2663.1,-89,2498.2,2861.5,110.9],["Starfish Casino",2437.3,1783.2,-89,2685.1,2012.1,110.9],["Starfish Casino",2437.3,1858.1,-39,2495,1970.8,60.9],
+                ["Starfish Casino",2162.3,1883.2,-89,2437.3,2012.1,110.9],["Temple",1252.3,-1130.8,-89,1378.3,-1026.3,110.9],["Temple",1252.3,-1026.3,-89,1391,-926.9,110.9],["Temple",1252.3,-926.9,-89,1357,-910.1,110.9],
+                ["Temple",952.6,-1130.8,-89,1096.4,-937.1,110.9],["Temple",1096.4,-1130.8,-89,1252.3,-1026.3,110.9],["Temple",1096.4,-1026.3,-89,1252.3,-910.1,110.9],["The Camel's Toe",2087.3,1203.2,-89,2640.4,1383.2,110.9],
+                ["The Clown's Pocket",2162.3,1783.2,-89,2437.3,1883.2,110.9],["The Emerald Isle",2011.9,2202.7,-89,2237.4,2508.2,110.9],["The Farm",-1209.6,-1317.1,114.9,-908.1,-787.3,251.9],["The Four Dragons Casino",1817.3,863.2,-89,2027.3,1083.2,110.9],
+                ["The High Roller",1817.3,1283.2,-89,2027.3,1469.2,110.9],["The Mako Span",1664.6,401.7,0,1785.1,567.2,200],["The Panopticon",-947.9,-304.3,-1.1,-319.6,327,200],["The Pink Swan",1817.3,1083.2,-89,2027.3,1283.2,110.9],
+                ["The Sherman Dam",-968.7,1929.4,-3,-481.1,2155.2,200],["The Strip",2027.4,863.2,-89,2087.3,1703.2,110.9],["The Strip",2106.7,1863.2,-89,2162.3,2202.7,110.9],["The Strip",2027.4,1783.2,-89,2162.3,1863.2,110.9],
+                ["The Strip",2027.4,1703.2,-89,2137.4,1783.2,110.9],["The Visage",1817.3,1863.2,-89,2106.7,2011.8,110.9],["The Visage",1817.3,1703.2,-89,2027.4,1863.2,110.9],["Unity Station",1692.6,-1971.8,-20.4,1812.6,-1932.8,79.5],
+                ["Valle Ocultado",-936.6,2611.4,2,-715.9,2847.9,200],["Oshodi",930.2,-2488.4,-89,1249.6,-2006.7,110.9],["Oshodi",1073.2,-2006.7,-89,1249.6,-1842.2,110.9],["Oshodi",1249.6,-2179.2,-89,1692.6,-1842.2,110.9],
+                ["Verdant Meadows",37,2337.1,-3,435.9,2677.9,200],["Verona Beach",647.7,-2173.2,-89,930.2,-1804.2,110.9],["Verona Beach",930.2,-2006.7,-89,1073.2,-1804.2,110.9],["Verona Beach",851.4,-1804.2,-89,1046.1,-1577.5,110.9],
+                ["Verona Beach",1161.5,-1722.2,-89,1323.9,-1577.5,110.9],["Verona Beach",1046.1,-1722.2,-89,1161.5,-1577.5,110.9],["Vinewood",787.4,-1310.2,-89,952.6,-1130.8,110.9],["Vinewood",787.4,-1130.8,-89,952.6,-954.6,110.9],
+                ["Vinewood",647.5,-1227.2,-89,787.4,-1118.2,110.9],["Vinewood",647.7,-1416.2,-89,787.4,-1227.2,110.9],["Whitewood Estates",883.3,1726.2,-89,1098.3,2507.2,110.9],["Whitewood Estates",1098.3,1726.2,-89,1197.3,2243.2,110.9],
+                ["Willowfield",1970.6,-2179.2,-89,2089,-1852.8,110.9],["Willowfield",2089,-2235.8,-89,2201.8,-1989.9,110.9],["Willowfield",2089,-1989.9,-89,2324,-1852.8,110.9],["Willowfield",2201.8,-2095,-89,2324,-1989.9,110.9],
+                ["Willowfield",2541.7,-1941.4,-89,2703.5,-1852.8,110.9],["Willowfield",2324,-2059.2,-89,2541.7,-1852.8,110.9],["Willowfield",2541.7,-2059.2,-89,2703.5,-1941.4,110.9],["Yellow Bell Station",1377.4,2600.4,-21.9,1492.4,2687.3,78],
+                ["Ikoyi",44.6,-2892.9,-242.9,2997,-768,900],["Las Venturas",869.4,596.3,-242.9,2997,2993.8,900],["Bone County",-480.5,596.3,-242.9,869.4,2993.8,900],["Tierra Robada",-2997.4,1659.6,-242.9,-480.5,2993.8,900],
+                ["Tierra Robada",-1213.9,596.3,-242.9,-480.5,1659.6,900],["San Fierro",-2997.4,-1115.5,-242.9,-1213.9,1659.6,900],["Red County",-1213.9,-768,-242.9,2997,596.3,900],["Flint County",-1213.9,-2892.9,-242.9,44.6,-768,900],
+                ["Whetstone",-2997.4,-2892.9,-242.9,-1213.9,-1115.5,900]
