@@ -52,7 +52,7 @@
         }
 
         #heatmap-canvas.visible {
-            opacity: 0.7;
+            opacity: 0.9;
         }
 
         .player-marker {
@@ -381,8 +381,7 @@
                 const mouseX = e.clientX - mapContainer.getBoundingClientRect().left;
                 const mouseY = e.clientY - mapContainer.getBoundingClientRect().top;
                 let newScale = e.deltaY < 0 ? scale * scaleAmount : scale / scaleAmount;
-                newScale = Math.max(0.1, Math.min(3.0, newScale)); // Set min and max zoom
-                
+                newScale = Math.max(0.1, Math.min(5.0, newScale)); // Increased max zoom to 5.0
                 const scaleRatio = newScale / scale;
                 currentTranslate.x = mouseX - (mouseX - currentTranslate.x) * scaleRatio;
                 currentTranslate.y = mouseY - (mouseY - currentTranslate.y) * scaleRatio;
