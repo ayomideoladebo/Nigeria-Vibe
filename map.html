@@ -398,6 +398,7 @@
             }
 
             function showCoordModal(username, posX, posY) {
+                initializeMapPosition(true); // Reset zoom on modal open
                 modalPlayerName.textContent = username;
                 modalCoords.textContent = `X: ${posX}, Y: ${posY}`;
                  modalZone.textContent = `Zone: ${getZoneName(parseFloat(posX), parseFloat(posY))}`;
@@ -504,7 +505,7 @@
                 updateDotStyles();
             }
 
-            function initializeMapPosition() {
+            function initializeMapPosition(withTransition = false) {
                 const mapWidth = 2048;
                 const containerWidth = mapContainer.clientWidth;
                 // Calculate the scale to fit the map width to the container width
@@ -512,7 +513,7 @@
                 // Center the map
                 currentTranslate.x = 0;
                 currentTranslate.y = (mapContainer.clientHeight - 2048 * scale) / 2;
-                applyTransform();
+                applyTransform(withTransition);
             }
 
             mapContainer.addEventListener('mousedown', (e) => {
@@ -536,7 +537,7 @@
                 const mouseX = e.clientX - mapContainer.getBoundingClientRect().left;
                 const mouseY = e.clientY - mapContainer.getBoundingClientRect().top;
                 let newScale = e.deltaY < 0 ? scale * scaleAmount : scale / scaleAmount;
-                newScale = Math.max(0.1, Math.min(10.0, newScale)); // Increased max zoom to 10.0
+                newScale = Math.max(0.1, Math.min(20.0, newScale)); // Increased max zoom to 20.0
                 const scaleRatio = newScale / scale;
                 currentTranslate.x = mouseX - (mouseX - currentTranslate.x) * scaleRatio;
                 currentTranslate.y = mouseY - (mouseY - currentTranslate.y) * scaleRatio;
@@ -546,7 +547,7 @@
             });
               zoomInBtn.addEventListener('click', () => {
                 let newScale = scale * 1.2;
-                newScale = Math.min(10.0, newScale);
+                newScale = Math.min(20.0, newScale);
                 scale = newScale;
                 applyTransform(true);
             });
