@@ -535,7 +535,7 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         circulationHistory: data.circulationHistory,
-                        serverAssetValue: data.serverAssetValue
+                        totalPlayerHours: data.totalPlayerHours // This line is now correctly passing the player hours
                     })
                 });
                 const predictionData = await predictionResponse.json();
