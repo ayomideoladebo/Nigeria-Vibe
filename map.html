@@ -86,7 +86,9 @@
             border: 1px solid rgba(255, 255, 255, 0.2);
             backdrop-filter: blur(2px);
         }
-
+        .player-marker.names-hidden .player-name {
+            display: none;
+        }
         .player-name::after {
             content: '';
             position: absolute;
@@ -144,6 +146,12 @@
                 <span class="text-gray-300">Show Player Heatmap</span>
             </label>
         </div>
+        <div class="mt-4">
+            <label class="flex items-center space-x-2">
+                <input type="checkbox" id="toggle-names-btn" class="form-checkbox h-5 w-5 text-cyan-400 bg-gray-700 border-gray-500 rounded focus:ring-cyan-500" checked>
+                <span class="text-gray-300">Show Player Names</span>
+            </label>
+        </div>
         <a href="dashboard.html" class="inline-block mt-4 text-cyan-400 hover:text-cyan-300 transition-colors duration-200">← Back to Dashboard</a>
     </div>
 
@@ -180,6 +188,7 @@
             const teleportBtn = document.getElementById('teleport-btn');
             const heatmapToggle = document.getElementById('heatmap-toggle');
             const onlineOnlyToggle = document.getElementById('online-only-toggle');
+            const toggleNamesBtn = document.getElementById('toggle-names-btn');
             const heatmapCanvas = document.getElementById('heatmap-canvas');
             const zoomInBtn = document.getElementById('zoom-in-btn');
             const zoomOutBtn = document.getElementById('zoom-out-btn');
@@ -369,6 +378,9 @@
 
                     const marker = document.createElement('div');
                     marker.className = 'player-marker';
+                    if (!toggleNamesBtn.checked) {
+                        marker.classList.add('names-hidden');
+                    }
                     marker.style.left = `${left}px`;
                     marker.style.top = `${top}px`;
                     marker.id = `player-${player.username}`;
@@ -396,7 +408,14 @@
                 updateDotStyles();
                 drawHeatmap();
             }
-
+            toggleNamesBtn.addEventListener('change', () => {
+                const markers = document.querySelectorAll('.player-marker');
+                if (toggleNamesBtn.checked) {
+                    markers.forEach(marker => marker.classList.remove('names-hidden'));
+                } else {
+                    markers.forEach(marker => marker.classList.add('names-hidden'));
+                }
+            });
             function showCoordModal(username, posX, posY) {
                 initializeMapPosition(true); // Reset zoom on modal open
                 modalPlayerName.textContent = username;
@@ -561,7 +580,7 @@
             // Initialize and then update periodically
             initializeMapPosition();
             fetchAndUpdatePlayers();
-            setInterval(fetchAndUpdatePlayers, 5000);
+            setInterval(fetchAndUpdatePlayers, 10000); // Set to 10 seconds
             window.addEventListener('resize', initializeMapPosition); // Re-center map on window resize
         });
     </script>
