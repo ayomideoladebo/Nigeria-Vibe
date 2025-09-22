@@ -12,35 +12,20 @@
             --font-body: 'Rajdhani', sans-serif;
             --sidebar-width: 16rem; /* 256px */
         }
-        body {
-            font-family: var(--font-body);
-        }
-        h1, h2, h3, h4, h5, h6 {
-            font-family: var(--font-heading);
-        }
-        .sidebar {
-            transition: transform 0.3s ease-in-out;
-        }
-        .main-content {
-            transition: margin-left 0.3s ease-in-out;
-        }
+        body { font-family: var(--font-body); }
+        h1, h2, h3, h4, h5, h6 { font-family: var(--font-heading); }
+        .sidebar { transition: transform 0.3s ease-in-out; }
+        .main-content { transition: margin-left 0.3s ease-in-out; }
         @media (min-width: 768px) {
-            .main-content {
-                margin-left: var(--sidebar-width);
-            }
+            .main-content { margin-left: var(--sidebar-width); }
         }
-        .sidebar a.active {
-            background-color: #00FFFF;
-            color: #111827;
-        }
-        .sidebar a svg {
-            width: 24px;
-            height: 24px;
-        }
+        .sidebar a.active { background-color: #00FFFF; color: #111827; }
+        .sidebar a svg { width: 24px; height: 24px; }
     </style>
 </head>
 <body class="bg-gray-900 text-gray-200">
     <div id="app-container" class="hidden">
+        <!-- Sidebar -->
         <aside id="sidebar" class="w-64 bg-gray-950/80 backdrop-blur-sm border-r border-gray-700 p-4 space-y-4 fixed inset-y-0 left-0 z-30 sidebar md:translate-x-0 -translate-x-full">
             <div class="flex items-center justify-between">
                  <h1 class="text-2xl font-bold text-cyan-400">NV:RP Logs</h1>
@@ -63,9 +48,18 @@
                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
                     <span>Paycheck Logs</span>
                 </a>
+                <a href="#" id="transaction-log-link" class="flex items-center space-x-3 py-2 px-4 rounded hover:bg-gray-700">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
+                    <span>Transaction Logs</span>
+                </a>
+                <a href="#" id="property-log-link" class="flex items-center space-x-3 py-2 px-4 rounded hover:bg-gray-700">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 9v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V9"/><path d="M9 22V12h6v10M2 10.6L12 5l10 5.6"/></svg>
+                    <span>Property Logs</span>
+                </a>
             </nav>
         </aside>
 
+        <!-- Main Content -->
         <main class="flex-1 overflow-y-auto main-content">
              <header class="bg-gray-800/50 backdrop-blur-sm p-4 flex items-center sticky top-0 z-20">
                 <button id="menu-toggle-main" class="md:hidden text-gray-400 hover:text-white mr-4">
@@ -74,6 +68,7 @@
                 <h2 id="page-title" class="text-2xl font-bold text-cyan-400"></h2>
             </header>
             <div class="p-4 md:p-8">
+                <!-- All sections here -->
                 <div id="job-log-section">
                     <div id="job-payout-cards" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-6"></div>
                     <div id="job-log-content" class="space-y-2 bg-gray-800/50 p-4 rounded-lg"></div>
@@ -81,11 +76,11 @@
                 </div>
 
                 <div id="job-record-section" class="hidden">
-                    <input type="text" id="player-search" class="w-full p-2 mb-4 bg-gray-800 rounded border border-gray-700" placeholder="Search for a player...">
+                     <input type="text" id="player-search-job" class="w-full p-2 mb-4 bg-gray-800 rounded border border-gray-700" placeholder="Search for a player...">
                     <div id="player-list" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4"></div>
                 </div>
-
-                <div id="player-log-section" class="hidden">
+                
+                 <div id="player-log-section" class="hidden">
                     <button id="back-to-players" class="mb-4 bg-cyan-500 text-white py-2 px-4 rounded hover:bg-cyan-600 flex items-center space-x-2">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" /></svg>
                         <span>Back to Player List</span>
@@ -96,44 +91,78 @@
                 </div>
 
                 <div id="paycheck-log-section" class="hidden">
-                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                        <div class="bg-gray-800 p-4 rounded-lg">
-                            <h3 class="font-semibold text-gray-400">Total Paycheck Payout</h3>
-                            <p id="total-paycheck-payout" class="text-2xl font-bold text-green-400">Loading...</p>
-                        </div>
-                        <div class="bg-gray-800 p-4 rounded-lg">
-                             <label for="paycheck-date-filter" class="block text-sm font-medium text-gray-400">Filter by Date</label>
-                            <input type="date" id="paycheck-date-filter" class="w-full bg-gray-700 border-gray-600 rounded mt-1 p-2">
-                        </div>
-                         <div id="daily-paycheck-card" class="bg-gray-800 p-4 rounded-lg hidden">
-                             <h3 class="font-semibold text-gray-400">Payout for Selected Date</h3>
-                            <p id="daily-paycheck-payout" class="text-2xl font-bold text-green-400"></p>
-                        </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                       <div class="bg-gray-800 p-4 rounded-lg">
+                           <h3 class="font-semibold text-gray-400">Total Paycheck Payout</h3>
+                           <p id="total-paycheck-payout" class="text-2xl font-bold text-green-400">Loading...</p>
+                       </div>
+                       <div class="bg-gray-800 p-4 rounded-lg">
+                            <label for="paycheck-date-filter" class="block text-sm font-medium text-gray-400">Filter by Date</label>
+                           <input type="date" id="paycheck-date-filter" class="w-full bg-gray-700 border-gray-600 rounded mt-1 p-2">
+                       </div>
+                        <div id="daily-paycheck-card" class="bg-gray-800 p-4 rounded-lg hidden">
+                            <h3 class="font-semibold text-gray-400">Payout for Selected Date</h3>
+                           <p id="daily-paycheck-payout" class="text-2xl font-bold text-green-400"></p>
+                       </div>
+                   </div>
+                   <div class="overflow-x-auto bg-gray-800/50 rounded-lg">
+                       <table class="w-full text-left">
+                           <thead class="bg-gray-900">
+                               <tr>
+                                   <th class="p-4">Date</th>
+                                   <th class="p-4">Hour</th>
+                                   <th class="p-4">Total Amount</th>
+                               </tr>
+                           </thead>
+                           <tbody id="paycheck-log-content" class="divide-y divide-gray-700"></tbody>
+                       </table>
+                   </div>
+                   <div id="paycheck-log-pagination" class="mt-4 flex justify-center space-x-2"></div>
+               </div>
+
+                <div id="transaction-log-section" class="hidden">
+                    <input type="text" id="transaction-search" class="w-full p-2 mb-4 bg-gray-800 rounded border border-gray-700" placeholder="Search for a player...">
+                    <div class="overflow-x-auto bg-gray-800/50 rounded-lg">
+                        <table class="w-full text-left">
+                            <thead class="bg-gray-900">
+                                <tr>
+                                    <th class="p-4">Player</th>
+                                    <th class="p-4">Amount</th>
+                                    <th class="p-4">Description</th>
+                                    <th class="p-4">Date</th>
+                                </tr>
+                            </thead>
+                            <tbody id="transaction-log-content" class="divide-y divide-gray-700"></tbody>
+                        </table>
                     </div>
+                    <div id="transaction-log-pagination" class="mt-4 flex justify-center space-x-2"></div>
+                </div>
+
+                <div id="property-log-section" class="hidden">
+                    <input type="text" id="property-search" class="w-full p-2 mb-4 bg-gray-800 rounded border border-gray-700" placeholder="Search for a player...">
                     <div class="overflow-x-auto bg-gray-800/50 rounded-lg">
                         <table class="w-full text-left">
                             <thead class="bg-gray-900">
                                 <tr>
                                     <th class="p-4">Date</th>
-                                    <th class="p-4">Hour</th>
-                                    <th class="p-4">Total Amount</th>
+                                    <th class="p-4">Description</th>
                                 </tr>
                             </thead>
-                            <tbody id="paycheck-log-content" class="divide-y divide-gray-700"></tbody>
+                            <tbody id="property-log-content" class="divide-y divide-gray-700"></tbody>
                         </table>
                     </div>
-                    <div id="paycheck-log-pagination" class="mt-4 flex justify-center space-x-2"></div>
+                    <div id="property-log-pagination" class="mt-4 flex justify-center space-x-2"></div>
                 </div>
             </div>
         </main>
     </div>
     <script>
-         document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', () => {
             if (localStorage.getItem('isLoggedIn') !== 'true') {
                 window.location.href = 'admin.html'; 
                 return;
             }
-             document.getElementById('app-container').classList.remove('hidden');
+            document.getElementById('app-container').classList.remove('hidden');
 
             const backendUrl = "https://nigeria-vibe-backend.onrender.com";
 
@@ -141,23 +170,26 @@
                 jobLog: document.getElementById('job-log-section'),
                 jobRecord: document.getElementById('job-record-section'),
                 playerLog: document.getElementById('player-log-section'),
-                paycheckLog: document.getElementById('paycheck-log-section')
+                paycheckLog: document.getElementById('paycheck-log-section'),
+                transactionLog: document.getElementById('transaction-log-section'),
+                propertyLog: document.getElementById('property-log-section')
             };
 
             const links = {
                 jobLog: document.getElementById('job-log-link'),
                 jobRecord: document.getElementById('job-record-link'),
-                paycheckLog: document.getElementById('paycheck-log-link')
+                paycheckLog: document.getElementById('paycheck-log-link'),
+                transactionLog: document.getElementById('transaction-log-link'),
+                propertyLog: document.getElementById('property-log-link')
             };
             
             const jobPayoutCardsContainer = document.getElementById('job-payout-cards');
             const playerJobPayoutCardsContainer = document.getElementById('player-job-payout-cards');
-
             const jobLogContent = document.getElementById('job-log-content');
             const jobLogPagination = document.getElementById('job-log-pagination');
             
             const playerListContainer = document.getElementById('player-list');
-            const playerSearchInput = document.getElementById('player-search');
+            const playerSearchInput = document.getElementById('player-search-job');
             const playerLogContent = document.getElementById('player-log-content');
             const playerLogName = document.getElementById('player-log-name');
 
@@ -167,7 +199,14 @@
             const paycheckDateFilter = document.getElementById('paycheck-date-filter');
             const dailyPaycheckCard = document.getElementById('daily-paycheck-card');
             const dailyPaycheckPayoutEl = document.getElementById('daily-paycheck-payout');
+            
+            const transactionLogContent = document.getElementById('transaction-log-content');
+            const transactionLogPagination = document.getElementById('transaction-log-pagination');
+            const transactionSearchInput = document.getElementById('transaction-search');
 
+            const propertyLogContent = document.getElementById('property-log-content');
+            const propertyLogPagination = document.getElementById('property-log-pagination');
+            const propertySearchInput = document.getElementById('property-search');
 
             const menuToggleMain = document.getElementById('menu-toggle-main');
             const closeMenuBtn = document.getElementById('close-menu');
@@ -189,14 +228,14 @@
                     closeSidebar();
                 }
             };
-            
+
             const fetchJobLogs = async (page = 1) => {
                 const response = await fetch(`${backendUrl}/api/job-logs?page=${page}`);
                 const data = await response.json();
                 jobLogContent.innerHTML = data.logs.map(log => `<div class="bg-gray-800 p-2 rounded text-sm">${log.description} - <span class="text-gray-400">${new Date(log.created_at).toLocaleString()}</span></div>`).join('');
                 renderPagination(jobLogPagination, data.totalPages, page, fetchJobLogs);
             };
-
+            
             const fetchJobPayouts = async () => {
                 const response = await fetch(`${backendUrl}/api/job-payouts`);
                 const payouts = await response.json();
@@ -246,7 +285,7 @@
                 const response = await fetch(url);
                 const data = await response.json();
 
-                if(date && date.length) {
+                if(date && date.length > 0) {
                     dailyPaycheckCard.classList.remove('hidden');
                     dailyPaycheckPayoutEl.textContent = `₦${data.dailyTotal.toLocaleString()}`;
                 } else {
@@ -268,6 +307,32 @@
                 const data = await response.json();
                 totalPaycheckPayoutEl.textContent = `₦${data.total.toLocaleString()}`;
             };
+            
+            const fetchTransactionLogs = async (page = 1, search = '') => {
+                const response = await fetch(`${backendUrl}/api/transaction-logs?page=${page}&search=${search}`);
+                const data = await response.json();
+                transactionLogContent.innerHTML = data.logs.map(log => `
+                     <tr class="hover:bg-gray-700/50">
+                        <td class="p-3">${log.player_name}</td>
+                        <td class="p-3">₦${log.amount.toLocaleString()}</td>
+                         <td class="p-3">${log.description}</td>
+                        <td class="p-3">${new Date(log.created_at).toLocaleString()}</td>
+                    </tr>
+                `).join('');
+                renderPagination(transactionLogPagination, data.totalPages, page, (p) => fetchTransactionLogs(p, search));
+            };
+            
+            const fetchPropertyLogs = async (page = 1, search = '') => {
+                const response = await fetch(`${backendUrl}/api/property-logs?page=${page}&search=${search}`);
+                const data = await response.json();
+                propertyLogContent.innerHTML = data.logs.map(log => `
+                    <tr class="hover:bg-gray-700/50">
+                        <td class="p-3">${new Date(log.date).toLocaleString()}</td>
+                        <td class="p-3">${log.description}</td>
+                    </tr>
+                `).join('');
+                renderPagination(propertyLogPagination, data.totalPages, page, (p) => fetchPropertyLogs(p, search));
+            };
 
 
             const renderPagination = (container, totalPages, currentPage, fetchFn) => {
@@ -281,23 +346,19 @@
                 }
             };
             
-            // Event Listeners for Sidebar
-            const openSidebar = () => {
-                sidebar.classList.remove('-translate-x-full');
-                sidebar.classList.add('translate-x-0');
-            };
+            const openSidebar = () => sidebar.classList.remove('-translate-x-full');
+            const closeSidebar = () => sidebar.classList.add('-translate-x-full');
 
-            const closeSidebar = () => {
-                sidebar.classList.remove('translate-x-0');
-                sidebar.classList.add('-translate-x-full');
-            };
-
+            // Event Listeners
             menuToggleMain.addEventListener('click', openSidebar);
             closeMenuBtn.addEventListener('click', closeSidebar);
 
             links.jobLog.addEventListener('click', () => { navigate('jobLog', 'Job Logs'); fetchJobLogs(); fetchJobPayouts(); });
             links.jobRecord.addEventListener('click', () => { navigate('jobRecord', 'Player Job Records'); fetchPlayers(); });
             links.paycheckLog.addEventListener('click', () => { navigate('paycheckLog', 'Paycheck Logs'); fetchPaycheckLogs(); fetchTotalPaycheckPayout(); });
+            links.transactionLog.addEventListener('click', () => navigate('transactionLog', 'Transaction Logs'));
+            links.propertyLog.addEventListener('click', () => navigate('propertyLog', 'Property Logs'));
+            
             backToPlayersBtn.addEventListener('click', () => navigate('jobRecord', 'Player Job Records'));
             
             playerListContainer.addEventListener('click', (e) => {
@@ -317,6 +378,10 @@
             });
 
             paycheckDateFilter.addEventListener('change', () => fetchPaycheckLogs(1, paycheckDateFilter.value));
+            
+            transactionSearchInput.addEventListener('input', e => fetchTransactionLogs(1, e.target.value));
+            propertySearchInput.addEventListener('input', e => fetchPropertyLogs(1, e.target.value));
+
 
             // Initial Load
             navigate('jobLog', 'Job Logs');
