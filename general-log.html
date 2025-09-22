@@ -12,159 +12,315 @@
             --font-body: 'Rajdhani', sans-serif;
             --color-green-accent: #39FF14;
             --color-cyan-accent: #00FFFF;
+            --sidebar-width: 16rem; /* 256px */
         }
         body {
             font-family: var(--font-body);
         }
-        h1, h2, h3 {
+        h1, h2, h3, h4, h5, h6 {
             font-family: var(--font-heading);
+        }
+        .sidebar {
+            transition: transform 0.3s ease-in-out;
+        }
+        .sidebar-hidden {
+            transform: translateX(-100%);
+        }
+        .main-content {
+            transition: margin-left 0.3s ease-in-out;
+        }
+        @media (min-width: 768px) {
+            .main-content {
+                margin-left: var(--sidebar-width);
+            }
+            .sidebar-hidden + .main-content {
+                margin-left: 0;
+            }
+        }
+        .sidebar a.active {
+            background-color: #00FFFF;
+            color: #111827;
+        }
+        .sidebar a svg {
+            width: 24px;
+            height: 24px;
         }
     </style>
 </head>
-<body class="bg-gray-900 text-white flex">
+<body class="bg-gray-900 text-gray-200">
+    <div id="app-container" class="hidden">
+        <!-- Sidebar -->
+        <aside id="sidebar" class="w-64 bg-gray-950/80 backdrop-blur-sm border-r border-gray-700 p-4 space-y-4 fixed inset-y-0 left-0 z-30 sidebar md:translate-x-0 -translate-x-full">
+            <div class="flex items-center justify-between">
+                 <h1 class="text-2xl font-bold text-cyan-400">NV:RP Logs</h1>
+                 <button id="close-menu" class="md:hidden text-gray-400 hover:text-white">&times;</button>
+            </div>
+            <nav class="flex flex-col space-y-2">
+                <a href="dashboard.html" class="flex items-center space-x-3 py-2 px-4 rounded hover:bg-gray-700">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#" id="job-log-link" class="flex items-center space-x-3 py-2 px-4 rounded hover:bg-gray-700">
+                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+                    <span>Job Logs</span>
+                </a>
+                <a href="#" id="job-record-link" class="flex items-center space-x-3 py-2 px-4 rounded hover:bg-gray-700">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                    <span>Player Records</span>
+                </a>
+                <a href="#" id="paycheck-log-link" class="flex items-center space-x-3 py-2 px-4 rounded hover:bg-gray-700">
+                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                    <span>Paycheck Logs</span>
+                </a>
+            </nav>
+        </aside>
 
-    <aside class="w-64 bg-gray-800 p-4 space-y-4">
-        <h1 class="text-2xl font-bold text-glow-green mb-6">NV:RP Logs</h1>
-        <nav class="space-y-2">
-            <a href="#" id="job-log-link" class="block py-2 px-4 rounded hover:bg-gray-700">Job Log</a>
-            <a href="#" id="job-record-link" class="block py-2 px-4 rounded hover:bg-gray-700">Job Record</a>
-        </nav>
-        <div class="mt-8">
-            <h2 class="text-lg font-semibold">Total Payout</h2>
-            <p id="total-payout" class="text-2xl font-bold text-green-400">Loading...</p>
-        </div>
-        <div class="mt-4">
-            <label for="date-filter" class="block text-sm font-medium">Filter by Date</label>
-            <input type="date" id="date-filter" class="w-full bg-gray-700 border-gray-600 rounded mt-1 p-2">
-            <p id="daily-payout" class="text-lg mt-2"></p>
-        </div>
-         <a href="dashboard.html" class="inline-block mt-4 text-cyan-400 hover:text-cyan-300 transition-colors duration-200">← Back to Dashboard</a>
-    </aside>
+        <!-- Main Content -->
+        <main class="flex-1 overflow-y-auto main-content">
+             <header class="bg-gray-800/50 backdrop-blur-sm p-4 flex items-center">
+                <button id="menu-toggle-main" class="md:hidden text-gray-400 hover:text-white mr-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
+                </button>
+                <h2 id="page-title" class="text-2xl font-bold text-cyan-400"></h2>
+            </header>
+            <div class="p-8">
+                <div id="job-log-section">
+                    <div id="job-payout-cards" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-6"></div>
+                    <div id="job-log-content" class="space-y-2 bg-gray-800/50 p-4 rounded-lg"></div>
+                    <div id="job-log-pagination" class="mt-4 flex justify-center space-x-2"></div>
+                </div>
 
-    <main class="flex-1 p-8">
-        <div id="job-log-section">
-            <h2 class="text-3xl font-bold mb-4">Job Logs</h2>
-            <div id="job-log-content" class="space-y-2"></div>
-            <div id="pagination" class="mt-4"></div>
-        </div>
+                <div id="job-record-section" class="hidden">
+                    <input type="text" id="player-search" class="w-full p-2 mb-4 bg-gray-800 rounded border border-gray-700" placeholder="Search for a player...">
+                    <div id="player-list" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4"></div>
+                </div>
 
-        <div id="job-record-section" class="hidden">
-            <h2 class="text-3xl font-bold mb-4">Job Records by Player</h2>
-            <div id="player-list" class="grid grid-cols-4 gap-4"></div>
-        </div>
+                <div id="player-log-section" class="hidden">
+                    <button id="back-to-players" class="mb-4 bg-cyan-500 text-white py-2 px-4 rounded hover:bg-cyan-600 flex items-center space-x-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" /></svg>
+                        <span>Back to Player List</span>
+                    </button>
+                    <h3 class="text-2xl font-bold mb-4">Job Payouts for <span id="player-log-name" class="text-cyan-400"></span></h3>
+                    <div id="player-job-payout-cards" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-6"></div>
+                    <div id="player-log-content" class="space-y-2 bg-gray-800/50 p-4 rounded-lg"></div>
+                </div>
 
-        <div id="player-log-section" class="hidden">
-            <button id="back-to-players" class="mb-4 bg-cyan-500 text-white py-2 px-4 rounded hover:bg-cyan-600">← Back to Player List</button>
-            <h2 class="text-3xl font-bold mb-4">Job Logs for <span id="player-log-name"></span></h2>
-            <div id="player-log-content" class="space-y-2"></div>
-        </div>
-    </main>
-
+                <div id="paycheck-log-section" class="hidden">
+                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                        <div class="bg-gray-800 p-4 rounded-lg">
+                            <h3 class="font-semibold text-gray-400">Total Paycheck Payout</h3>
+                            <p id="total-paycheck-payout" class="text-2xl font-bold text-green-400">Loading...</p>
+                        </div>
+                        <div class="bg-gray-800 p-4 rounded-lg">
+                             <label for="paycheck-date-filter" class="block text-sm font-medium text-gray-400">Filter by Date</label>
+                            <input type="date" id="paycheck-date-filter" class="w-full bg-gray-700 border-gray-600 rounded mt-1 p-2">
+                        </div>
+                         <div id="daily-paycheck-card" class="bg-gray-800 p-4 rounded-lg hidden">
+                             <h3 class="font-semibold text-gray-400">Payout for Selected Date</h3>
+                            <p id="daily-paycheck-payout" class="text-2xl font-bold text-green-400"></p>
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto bg-gray-800/50 rounded-lg">
+                        <table class="w-full text-left">
+                            <thead class="bg-gray-900">
+                                <tr>
+                                    <th class="p-4">Date</th>
+                                    <th class="p-4">Hour</th>
+                                    <th class="p-4">Total Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody id="paycheck-log-content" class="divide-y divide-gray-700"></tbody>
+                        </table>
+                    </div>
+                    <div id="paycheck-log-pagination" class="mt-4 flex justify-center space-x-2"></div>
+                </div>
+            </div>
+        </main>
+    </div>
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
+         document.addEventListener('DOMContentLoaded', () => {
+            if (!localStorage.getItem('isLoggedIn')) {
+                window.location.href = 'admin.html'; 
+                return;
+            }
+             document.getElementById('app-container').classList.remove('hidden');
+
             const backendUrl = "https://nigeria-vibe-backend.onrender.com";
 
-            const jobLogSection = document.getElementById('job-log-section');
-            const jobRecordSection = document.getElementById('job-record-section');
-            const playerLogSection = document.getElementById('player-log-section');
+            const sections = {
+                jobLog: document.getElementById('job-log-section'),
+                jobRecord: document.getElementById('job-record-section'),
+                playerLog: document.getElementById('player-log-section'),
+                paycheckLog: document.getElementById('paycheck-log-section')
+            };
 
-            const jobLogLink = document.getElementById('job-log-link');
-            const jobRecordLink = document.getElementById('job-record-link');
-            const backToPlayersBtn = document.getElementById('back-to-players');
+            const links = {
+                jobLog: document.getElementById('job-log-link'),
+                jobRecord: document.getElementById('job-record-link'),
+                paycheckLog: document.getElementById('paycheck-log-link')
+            };
+            
+            const jobPayoutCardsContainer = document.getElementById('job-payout-cards');
+            const playerJobPayoutCardsContainer = document.getElementById('player-job-payout-cards');
 
             const jobLogContent = document.getElementById('job-log-content');
-            const paginationContainer = document.getElementById('pagination');
+            const jobLogPagination = document.getElementById('job-log-pagination');
+            
             const playerListContainer = document.getElementById('player-list');
+            const playerSearchInput = document.getElementById('player-search');
             const playerLogContent = document.getElementById('player-log-content');
             const playerLogName = document.getElementById('player-log-name');
 
-            const totalPayoutEl = document.getElementById('total-payout');
-            const dailyPayoutEl = document.getElementById('daily-payout');
-            const dateFilterInput = document.getElementById('date-filter');
+            const paycheckLogContent = document.getElementById('paycheck-log-content');
+            const paycheckLogPagination = document.getElementById('paycheck-log-pagination');
+            const totalPaycheckPayoutEl = document.getElementById('total-paycheck-payout');
+            const paycheckDateFilter = document.getElementById('paycheck-date-filter');
+            const dailyPaycheckCard = document.getElementById('daily-paycheck-card');
+            const dailyPaycheckPayoutEl = document.getElementById('daily-paycheck-payout');
 
-            const fetchJobLogs = async (page = 1, date = null) => {
-                let url = `${backendUrl}/api/job-logs?page=${page}`;
-                if (date) {
-                    url += `&date=${date}`;
-                }
-                const response = await fetch(url);
-                const data = await response.json();
 
-                jobLogContent.innerHTML = data.logs.map(log => `<div class="bg-gray-800 p-2 rounded">${log.description} - ${new Date(log.created_at).toLocaleString()}</div>`).join('');
+            const menuToggleMain = document.getElementById('menu-toggle-main');
+            const closeMenuBtn = document.getElementById('close-menu');
+            const sidebar = document.getElementById('sidebar');
+            const backToPlayersBtn = document.getElementById('back-to-players');
+            const pageTitle = document.getElementById('page-title');
+            
+            const jobs = ["MINING", "MEAT CHOPPING", "PACKAGING", "GARBAGE", "LUMBER JACK", "DELIVERY", "COURIER", "FORKLIFTING", "FOODPANDA", "FARMING"];
+
+            const navigate = (sectionName, title) => {
+                Object.values(sections).forEach(s => s.classList.add('hidden'));
+                sections[sectionName].classList.remove('hidden');
+                pageTitle.textContent = title;
                 
-                if (date) {
-                    dailyPayoutEl.textContent = `Payout for ${date}: ₦${data.totalPayout.toLocaleString()}`;
-                } else {
-                    dailyPayoutEl.textContent = '';
-                }
+                Object.values(links).forEach(l => l.classList.remove('active'));
+                if(links[sectionName]) links[sectionName].classList.add('active');
 
-                renderPagination(data.totalPages, page, fetchJobLogs);
+                if (window.innerWidth < 768) {
+                    sidebar.classList.add('sidebar-hidden');
+                }
+            };
+            
+            const fetchJobLogs = async (page = 1) => {
+                const response = await fetch(`${backendUrl}/api/job-logs?page=${page}`);
+                const data = await response.json();
+                jobLogContent.innerHTML = data.logs.map(log => `<div class="bg-gray-800 p-2 rounded text-sm">${log.description} - <span class="text-gray-400">${new Date(log.created_at).toLocaleString()}</span></div>`).join('');
+                renderPagination(jobLogPagination, data.totalPages, page, fetchJobLogs);
+            };
+
+            const fetchJobPayouts = async () => {
+                const response = await fetch(`${backendUrl}/api/job-payouts`);
+                const payouts = await response.json();
+                jobPayoutCardsContainer.innerHTML = Object.entries(payouts).map(([job, amount]) => `
+                    <div class="bg-gray-800 p-4 rounded-lg">
+                        <h3 class="font-semibold text-gray-400 text-sm">${job}</h3>
+                        <p class="text-xl font-bold text-green-400">₦${amount.toLocaleString()}</p>
+                    </div>
+                `).join('');
             };
 
             const fetchPlayers = async () => {
                 const response = await fetch(`${backendUrl}/api/all-players-list`);
                 const players = await response.json();
-                playerListContainer.innerHTML = players.map(player => `<div class="bg-gray-800 p-4 rounded hover:bg-gray-700 cursor-pointer" data-player="${player.username}">${player.username}</div>`).join('');
+                renderPlayerList(players);
             };
             
-            const fetchPlayerJobLogs = async (playerName) => {
-                const response = await fetch(`${backendUrl}/api/player-job-logs/${playerName}`);
-                const logs = await response.json();
-                playerLogName.textContent = playerName;
-                playerLogContent.innerHTML = logs.map(log => `<div class="bg-gray-800 p-2 rounded">${log.description} - ${new Date(log.created_at).toLocaleString()}</div>`).join('');
-            };
-            
-            const fetchTotalPayout = async () => {
-                const response = await fetch(`${backendUrl}/api/job-logs/payout-total`);
-                const data = await response.json();
-                totalPayoutEl.textContent = `₦${data.totalPayout.toLocaleString()}`;
+            const renderPlayerList = (players) => {
+                playerListContainer.innerHTML = players.map(player => `<div class="bg-gray-800 p-4 rounded hover:bg-gray-700 cursor-pointer text-center" data-player="${player.username}">${player.username}</div>`).join('');
             };
 
-            const renderPagination = (totalPages, currentPage, fetchFn) => {
-                paginationContainer.innerHTML = '';
-                for (let i = 1; i <= totalPages; i++) {
+            const fetchPlayerJobLogs = async (playerName) => {
+                playerLogName.textContent = playerName;
+                const response = await fetch(`${backendUrl}/api/player-job-logs/${playerName}`);
+                const logs = await response.json();
+                playerLogContent.innerHTML = logs.map(log => `<div class="bg-gray-800 p-2 rounded text-sm">${log.description} - <span class="text-gray-400">${new Date(log.created_at).toLocaleString()}</span></div>`).join('');
+
+                const playerPayouts = {};
+                jobs.forEach(job => {
+                    const total = logs.filter(log => log.description.includes(job))
+                                    .reduce((sum, log) => sum + (parseInt(log.description.match(/got paid (\d+)/)?.[1], 10) || 0), 0);
+                    if (total > 0) playerPayouts[job] = total;
+                });
+
+                playerJobPayoutCardsContainer.innerHTML = Object.entries(playerPayouts).map(([job, amount]) => `
+                    <div class="bg-gray-800 p-4 rounded-lg">
+                        <h3 class="font-semibold text-gray-400 text-sm">${job}</h3>
+                        <p class="text-xl font-bold text-green-400">₦${amount.toLocaleString()}</p>
+                    </div>
+                `).join('');
+            };
+            
+            const fetchPaycheckLogs = async (page = 1, date = null) => {
+                let url = `${backendUrl}/api/paycheck-logs?page=${page}`;
+                if (date) url += `&date=${date}`;
+                
+                const response = await fetch(url);
+                const data = await response.json();
+
+                if(date) {
+                    dailyPaycheckCard.classList.remove('hidden');
+                    dailyPaycheckPayoutEl.textContent = `₦${data.dailyTotal.toLocaleString()}`;
+                } else {
+                    dailyPaycheckCard.classList.add('hidden');
+                }
+
+                paycheckLogContent.innerHTML = data.logs.map(log => `
+                    <tr class="border-b border-gray-700 hover:bg-gray-700/50">
+                        <td class="p-3">${new Date(log.log_date).toLocaleDateString()}</td>
+                        <td class="p-3">${log.log_hour}</td>
+                        <td class="p-3">₦${log.total_amount.toLocaleString()}</td>
+                    </tr>
+                `).join('');
+                renderPagination(paycheckLogPagination, data.totalPages, page, (p) => fetchPaycheckLogs(p, date));
+            };
+            
+            const fetchTotalPaycheckPayout = async () => {
+                const response = await fetch(`${backendUrl}/api/paycheck-payout-total`);
+                const data = await response.json();
+                totalPaycheckPayoutEl.textContent = `₦${data.total.toLocaleString()}`;
+            };
+
+
+            const renderPagination = (container, totalPages, currentPage, fetchFn) => {
+                container.innerHTML = '';
+                 for (let i = 1; i <= Math.min(totalPages, 10); i++) {
                     const button = document.createElement('button');
                     button.textContent = i;
-                    button.className = `px-3 py-1 rounded ${i === currentPage ? 'bg-cyan-500' : 'bg-gray-700'}`;
-                    button.onclick = () => fetchFn(i, dateFilterInput.value);
-                    paginationContainer.appendChild(button);
+                    button.className = `px-3 py-1 rounded ${i === currentPage ? 'bg-cyan-500 text-black' : 'bg-gray-700'}`;
+                    button.onclick = () => fetchFn(i);
+                    container.appendChild(button);
                 }
             };
             
-            jobLogLink.addEventListener('click', () => {
-                jobLogSection.classList.remove('hidden');
-                jobRecordSection.classList.add('hidden');
-                playerLogSection.classList.add('hidden');
-                fetchJobLogs();
-            });
+            // Event Listeners
+            menuToggleMain.addEventListener('click', () => sidebar.classList.remove('sidebar-hidden'));
+            closeMenuBtn.addEventListener('click', () => sidebar.classList.add('sidebar-hidden'));
 
-            jobRecordLink.addEventListener('click', () => {
-                jobLogSection.classList.add('hidden');
-                jobRecordSection.classList.remove('hidden');
-                playerLogSection.classList.add('hidden');
-                fetchPlayers();
-            });
-
+            links.jobLog.addEventListener('click', () => { navigate('jobLog', 'Job Logs'); fetchJobLogs(); fetchJobPayouts(); });
+            links.jobRecord.addEventListener('click', () => { navigate('jobRecord', 'Player Job Records'); fetchPlayers(); });
+            links.paycheckLog.addEventListener('click', () => { navigate('paycheckLog', 'Paycheck Logs'); fetchPaycheckLogs(); fetchTotalPaycheckPayout(); });
+            backToPlayersBtn.addEventListener('click', () => navigate('jobRecord', 'Player Job Records'));
+            
             playerListContainer.addEventListener('click', (e) => {
                 if (e.target.dataset.player) {
-                    jobRecordSection.classList.add('hidden');
-                    playerLogSection.classList.remove('hidden');
+                    navigate('playerLog', `Logs for ${e.target.dataset.player}`);
                     fetchPlayerJobLogs(e.target.dataset.player);
                 }
             });
-
-            backToPlayersBtn.addEventListener('click', () => {
-                playerLogSection.classList.add('hidden');
-                jobRecordSection.classList.remove('hidden');
+            
+            playerSearchInput.addEventListener('input', async (e) => {
+                const searchTerm = e.target.value.toLowerCase();
+                 const response = await fetch(`${backendUrl}/api/all-players-list`);
+                const players = await response.json();
+                const filteredPlayers = players.filter(p => p.username.toLowerCase().includes(searchTerm));
+                renderPlayerList(filteredPlayers);
             });
 
-            dateFilterInput.addEventListener('change', () => {
-                fetchJobLogs(1, dateFilterInput.value);
-            });
+            paycheckDateFilter.addEventListener('change', () => fetchPaycheckLogs(1, paycheckDateFilter.value));
 
             // Initial Load
+            navigate('jobLog', 'Job Logs');
             fetchJobLogs();
-            fetchTotalPayout();
+            fetchJobPayouts();
         });
     </script>
 </body>
