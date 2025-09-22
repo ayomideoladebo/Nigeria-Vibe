@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>General Logs - NV:RP Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --font-heading: 'Audiowide', sans-serif;
+            --font-body: 'Rajdhani', sans-serif;
+            --color-green-accent: #39FF14;
+            --color-cyan-accent: #00FFFF;
+        }
+        body {
+            font-family: var(--font-body);
+        }
+        h1, h2, h3 {
+            font-family: var(--font-heading);
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white flex">
+
+    <aside class="w-64 bg-gray-800 p-4 space-y-4">
+        <h1 class="text-2xl font-bold text-glow-green mb-6">NV:RP Logs</h1>
+        <nav class="space-y-2">
+            <a href="#" id="job-log-link" class="block py-2 px-4 rounded hover:bg-gray-700">Job Log</a>
+            <a href="#" id="job-record-link" class="block py-2 px-4 rounded hover:bg-gray-700">Job Record</a>
+        </nav>
+        <div class="mt-8">
+            <h2 class="text-lg font-semibold">Total Payout</h2>
+            <p id="total-payout" class="text-2xl font-bold text-green-400">Loading...</p>
+        </div>
+        <div class="mt-4">
+            <label for="date-filter" class="block text-sm font-medium">Filter by Date</label>
+            <input type="date" id="date-filter" class="w-full bg-gray-700 border-gray-600 rounded mt-1 p-2">
+            <p id="daily-payout" class="text-lg mt-2"></p>
+        </div>
+         <a href="dashboard.html" class="inline-block mt-4 text-cyan-400 hover:text-cyan-300 transition-colors duration-200">← Back to Dashboard</a>
+    </aside>
+
+    <main class="flex-1 p-8">
+        <div id="job-log-section">
+            <h2 class="text-3xl font-bold mb-4">Job Logs</h2>
+            <div id="job-log-content" class="space-y-2"></div>
+            <div id="pagination" class="mt-4"></div>
+        </div>
+
+        <div id="job-record-section" class="hidden">
+            <h2 class="text-3xl font-bold mb-4">Job Records by Player</h2>
+            <div id="player-list" class="grid grid-cols-4 gap-4"></div>
+        </div>
+
+        <div id="player-log-section" class="hidden">
+            <button id="back-to-players" class="mb-4 bg-cyan-500 text-white py-2 px-4 rounded hover:bg-cyan-600">← Back to Player List</button>
+            <h2 class="text-3xl font-bold mb-4">Job Logs for <span id="player-log-name"></span></h2>
+            <div id="player-log-content" class="space-y-2"></div>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const backendUrl = "https://nigeria-vibe-backend.onrender.com";
+
+            const jobLogSection = document.getElementById('job-log-section');
+            const jobRecordSection = document.getElementById('job-record-section');
+            const playerLogSection = document.getElementById('player-log-section');
+
+            const jobLogLink = document.getElementById('job-log-link');
+            const jobRecordLink = document.getElementById('job-record-link');
+            const backToPlayersBtn = document.getElementById('back-to-players');
+
+            const jobLogContent = document.getElementById('job-log-content');
+            const paginationContainer = document.getElementById('pagination');
+            const playerListContainer = document.getElementById('player-list');
+            const playerLogContent = document.getElementById('player-log-content');
+            const playerLogName = document.getElementById('player-log-name');
+
+            const totalPayoutEl = document.getElementById('total-payout');
+            const dailyPayoutEl = document.getElementById('daily-payout');
+            const dateFilterInput = document.getElementById('date-filter');
+
+            const fetchJobLogs = async (page = 1, date = null) => {
+                let url = `${backendUrl}/api/job-logs?page=${page}`;
+                if (date) {
+                    url += `&date=${date}`;
+                }
+                const response = await fetch(url);
+                const data = await response.json();
+
+                jobLogContent.innerHTML = data.logs.map(log => `<div class="bg-gray-800 p-2 rounded">${log.description} - ${new Date(log.created_at).toLocaleString()}</div>`).join('');
+                
+                if (date) {
+                    dailyPayoutEl.textContent = `Payout for ${date}: ₦${data.totalPayout.toLocaleString()}`;
+                } else {
+                    dailyPayoutEl.textContent = '';
+                }
+
+                renderPagination(data.totalPages, page, fetchJobLogs);
+            };
+
+            const fetchPlayers = async () => {
+                const response = await fetch(`${backendUrl}/api/all-players-list`);
+                const players = await response.json();
+                playerListContainer.innerHTML = players.map(player => `<div class="bg-gray-800 p-4 rounded hover:bg-gray-700 cursor-pointer" data-player="${player.username}">${player.username}</div>`).join('');
+            };
+            
+            const fetchPlayerJobLogs = async (playerName) => {
+                const response = await fetch(`${backendUrl}/api/player-job-logs/${playerName}`);
+                const logs = await response.json();
+                playerLogName.textContent = playerName;
+                playerLogContent.innerHTML = logs.map(log => `<div class="bg-gray-800 p-2 rounded">${log.description} - ${new Date(log.created_at).toLocaleString()}</div>`).join('');
+            };
+            
+            const fetchTotalPayout = async () => {
+                const response = await fetch(`${backendUrl}/api/job-logs/payout-total`);
+                const data = await response.json();
+                totalPayoutEl.textContent = `₦${data.totalPayout.toLocaleString()}`;
+            };
+
+            const renderPagination = (totalPages, currentPage, fetchFn) => {
+                paginationContainer.innerHTML = '';
+                for (let i = 1; i <= totalPages; i++) {
+                    const button = document.createElement('button');
+                    button.textContent = i;
+                    button.className = `px-3 py-1 rounded ${i === currentPage ? 'bg-cyan-500' : 'bg-gray-700'}`;
+                    button.onclick = () => fetchFn(i, dateFilterInput.value);
+                    paginationContainer.appendChild(button);
+                }
+            };
+            
+            jobLogLink.addEventListener('click', () => {
+                jobLogSection.classList.remove('hidden');
+                jobRecordSection.classList.add('hidden');
+                playerLogSection.classList.add('hidden');
+                fetchJobLogs();
+            });
+
+            jobRecordLink.addEventListener('click', () => {
+                jobLogSection.classList.add('hidden');
+                jobRecordSection.classList.remove('hidden');
+                playerLogSection.classList.add('hidden');
+                fetchPlayers();
+            });
+
+            playerListContainer.addEventListener('click', (e) => {
+                if (e.target.dataset.player) {
+                    jobRecordSection.classList.add('hidden');
+                    playerLogSection.classList.remove('hidden');
+                    fetchPlayerJobLogs(e.target.dataset.player);
+                }
+            });
+
+            backToPlayersBtn.addEventListener('click', () => {
+                playerLogSection.classList.add('hidden');
+                jobRecordSection.classList.remove('hidden');
+            });
+
+            dateFilterInput.addEventListener('change', () => {
+                fetchJobLogs(1, dateFilterInput.value);
+            });
+
+            // Initial Load
+            fetchJobLogs();
+            fetchTotalPayout();
+        });
+    </script>
+</body>
+</html>
