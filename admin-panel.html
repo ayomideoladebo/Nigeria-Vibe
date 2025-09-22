@@ -31,7 +31,6 @@
 </head>
 <body class="bg-gray-900 text-gray-200">
     <div id="app-container" class="hidden">
-        <!-- Sidebar -->
         <aside id="sidebar" class="w-64 bg-gray-950/80 backdrop-blur-sm border-r border-gray-700 p-4 space-y-4 fixed inset-y-0 left-0 z-30 sidebar md:translate-x-0 -translate-x-full">
             <div class="flex items-center justify-between">
                  <h1 class="text-2xl font-bold text-cyan-400">NV:RP Admin</h1>
@@ -57,7 +56,6 @@
             </nav>
         </aside>
 
-        <!-- Main Content -->
         <main class="flex-1 overflow-y-auto main-content">
              <header class="bg-gray-800/50 backdrop-blur-sm p-4 flex items-center sticky top-0 z-20">
                 <button id="menu-toggle-main" class="md:hidden text-gray-400 hover:text-white mr-4">
@@ -114,27 +112,39 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             if (localStorage.getItem('isLoggedIn') !== 'true') {
-                window.location.href = 'admin.html';
+                window.location.href = 'admin.html'; 
                 return;
             }
             document.getElementById('app-container').classList.remove('hidden');
 
             const backendUrl = "https://rcon-nvrp-backend.onrender.com";
 
-            const sections = { playerManagement: document.getElementById('player-management-section'), serverControl: document.getElementById('server-control-section'), rconConsole: document.getElementById('rcon-console-section') };
-            const links = { playerManagement: document.getElementById('player-management-link'), serverControl: document.getElementById('server-control-link'), rconConsole: document.getElementById('rcon-console-link') };
+            // DOM Elements
+            const sections = {
+                playerManagement: document.getElementById('player-management-section'),
+                serverControl: document.getElementById('server-control-section'),
+                rconConsole: document.getElementById('rcon-console-section')
+            };
+            const links = {
+                playerManagement: document.getElementById('player-management-link'),
+                serverControl: document.getElementById('server-control-link'),
+                rconConsole: document.getElementById('rcon-console-link')
+            };
             const playerListContent = document.getElementById('player-list-content');
             const pageTitle = document.getElementById('page-title');
             const menuToggleMain = document.getElementById('menu-toggle-main');
             const closeMenuBtn = document.getElementById('close-menu');
             const sidebar = document.getElementById('sidebar');
 
+            // --- Navigation ---
             const navigate = (sectionName, title) => {
                 Object.values(sections).forEach(s => s.classList.add('hidden'));
                 sections[sectionName].classList.remove('hidden');
                 pageTitle.textContent = title;
+                
                 Object.values(links).forEach(l => l.classList.remove('active'));
                 if(links[sectionName]) links[sectionName].classList.add('active');
+
                 if (window.innerWidth < 768) closeSidebar();
             };
 
@@ -142,10 +152,12 @@
             const closeSidebar = () => sidebar.classList.add('-translate-x-full');
             menuToggleMain.addEventListener('click', openSidebar);
             closeMenuBtn.addEventListener('click', closeSidebar);
+            
             Object.keys(links).forEach(key => {
                 links[key].addEventListener('click', (e) => {
                     e.preventDefault();
                     navigate(key, e.currentTarget.textContent.trim());
+                    if(key === 'playerManagement') fetchPlayers();
                 });
             });
 
@@ -161,36 +173,48 @@
                 } catch (error) {
                     console.error('RCON command failed:', error);
                     appendToConsole(`Error: ${error.message}`);
-                    return { response: 'Error sending command.', players: [] };
+                    return { response: 'Error sending command.' };
                 }
             };
-
+            
             const fetchPlayers = async () => {
-                const data = await sendRconCommand('players');
-                playerListContent.innerHTML = data.players.map(player => `
-                    <tr class="hover:bg-gray-700/50">
-                        <td class="p-3">${player.id}</td>
-                        <td class="p-3">${player.name}</td>
-                        <td class="p-3">${player.ping}</td>
-                        <td class="p-3 flex flex-wrap gap-2">
-                            <button class="btn btn-red" onclick="kickPlayer('${player.id}', '${player.name}')">Kick</button>
-                            <button class="btn btn-red" onclick="banPlayer('${player.id}', '${player.name}')">Ban</button>
-                            <button class="btn btn-yellow" onclick="mutePlayer('${player.id}', '${player.name}')">Mute</button>
-                            <button class="btn btn-blue" onclick="sendMessage('${player.id}', '${player.name}')">Message</button>
-                            <button class="btn btn-green" onclick="giveCash('${player.id}', '${player.name}')">Give Cash</button>
-                            <button class="btn btn-gray" onclick="jailPlayer('${player.id}', '${player.name}')">Jail</button>
-                        </td>
-                    </tr>
-                `).join('') || '<tr><td colspan="4" class="p-4 text-center">No players online.</td></tr>';
+                 try {
+                    const response = await fetch(`${backendUrl}/api/rcon/players`);
+                    if (!response.ok) throw new Error('Failed to fetch players');
+                    const data = await response.json();
+                    
+                    if (data.players && data.players.length > 0) {
+                        playerListContent.innerHTML = data.players.map(player => `
+                            <tr class="hover:bg-gray-700/50">
+                                <td class="p-3">${player.id}</td>
+                                <td class="p-3">${player.name}</td>
+                                <td class="p-3">${player.ping}</td>
+                                <td class="p-3 flex flex-wrap gap-2">
+                                    <button class="btn btn-red" onclick="kickPlayer('${player.id}', '${player.name}')">Kick</button>
+                                    <button class="btn btn-red" onclick="banPlayer('${player.id}', '${player.name}')">Ban</button>
+                                    <button class="btn btn-yellow" onclick="mutePlayer('${player.id}', '${player.name}')">Mute</button>
+                                    <button class="btn btn-blue" onclick="sendMessage('${player.id}', '${player.name}')">Message</button>
+                                    <button class="btn btn-green" onclick="giveCash('${player.id}', '${player.name}')">Give Cash</button>
+                                    <button class="btn btn-gray" onclick="jailPlayer('${player.id}', '${player.name}')">Jail</button>
+                                </td>
+                            </tr>
+                        `).join('');
+                    } else {
+                         playerListContent.innerHTML = '<tr><td colspan="4" class="p-4 text-center">No players online.</td></tr>';
+                    }
+                } catch(error) {
+                     playerListContent.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-red-500">Could not fetch player list. Error: ${error.message}</td></tr>`;
+                }
             };
-
+            
             window.kickPlayer = (id, name) => {
                 const reason = prompt(`Reason for kicking ${name}:`, 'Disruptive behavior');
                 if (reason) sendRconCommand(`kick ${id} ${reason}`).then(fetchPlayers);
             };
             window.banPlayer = (id, name) => {
-                const reason = prompt(`Reason for banning ${name}:`, 'Rule violations');
-                if (reason) sendRconCommand(`ban ${id} ${reason}`).then(fetchPlayers);
+                 if (confirm(`Are you sure you want to ban ${name}?`)) {
+                    sendRconCommand(`ban ${id}`).then(fetchPlayers);
+                }
             };
             window.mutePlayer = (id, name) => {
                 if (confirm(`Are you sure you want to mute ${name}?`)) sendRconCommand(`mute ${id}`).then(fetchPlayers);
@@ -217,7 +241,7 @@
 
             const fetchServerStatus = async () => {
                 const [hostnameData, gamemodeData, playersData] = await Promise.all([
-                    sendRconCommand('hostname'), sendRconCommand('gamemodetext'), sendRconCommand('players')
+                    sendRconCommand('hostname'), sendRconCommand('gamemodetext'), fetch(`${backendUrl}/api/rcon/players`).then(res => res.json())
                 ]);
                 serverStatusCards.innerHTML = `
                     <div class="bg-gray-800 p-4 rounded-lg"><h3 class="font-semibold text-gray-400">Hostname</h3><p class="text-xl font-bold">${hostnameData.response}</p></div>
@@ -246,8 +270,10 @@
             const sendRconCommandBtn = document.getElementById('send-rcon-command-btn');
 
             const appendToConsole = (text) => {
-                consoleOutput.innerHTML += `<div>${text.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</div>`;
-                consoleOutput.scrollTop = consoleOutput.scrollHeight;
+                if (text) {
+                    consoleOutput.innerHTML += `<div>${text.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</div>`;
+                    consoleOutput.scrollTop = consoleOutput.scrollHeight;
+                }
             };
             
             const handleRconSubmit = async () => {
@@ -266,8 +292,8 @@
             navigate('playerManagement', 'Player Management');
             fetchPlayers();
             fetchServerStatus();
-            setInterval(fetchPlayers, 10000); // Refresh player list every 10 seconds
-            setInterval(fetchServerStatus, 60000); // Refresh server status every minute
+            setInterval(fetchPlayers, 30000);
+            setInterval(fetchServerStatus, 60000);
         });
     </script>
 </body>
