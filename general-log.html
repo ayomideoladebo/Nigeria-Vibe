@@ -10,8 +10,6 @@
         :root {
             --font-heading: 'Audiowide', sans-serif;
             --font-body: 'Rajdhani', sans-serif;
-            --color-green-accent: #39FF14;
-            --color-cyan-accent: #00FFFF;
             --sidebar-width: 16rem; /* 256px */
         }
         body {
@@ -23,18 +21,12 @@
         .sidebar {
             transition: transform 0.3s ease-in-out;
         }
-        .sidebar-hidden {
-            transform: translateX(-100%);
-        }
         .main-content {
             transition: margin-left 0.3s ease-in-out;
         }
         @media (min-width: 768px) {
             .main-content {
                 margin-left: var(--sidebar-width);
-            }
-            .sidebar-hidden + .main-content {
-                margin-left: 0;
             }
         }
         .sidebar a.active {
@@ -49,11 +41,10 @@
 </head>
 <body class="bg-gray-900 text-gray-200">
     <div id="app-container" class="hidden">
-        <!-- Sidebar -->
         <aside id="sidebar" class="w-64 bg-gray-950/80 backdrop-blur-sm border-r border-gray-700 p-4 space-y-4 fixed inset-y-0 left-0 z-30 sidebar md:translate-x-0 -translate-x-full">
             <div class="flex items-center justify-between">
                  <h1 class="text-2xl font-bold text-cyan-400">NV:RP Logs</h1>
-                 <button id="close-menu" class="md:hidden text-gray-400 hover:text-white">&times;</button>
+                 <button id="close-menu" class="md:hidden text-gray-400 hover:text-white text-2xl">&times;</button>
             </div>
             <nav class="flex flex-col space-y-2">
                 <a href="dashboard.html" class="flex items-center space-x-3 py-2 px-4 rounded hover:bg-gray-700">
@@ -75,15 +66,14 @@
             </nav>
         </aside>
 
-        <!-- Main Content -->
         <main class="flex-1 overflow-y-auto main-content">
-             <header class="bg-gray-800/50 backdrop-blur-sm p-4 flex items-center">
+             <header class="bg-gray-800/50 backdrop-blur-sm p-4 flex items-center sticky top-0 z-20">
                 <button id="menu-toggle-main" class="md:hidden text-gray-400 hover:text-white mr-4">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
                 </button>
                 <h2 id="page-title" class="text-2xl font-bold text-cyan-400"></h2>
             </header>
-            <div class="p-8">
+            <div class="p-4 md:p-8">
                 <div id="job-log-section">
                     <div id="job-payout-cards" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-6"></div>
                     <div id="job-log-content" class="space-y-2 bg-gray-800/50 p-4 rounded-lg"></div>
@@ -139,7 +129,7 @@
     </div>
     <script>
          document.addEventListener('DOMContentLoaded', () => {
-            if (!localStorage.getItem('isLoggedIn')) {
+            if (localStorage.getItem('isLoggedIn') !== 'true') {
                 window.location.href = 'admin.html'; 
                 return;
             }
@@ -196,7 +186,7 @@
                 if(links[sectionName]) links[sectionName].classList.add('active');
 
                 if (window.innerWidth < 768) {
-                    sidebar.classList.add('sidebar-hidden');
+                    closeSidebar();
                 }
             };
             
@@ -256,7 +246,7 @@
                 const response = await fetch(url);
                 const data = await response.json();
 
-                if(date) {
+                if(date && date.length) {
                     dailyPaycheckCard.classList.remove('hidden');
                     dailyPaycheckPayoutEl.textContent = `₦${data.dailyTotal.toLocaleString()}`;
                 } else {
@@ -264,7 +254,7 @@
                 }
 
                 paycheckLogContent.innerHTML = data.logs.map(log => `
-                    <tr class="border-b border-gray-700 hover:bg-gray-700/50">
+                    <tr class="hover:bg-gray-700/50">
                         <td class="p-3">${new Date(log.log_date).toLocaleDateString()}</td>
                         <td class="p-3">${log.log_hour}</td>
                         <td class="p-3">₦${log.total_amount.toLocaleString()}</td>
@@ -291,9 +281,19 @@
                 }
             };
             
-            // Event Listeners
-            menuToggleMain.addEventListener('click', () => sidebar.classList.remove('sidebar-hidden'));
-            closeMenuBtn.addEventListener('click', () => sidebar.classList.add('sidebar-hidden'));
+            // Event Listeners for Sidebar
+            const openSidebar = () => {
+                sidebar.classList.remove('-translate-x-full');
+                sidebar.classList.add('translate-x-0');
+            };
+
+            const closeSidebar = () => {
+                sidebar.classList.remove('translate-x-0');
+                sidebar.classList.add('-translate-x-full');
+            };
+
+            menuToggleMain.addEventListener('click', openSidebar);
+            closeMenuBtn.addEventListener('click', closeSidebar);
 
             links.jobLog.addEventListener('click', () => { navigate('jobLog', 'Job Logs'); fetchJobLogs(); fetchJobPayouts(); });
             links.jobRecord.addEventListener('click', () => { navigate('jobRecord', 'Player Job Records'); fetchPlayers(); });
@@ -302,8 +302,9 @@
             
             playerListContainer.addEventListener('click', (e) => {
                 if (e.target.dataset.player) {
-                    navigate('playerLog', `Logs for ${e.target.dataset.player}`);
-                    fetchPlayerJobLogs(e.target.dataset.player);
+                    const playerName = e.target.dataset.player;
+                    navigate('playerLog', `Logs for ${playerName}`);
+                    fetchPlayerJobLogs(playerName);
                 }
             });
             

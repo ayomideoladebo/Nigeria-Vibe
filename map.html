@@ -83,7 +83,7 @@
             font-weight: 600;
             white-space: nowrap;
             pointer-events: none;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid rgb(255, 0, 0);
             backdrop-filter: blur(2px);
         }
         .player-marker.names-hidden .player-name {
@@ -395,7 +395,7 @@
                     dot.style.backgroundColor = getFactionColor(player.faction);
                     dot.style.width = '16px';
                     dot.style.height = '16px';
-                    dot.style.border = `3px solid ${player.is_online ? 'white' : '#4B5563'}`; // Different border for offline
+                    dot.style.border = `3px solid ${player.is_online ? 'white' : 'red'}`; // Different border for offline
                     dot.dataset.username = player.username;
                     dot.dataset.posX = player.pos_x.toFixed(2);
                     dot.dataset.posY = player.pos_y.toFixed(2);
@@ -484,20 +484,22 @@
                 const playerName = modalPlayerName.textContent;
                 if (!playerName) return;
 
-                try {
-                    const response = await fetch(`${backendUrl}/api/player/${playerName}/teleport`, {
-                        method: 'POST'
-                    });
-                    if (response.ok) {
-                        alert('Player teleported successfully!');
-                        hideCoordModal();
-                        fetchAndUpdatePlayers();
-                    } else {
-                        throw new Error('Teleport failed');
+                if (confirm(`Are you sure you want to teleport ${playerName}?`)) {
+                    try {
+                        const response = await fetch(`${backendUrl}/api/player/${playerName}/teleport`, {
+                            method: 'POST'
+                        });
+                        if (response.ok) {
+                            alert('Player teleported successfully!');
+                            hideCoordModal();
+                            fetchAndUpdatePlayers();
+                        } else {
+                            throw new Error('Teleport failed');
+                        }
+                    } catch (error) {
+                        console.error('Teleport error:', error);
+                        alert('Failed to teleport player.');
                     }
-                } catch (error) {
-                    console.error('Teleport error:', error);
-                    alert('Failed to teleport player.');
                 }
             });
 
