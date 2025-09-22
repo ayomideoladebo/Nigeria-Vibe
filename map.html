@@ -582,7 +582,7 @@
             // Initialize and then update periodically
             initializeMapPosition();
             fetchAndUpdatePlayers();
-            setInterval(fetchAndUpdatePlayers, 10000); // Set to 10 seconds
+            setInterval(fetchAndUpdatePlayers, 5000); // Set to 5 seconds
             window.addEventListener('resize', initializeMapPosition); // Re-center map on window resize
         });
     </script>
