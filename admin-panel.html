@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NV:RP Admin Dashboard</title>
+    <title>NV:RP Economy Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -55,17 +55,20 @@
                 <a href="dashboard.html" class="text-gray-400 hover:bg-slate-700 hover:text-white flex items-center space-x-3 py-2 px-4 rounded-lg font-semibold">
                     <span>Main Dashboard</span>
                 </a>
-                <a href="admin-panel.html" class="bg-slate-700 text-white flex items-center space-x-3 py-2 px-4 rounded-lg font-semibold">
+                <a href="economy.html" class="bg-slate-700 text-white flex items-center space-x-3 py-2 px-4 rounded-lg font-semibold">
                     <span>Economic Analysis</span>
                 </a>
                 <a href="general-logs.html" class="text-gray-400 hover:bg-slate-700 hover:text-white flex items-center space-x-3 py-2 px-4 rounded-lg font-semibold">
                     <span>General Logs</span>
                 </a>
+                 <a href="admin-panel.html" class="text-gray-400 hover:bg-slate-700 hover:text-white flex items-center space-x-3 py-2 px-4 rounded-lg font-semibold">
+                    <span>Admin Panel</span>
+                </a>
             </nav>
         </aside>
 
         <main class="flex-1 overflow-y-auto">
-            <div class="p-6 md:p-8 space-y-8">
+            <div id="main-content" class="p-6 md:p-8 space-y-8">
                 <div>
                     <h2 class="text-3xl font-bold text-white">Server Economic Analysis</h2>
                     <p class="text-slate-400">A detailed overview of the server's financial health and player activity.</p>
@@ -146,7 +149,7 @@
             }
             document.getElementById('app-container').style.display = 'flex';
 
-            const backendUrl = "https://nigeria-vibe-backend.onrender.com";
+            const economyBackendUrl = "https://rcon-nvrp-backend.onrender.com";
 
             const formatCurrency = (value) => `₦${parseInt(value || 0).toLocaleString()}`;
             const formatHours = (minutes) => `${((minutes || 0) / 60).toFixed(1)} hrs`;
@@ -157,13 +160,13 @@
                 if (data && data.length > 0) {
                     list.innerHTML = data.map(formatter).join('');
                 } else {
-                    list.innerHTML = '<li class="text-slate-400">No data available.</li>';
+                    list.innerHTML = '<li class="text-slate-400 text-sm">No data available.</li>';
                 }
             };
             
             const fetchAllDashboardData = async () => {
                 try {
-                    const response = await fetch(`${backendUrl}/api/dashboard/all-stats`);
+                    const response = await fetch(`${economyBackendUrl}/api/economy/all-stats`);
                     if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
                     const data = await response.json();
 
@@ -208,9 +211,9 @@
                     inequalityContainer.innerHTML = `<p class="text-3xl font-bold text-cyan-400">${percentage}%</p>`;
                     
                     // --- End-Game Vehicles ---
-                    populateList('top-vehicles-list', data.endGameAssets.topVehicles[0], v => 
+                    populateList('top-vehicles-list', data.endGameAssets.topVehicles, v => 
                         `<li class="list-item flex justify-between items-center py-2">
-                            <span class="font-semibold">${v.model}</span>
+                            <span class="font-semibold">${v.modelid}</span>
                             <span class="text-cyan-400 font-bold">${v.count} owned</span>
                         </li>`
                     );
@@ -225,7 +228,7 @@
 
                 } catch (error) {
                     console.error("Failed to load dashboard data:", error);
-                    document.getElementById('page-title').textContent = "Error loading data. Check console.";
+                    document.getElementById('main-content').innerHTML = `<div class="text-red-400 p-8"><h2>Error Loading Data</h2><p>${error.message}</p><p>Please ensure the economy.js server is running and accessible at the configured URL.</p></div>`;
                 }
             };
             
