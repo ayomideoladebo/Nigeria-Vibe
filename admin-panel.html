@@ -116,12 +116,12 @@
                             <ul id="top-miners-list" class="space-y-3"><li class="skeleton h-10 w-full"></li><li class="skeleton h-10 w-full"></li></ul>
                         </div>
                         <div class="stat-card p-6 rounded-xl">
-                            <h4 class="font-bold text-lg mb-4">Top 5 Truckers</h4>
-                            <ul id="top-truckers-list" class="space-y-3"><li class="skeleton h-10 w-full"></li><li class="skeleton h-10 w-full"></li></ul>
+                            <h4 class="font-bold text-lg mb-4">Top 5 Farmers</h4>
+                            <ul id="top-farmers-list" class="space-y-3"><li class="skeleton h-10 w-full"></li><li class="skeleton h-10 w-full"></li></ul>
                         </div>
                         <div class="stat-card p-6 rounded-xl">
-                            <h4 class="font-bold text-lg mb-4">Top 5 Couriers</h4>
-                            <ul id="top-couriers-list" class="space-y-3"><li class="skeleton h-10 w-full"></li><li class="skeleton h-10 w-full"></li></ul>
+                            <h4 class="font-bold text-lg mb-4">Top 5 Meat Choppers</h4>
+                            <ul id="top-meatchoppers-list" class="space-y-3"><li class="skeleton h-10 w-full"></li><li class="skeleton h-10 w-full"></li></ul>
                         </div>
                         <div class="stat-card p-6 rounded-xl">
                             <h4 class="font-bold text-lg mb-4">Top 5 Business Magnates</h4>
@@ -220,8 +220,8 @@
 
                     // --- Player Archetypes ---
                     populateList('top-miners-list', data.playerArchetypes.topMiners, p => `<li class="list-item py-2"><span class="font-semibold">${p.player}</span><br><span class="text-sm text-green-400">${formatCurrency(p.total)}</span></li>`);
-                    populateList('top-truckers-list', data.playerArchetypes.topTruckers, p => `<li class="list-item py-2"><span class="font-semibold">${p.player}</span><br><span class="text-sm text-green-400">${formatCurrency(p.total)}</span></li>`);
-                    populateList('top-couriers-list', data.playerArchetypes.topCouriers, p => `<li class="list-item py-2"><span class="font-semibold">${p.player}</span><br><span class="text-sm text-green-400">${formatCurrency(p.total)}</span></li>`);
+                    populateList('top-farmers-list', data.playerArchetypes.topFarmers, p => `<li class="list-item py-2"><span class="font-semibold">${p.player}</span><br><span class="text-sm text-green-400">${formatCurrency(p.total)}</span></li>`);
+                    populateList('top-meatchoppers-list', data.playerArchetypes.topMeatChoppers, p => `<li class="list-item py-2"><span class="font-semibold">${p.player}</span><br><span class="text-sm text-green-400">${formatCurrency(p.total)}</span></li>`);
                     populateList('business-magnates-list', data.playerArchetypes.businessMagnates, p => `<li class="list-item py-2"><span class="font-semibold">${p.player}</span><br><span class="text-sm text-purple-400">${p.business_count} properties</span></li>`);
                     populateList('high-rollers-list', data.playerArchetypes.highRollers, p => `<li class="list-item py-2"><span class="font-semibold">${p.username}</span><br><span class="text-sm text-yellow-400">${formatCurrency(p.wealth)} in ${formatHours(p.playtime)}</span></li>`);
                     populateList('grinders-list', data.playerArchetypes.grinders, p => `<li class="list-item py-2"><span class="font-semibold">${p.username}</span><br><span class="text-sm text-sky-400">${formatHours(p.playtime)} for ${formatCurrency(p.wealth)}</span></li>`);
