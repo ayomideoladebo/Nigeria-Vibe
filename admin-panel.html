@@ -3,297 +3,239 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Live Admin Panel - NV:RP</title>
+    <title>NV:RP Economy Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        :root {
-            --font-heading: 'Audiowide', sans-serif;
-            --font-body: 'Rajdhani', sans-serif;
-            --sidebar-width: 16rem;
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background: #0F172A; /* slate-900 */
         }
-        body { font-family: var(--font-body); }
-        h1, h2, h3, h4, h5, h6 { font-family: var(--font-heading); }
-        .sidebar { transition: transform 0.3s ease-in-out; }
-        .main-content { transition: margin-left 0.3s ease-in-out; }
-        @media (min-width: 768px) {
-            .main-content { margin-left: var(--sidebar-width); }
+        .sidebar {
+            background-color: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(10px);
+            border-right: 1px solid rgba(51, 65, 85, 0.5);
         }
-        .sidebar a.active, .sidebar a:hover { background-color: #00FFFF; color: #111827; }
-        .sidebar a svg { width: 24px; height: 24px; }
-        .btn { @apply px-3 py-1 rounded text-xs font-bold transition-colors; }
-        .btn-red { @apply bg-red-600 hover:bg-red-500 text-white; }
-        .btn-yellow { @apply bg-yellow-500 hover:bg-yellow-400 text-black; }
-        .btn-blue { @apply bg-blue-500 hover:bg-blue-400 text-white; }
-        .btn-green { @apply bg-green-500 hover:bg-green-400 text-white; }
-        .btn-gray { @apply bg-gray-600 hover:bg-gray-500 text-white; }
+        .stat-card, .chart-container {
+            background: #1E293B; /* slate-800 */
+            border: 1px solid #334155; /* slate-700 */
+            transition: all 0.3s ease;
+        }
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            border-color: #475569; /* slate-600 */
+        }
+        .list-item {
+            border-bottom: 1px solid #334155;
+        }
+        .list-item:last-child {
+            border-bottom: none;
+        }
+        /* Loading Skeleton */
+        .skeleton {
+            background-color: #334155;
+            border-radius: 0.25rem;
+            animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
     </style>
 </head>
-<body class="bg-gray-900 text-gray-200">
-    <div id="app-container" class="hidden">
-        <aside id="sidebar" class="w-64 bg-gray-950/80 backdrop-blur-sm border-r border-gray-700 p-4 space-y-4 fixed inset-y-0 left-0 z-30 sidebar md:translate-x-0 -translate-x-full">
-            <div class="flex items-center justify-between">
-                 <h1 class="text-2xl font-bold text-cyan-400">NV:RP Admin</h1>
-                 <button id="close-menu" class="md:hidden text-gray-400 hover:text-white text-2xl">&times;</button>
-            </div>
+<body class="text-gray-200">
+    <div id="app-container" class="flex h-screen overflow-hidden">
+        <!-- Sidebar -->
+        <aside class="w-64 sidebar p-6 space-y-6 hidden md:block">
+            <h1 class="text-2xl font-black text-white tracking-wider">NV:RP <span class="text-cyan-400">ADMIN</span></h1>
             <nav class="flex flex-col space-y-2">
-                <a href="dashboard.html" class="flex items-center space-x-3 py-2 px-4 rounded">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-                    <span>Dashboard</span>
+                <a href="dashboard.html" class="bg-slate-700 text-white flex items-center space-x-3 py-2 px-4 rounded-lg font-semibold">
+                    <span>Economic Dashboard</span>
                 </a>
-                <a href="#" id="player-management-link" class="flex items-center space-x-3 py-2 px-4 rounded">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-                    <span>Player Management</span>
+                <a href="general-logs.html" class="text-gray-400 hover:bg-slate-700 hover:text-white flex items-center space-x-3 py-2 px-4 rounded-lg font-semibold">
+                    <span>General Logs</span>
                 </a>
-                <a href="#" id="server-control-link" class="flex items-center space-x-3 py-2 px-4 rounded">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
-                    <span>Server Control</span>
-                </a>
-                <a href="#" id="rcon-console-link" class="flex items-center space-x-3 py-2 px-4 rounded">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
-                    <span>RCON Console</span>
+                <a href="admin-panel.html" class="text-gray-400 hover:bg-slate-700 hover:text-white flex items-center space-x-3 py-2 px-4 rounded-lg font-semibold">
+                    <span>Admin Panel</span>
                 </a>
             </nav>
         </aside>
 
-        <main class="flex-1 overflow-y-auto main-content">
-             <header class="bg-gray-800/50 backdrop-blur-sm p-4 flex items-center sticky top-0 z-20">
-                <button id="menu-toggle-main" class="md:hidden text-gray-400 hover:text-white mr-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
-                </button>
-                <h2 id="page-title" class="text-2xl font-bold text-cyan-400"></h2>
-            </header>
-            <div class="p-4 md:p-8">
-                <div id="player-management-section">
-                    <div class="overflow-x-auto bg-gray-800/50 rounded-lg">
-                        <table class="w-full text-left">
-                            <thead class="bg-gray-900">
-                                <tr>
-                                    <th class="p-4">ID</th>
-                                    <th class="p-4">Name</th>
-                                    <th class="p-4">Ping</th>
-                                    <th class="p-4">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="player-list-content" class="divide-y divide-gray-700"></tbody>
-                        </table>
-                    </div>
+        <!-- Main Content -->
+        <main class="flex-1 overflow-y-auto">
+            <div class="p-6 md:p-8 space-y-8">
+                <!-- Header -->
+                <div>
+                    <h2 class="text-3xl font-bold text-white">Server Economic Analysis</h2>
+                    <p class="text-slate-400">A detailed overview of the server's financial health and player activity.</p>
                 </div>
 
-                <div id="server-control-section" class="hidden">
-                    <div id="server-status-cards" class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6"></div>
-                    <div class="bg-gray-800/50 p-4 rounded-lg">
-                        <h3 class="text-xl font-bold mb-2">Global Announcement</h3>
-                        <textarea id="announcement-text" class="w-full p-2 bg-gray-700 rounded border border-gray-600" placeholder="Enter your message..."></textarea>
-                        <button id="send-announcement-btn" class="mt-2 bg-cyan-500 text-black font-bold py-2 px-4 rounded hover:bg-cyan-400">Send</button>
-                    </div>
-                    <div class="mt-6 bg-gray-800/50 p-4 rounded-lg">
-                        <h3 class="text-xl font-bold mb-2">Weather & Time</h3>
-                        <div class="flex space-x-4">
-                            <select id="weather-select" class="p-2 bg-gray-700 rounded border border-gray-600"></select>
-                            <input type="number" id="time-input" min="0" max="23" class="p-2 bg-gray-700 rounded border border-gray-600" placeholder="Set Time (0-23)">
-                            <button id="set-weather-time-btn" class="bg-cyan-500 text-black font-bold py-2 px-4 rounded hover:bg-cyan-400">Set</button>
+                <!-- Key Metrics -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" id="key-metrics-container">
+                    <div class="stat-card p-6 rounded-xl"><p class="text-sm text-slate-400">Total Players</p><div class="skeleton h-8 w-24 mt-2"></div></div>
+                    <div class="stat-card p-6 rounded-xl"><p class="text-sm text-slate-400">Players Today</p><div class="skeleton h-8 w-16 mt-2"></div></div>
+                    <div class="stat-card p-6 rounded-xl"><p class="text-sm text-slate-400">Total Server Wealth</p><div class="skeleton h-8 w-40 mt-2"></div></div>
+                    <div class="stat-card p-6 rounded-xl"><p class="text-sm text-slate-400">Richest Player</p><div class="skeleton h-8 w-32 mt-2"></div></div>
+                </div>
+                
+                <!-- Asset Market Analysis -->
+                <section>
+                    <h3 class="text-2xl font-bold text-white mb-4">Asset Market Analysis</h3>
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <div class="lg:col-span-2 chart-container p-6 rounded-xl">
+                            <h4 class="font-bold text-lg mb-2">Total Asset Value Distribution</h4>
+                            <div class="h-64 flex items-center justify-center">
+                                <canvas id="asset-distribution-chart"></canvas>
+                            </div>
+                        </div>
+                        <div class="space-y-6">
+                            <div class="stat-card p-6 rounded-xl">
+                                <h4 class="font-bold text-lg mb-4">Top 5 "End-Game" Vehicles</h4>
+                                <ul id="top-vehicles-list" class="space-y-3 text-sm">
+                                    <li class="skeleton h-6 w-full"></li><li class="skeleton h-6 w-full"></li><li class="skeleton h-6 w-full"></li>
+                                </ul>
+                            </div>
+                            <div class="stat-card p-6 rounded-xl">
+                                <h4 class="font-bold text-lg mb-2">Wealth Inequality</h4>
+                                <div class="skeleton h-10 w-24 my-1"></div>
+                                <p class="text-slate-400 text-sm">of total server wealth is held by the top 10% of players.</p>
+                            </div>
                         </div>
                     </div>
-                </div>
-
-                <div id="rcon-console-section" class="hidden">
-                    <div class="bg-gray-800/50 p-4 rounded-lg">
-                        <div id="console-output" class="h-96 overflow-y-auto bg-black p-2 rounded mb-4 font-mono text-sm"></div>
-                        <div class="flex">
-                            <input type="text" id="rcon-command-input" class="flex-1 p-2 bg-gray-700 rounded-l border border-gray-600" placeholder="Enter RCON command...">
-                            <button id="send-rcon-command-btn" class="bg-cyan-500 text-black font-bold py-2 px-4 rounded-r hover:bg-cyan-400">Send</button>
+                </section>
+                
+                <!-- Player Archetypes -->
+                <section>
+                    <h3 class="text-2xl font-bold text-white mb-4">Player Archetypes</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+                        <!-- Repeat for all archetype cards -->
+                        <div class="stat-card p-6 rounded-xl">
+                            <h4 class="font-bold text-lg mb-4">Top 5 Miners</h4>
+                            <ul id="top-miners-list" class="space-y-3"><li class="skeleton h-10 w-full"></li><li class="skeleton h-10 w-full"></li></ul>
+                        </div>
+                        <div class="stat-card p-6 rounded-xl">
+                            <h4 class="font-bold text-lg mb-4">Top 5 Truckers</h4>
+                            <ul id="top-truckers-list" class="space-y-3"><li class="skeleton h-10 w-full"></li><li class="skeleton h-10 w-full"></li></ul>
+                        </div>
+                        <div class="stat-card p-6 rounded-xl">
+                            <h4 class="font-bold text-lg mb-4">Top 5 Couriers</h4>
+                            <ul id="top-couriers-list" class="space-y-3"><li class="skeleton h-10 w-full"></li><li class="skeleton h-10 w-full"></li></ul>
+                        </div>
+                        <div class="stat-card p-6 rounded-xl">
+                            <h4 class="font-bold text-lg mb-4">Top 5 Business Magnates</h4>
+                            <ul id="business-magnates-list" class="space-y-3"><li class="skeleton h-10 w-full"></li><li class="skeleton h-10 w-full"></li></ul>
+                        </div>
+                        <div class="md:col-span-2 stat-card p-6 rounded-xl">
+                            <h4 class="font-bold text-lg mb-4">Top 5 "High Rollers" (High Wealth, Low Playtime)</h4>
+                            <ul id="high-rollers-list" class="space-y-3"><li class="skeleton h-10 w-full"></li><li class="skeleton h-10 w-full"></li></ul>
+                        </div>
+                        <div class="md:col-span-2 stat-card p-6 rounded-xl">
+                            <h4 class="font-bold text-lg mb-4">Top 5 "Grinders" (High Playtime, Low Wealth)</h4>
+                            <ul id="grinders-list" class="space-y-3"><li class="skeleton h-10 w-full"></li><li class="skeleton h-10 w-full"></li></ul>
                         </div>
                     </div>
-                </div>
+                </section>
             </div>
         </main>
     </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             if (localStorage.getItem('isLoggedIn') !== 'true') {
-                window.location.href = 'admin.html'; 
+                window.location.href = 'admin.html';
                 return;
             }
-            document.getElementById('app-container').classList.remove('hidden');
+            document.getElementById('app-container').style.display = 'flex';
 
-            const backendUrl = "https://rcon-nvrp-backend.onrender.com";
+            const backendUrl = "https://nigeria-vibe-backend.onrender.com";
 
-            // DOM Elements
-            const sections = {
-                playerManagement: document.getElementById('player-management-section'),
-                serverControl: document.getElementById('server-control-section'),
-                rconConsole: document.getElementById('rcon-console-section')
+            const formatCurrency = (value) => ₦${parseInt(value || 0).toLocaleString()};
+            const formatHours = (minutes) => ${((minutes || 0) / 60).toFixed(1)} hrs;
+
+            const populateList = (elementId, data, formatter) => {
+                const list = document.getElementById(elementId);
+                if (!list) return;
+                if (data && data.length > 0) {
+                    list.innerHTML = data.map(formatter).join('');
+                } else {
+                    list.innerHTML = '<li class="text-slate-400">No data available.</li>';
+                }
             };
-            const links = {
-                playerManagement: document.getElementById('player-management-link'),
-                serverControl: document.getElementById('server-control-link'),
-                rconConsole: document.getElementById('rcon-console-link')
-            };
-            const playerListContent = document.getElementById('player-list-content');
-            const pageTitle = document.getElementById('page-title');
-            const menuToggleMain = document.getElementById('menu-toggle-main');
-            const closeMenuBtn = document.getElementById('close-menu');
-            const sidebar = document.getElementById('sidebar');
-
-            // --- Navigation ---
-            const navigate = (sectionName, title) => {
-                Object.values(sections).forEach(s => s.classList.add('hidden'));
-                sections[sectionName].classList.remove('hidden');
-                pageTitle.textContent = title;
-                
-                Object.values(links).forEach(l => l.classList.remove('active'));
-                if(links[sectionName]) links[sectionName].classList.add('active');
-
-                if (window.innerWidth < 768) closeSidebar();
-            };
-
-            const openSidebar = () => sidebar.classList.remove('-translate-x-full');
-            const closeSidebar = () => sidebar.classList.add('-translate-x-full');
-            menuToggleMain.addEventListener('click', openSidebar);
-            closeMenuBtn.addEventListener('click', closeSidebar);
             
-            Object.keys(links).forEach(key => {
-                links[key].addEventListener('click', (e) => {
-                    e.preventDefault();
-                    navigate(key, e.currentTarget.textContent.trim());
-                    if(key === 'playerManagement') fetchPlayers();
-                });
-            });
-
-            const sendRconCommand = async (command) => {
+            const fetchAllDashboardData = async () => {
                 try {
-                    const response = await fetch(`${backendUrl}/api/rcon/command`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ command })
-                    });
-                    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-                    return await response.json();
-                } catch (error) {
-                    console.error('RCON command failed:', error);
-                    appendToConsole(`Error: ${error.message}`);
-                    return { response: 'Error sending command.' };
-                }
-            };
-            
-            const fetchPlayers = async () => {
-                 try {
-                    const response = await fetch(`${backendUrl}/api/rcon/players`);
-                    if (!response.ok) throw new Error('Failed to fetch players');
+                    const response = await fetch(${backendUrl}/api/dashboard/all-stats);
+                    if (!response.ok) throw new Error(HTTP error! status: ${response.status});
                     const data = await response.json();
+
+                    // --- Populate Key Metrics ---
+                    const keyMetricsContainer = document.getElementById('key-metrics-container');
+                    keyMetricsContainer.innerHTML = `
+                        <div class="stat-card p-6 rounded-xl"><p class="text-sm text-slate-400">Total Players</p><p class="text-3xl font-bold">${data.keyMetrics.totalPlayers}</p></div>
+                        <div class="stat-card p-6 rounded-xl"><p class="text-sm text-slate-400">Players Today</p><p class="text-3xl font-bold">${data.keyMetrics.playersToday}</p></div>
+                        <div class="stat-card p-6 rounded-xl"><p class="text-sm text-slate-400">Total Server Wealth</p><p class="text-3xl font-bold">${formatCurrency(data.keyMetrics.totalWealth)}</p></div>
+                        <div class="stat-card p-6 rounded-xl"><p class="text-sm text-slate-400">Richest Player</p><p class="text-3xl font-bold">${data.keyMetrics.richestPlayer.username}</p></div>
+                    `;
                     
-                    if (data.players && data.players.length > 0) {
-                        playerListContent.innerHTML = data.players.map(player => `
-                            <tr class="hover:bg-gray-700/50">
-                                <td class="p-3">${player.id}</td>
-                                <td class="p-3">${player.name}</td>
-                                <td class="p-3">${player.ping}</td>
-                                <td class="p-3 flex flex-wrap gap-2">
-                                    <button class="btn btn-red" onclick="kickPlayer('${player.id}', '${player.name}')">Kick</button>
-                                    <button class="btn btn-red" onclick="banPlayer('${player.id}', '${player.name}')">Ban</button>
-                                    <button class="btn btn-yellow" onclick="mutePlayer('${player.id}', '${player.name}')">Mute</button>
-                                    <button class="btn btn-blue" onclick="sendMessage('${player.id}', '${player.name}')">Message</button>
-                                    <button class="btn btn-green" onclick="giveCash('${player.id}', '${player.name}')">Give Cash</button>
-                                    <button class="btn btn-gray" onclick="jailPlayer('${player.id}', '${player.name}')">Jail</button>
-                                </td>
-                            </tr>
-                        `).join('');
-                    } else {
-                         playerListContent.innerHTML = '<tr><td colspan="4" class="p-4 text-center">No players online.</td></tr>';
-                    }
-                } catch(error) {
-                     playerListContent.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-red-500">Could not fetch player list. Error: ${error.message}</td></tr>`;
+                    // --- Asset Distribution Chart ---
+                    const assetCtx = document.getElementById('asset-distribution-chart').getContext('2d');
+                    new Chart(assetCtx, {
+                        type: 'doughnut',
+                        data: {
+                            labels: ['Player Liquid', 'Vehicles', 'Houses', 'Businesses'],
+                            datasets: [{
+                                data: [
+                                    data.assetDistribution.playerLiquid, 
+                                    data.assetDistribution.vehicles, 
+                                    data.assetDistribution.houses, 
+                                    data.assetDistribution.businesses
+                                ],
+                                backgroundColor: ['#22d3ee', '#34d399', '#f59e0b', '#a78bfa'],
+                                borderColor: '#1E293B',
+                                borderWidth: 4,
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            plugins: { legend: { position: 'bottom', labels: { color: '#94a3b8', font: { size: 14 } } } }
+                        }
+                    });
+
+                    // --- Asset Inequality ---
+                    const inequalityMetric = document.getElementById('asset-inequality-metric');
+                    const percentage = (data.assetInequality.serverTotal > 0)
+                        ? ((data.assetInequality.top10PercentTotal / data.assetInequality.serverTotal) * 100).toFixed(1)
+                        : 0;
+                    inequalityMetric.classList.remove('skeleton', 'h-10', 'w-24', 'my-1');
+                    inequalityMetric.textContent = ${percentage}%;
+                    
+                    // --- End-Game Vehicles ---
+                    populateList('top-vehicles-list', data.endGameAssets.topVehicles, v => 
+                        `<li class="list-item flex justify-between items-center py-2">
+                            <span class="font-semibold">${v.model}</span>
+                            <span class="text-cyan-400 font-bold">${v.count} owned</span>
+                        </li>`
+                    );
+
+                    // --- Player Archetypes ---
+                    populateList('top-miners-list', data.playerArchetypes.topMiners, p => <li class="list-item py-2"><span class="font-semibold">${p.player}</span><br><span class="text-sm text-green-400">${formatCurrency(p.total)}</span></li>);
+                    populateList('top-truckers-list', data.playerArchetypes.topTruckers, p => <li class="list-item py-2"><span class="font-semibold">${p.player}</span><br><span class="text-sm text-green-400">${formatCurrency(p.total)}</span></li>);
+                    populateList('top-couriers-list', data.playerArchetypes.topCouriers, p => <li class="list-item py-2"><span class="font-semibold">${p.player}</span><br><span class="text-sm text-green-400">${formatCurrency(p.total)}</span></li>);
+                    populateList('business-magnates-list', data.playerArchetypes.businessMagnates, p => <li class="list-item py-2"><span class="font-semibold">${p.player}</span><br><span class="text-sm text-purple-400">${p.business_count} properties</span></li>);
+                    populateList('high-rollers-list', data.playerArchetypes.highRollers, p => <li class="list-item py-2"><span class="font-semibold">${p.username}</span><br><span class="text-sm text-yellow-400">${formatCurrency(p.wealth)} in ${formatHours(p.playtime)}</span></li>);
+                    populateList('grinders-list', data.playerArchetypes.grinders, p => <li class="list-item py-2"><span class="font-semibold">${p.username}</span><br><span class="text-sm text-sky-400">${formatHours(p.playtime)} for ${formatCurrency(p.wealth)}</span></li>);
+
+                } catch (error) {
+                    console.error("Failed to load dashboard data:", error);
+                    document.getElementById('page-title').textContent = "Error loading data. Check console.";
                 }
             };
             
-            window.kickPlayer = (id, name) => {
-                const reason = prompt(`Reason for kicking ${name}:`, 'Disruptive behavior');
-                if (reason) sendRconCommand(`kick ${id} ${reason}`).then(fetchPlayers);
-            };
-            window.banPlayer = (id, name) => {
-                 if (confirm(`Are you sure you want to ban ${name}?`)) {
-                    sendRconCommand(`ban ${id}`).then(fetchPlayers);
-                }
-            };
-            window.mutePlayer = (id, name) => {
-                if (confirm(`Are you sure you want to mute ${name}?`)) sendRconCommand(`mute ${id}`).then(fetchPlayers);
-            };
-            window.sendMessage = (id, name) => {
-                const message = prompt(`Message to send to ${name}:`);
-                if (message) sendRconCommand(`pm ${id} ${message}`);
-            };
-            window.giveCash = (id, name) => {
-                const amount = prompt(`Amount to give to ${name}:`, '10000');
-                if (amount && !isNaN(amount)) sendRconCommand(`givecash ${id} ${amount}`);
-            };
-            window.jailPlayer = (id, name) => {
-                const time = prompt(`Jail time in seconds for ${name}:`, '60');
-                if (time && !isNaN(time)) sendRconCommand(`jail ${id} ${time}`);
-            };
-
-            const serverStatusCards = document.getElementById('server-status-cards');
-            const announcementText = document.getElementById('announcement-text');
-            const sendAnnouncementBtn = document.getElementById('send-announcement-btn');
-            const weatherSelect = document.getElementById('weather-select');
-            const timeInput = document.getElementById('time-input');
-            const setWeatherTimeBtn = document.getElementById('set-weather-time-btn');
-
-            const fetchServerStatus = async () => {
-                const [hostnameData, gamemodeData, playersData] = await Promise.all([
-                    sendRconCommand('hostname'), sendRconCommand('gamemodetext'), fetch(`${backendUrl}/api/rcon/players`).then(res => res.json())
-                ]);
-                serverStatusCards.innerHTML = `
-                    <div class="bg-gray-800 p-4 rounded-lg"><h3 class="font-semibold text-gray-400">Hostname</h3><p class="text-xl font-bold">${hostnameData.response}</p></div>
-                    <div class="bg-gray-800 p-4 rounded-lg"><h3 class="font-semibold text-gray-400">Gamemode</h3><p class="text-xl font-bold">${gamemodeData.response}</p></div>
-                    <div class="bg-gray-800 p-4 rounded-lg"><h3 class="font-semibold text-gray-400">Players</h3><p class="text-xl font-bold">${playersData.players.length} / 100</p></div>
-                `;
-            };
-            sendAnnouncementBtn.addEventListener('click', () => {
-                const text = announcementText.value;
-                if(text) {
-                    sendRconCommand(`say [ADMIN] ${text}`);
-                    announcementText.value = '';
-                }
-            });
-            const weatherOptions = { "Sunny": 1, "Cloudy": 2, "Rainy": 3, "Foggy": 4, "Sandstorm": 9 };
-            weatherSelect.innerHTML = Object.keys(weatherOptions).map(w => `<option value="${weatherOptions[w]}">${w}</option>`).join('');
-            setWeatherTimeBtn.addEventListener('click', () => {
-                const weather = weatherSelect.value;
-                const time = timeInput.value;
-                if(weather) sendRconCommand(`weather ${weather}`);
-                if(time) sendRconCommand(`worldtime ${time}`);
-            });
-
-            const consoleOutput = document.getElementById('console-output');
-            const rconCommandInput = document.getElementById('rcon-command-input');
-            const sendRconCommandBtn = document.getElementById('send-rcon-command-btn');
-
-            const appendToConsole = (text) => {
-                if (text) {
-                    consoleOutput.innerHTML += `<div>${text.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</div>`;
-                    consoleOutput.scrollTop = consoleOutput.scrollHeight;
-                }
-            };
-            
-            const handleRconSubmit = async () => {
-                const command = rconCommandInput.value;
-                if (!command) return;
-                appendToConsole(`> ${command}`);
-                const data = await sendRconCommand(command);
-                appendToConsole(data.response.split('\n').join('<br>'));
-                rconCommandInput.value = '';
-            };
-
-            sendRconCommandBtn.addEventListener('click', handleRconSubmit);
-            rconCommandInput.addEventListener('keypress', (e) => { if(e.key === 'Enter') handleRconSubmit(); });
-
-            // Initial Load
-            navigate('playerManagement', 'Player Management');
-            fetchPlayers();
-            fetchServerStatus();
-            setInterval(fetchPlayers, 30000);
-            setInterval(fetchServerStatus, 60000);
+            fetchAllDashboardData();
         });
     </script>
 </body>
