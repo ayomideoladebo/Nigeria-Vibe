@@ -224,7 +224,7 @@
                     populateList('top-meatchoppers-list', data.playerArchetypes.topMeatChoppers, p => `<li class="list-item py-2"><span class="font-semibold">${p.player}</span><br><span class="text-sm text-green-400">${formatCurrency(p.total)}</span></li>`);
                     populateList('business-magnates-list', data.playerArchetypes.businessMagnates, p => `<li class="list-item py-2"><span class="font-semibold">${p.player}</span><br><span class="text-sm text-purple-400">${p.business_count} properties</span></li>`);
                     populateList('high-rollers-list', data.playerArchetypes.highRollers, p => `<li class="list-item py-2"><span class="font-semibold">${p.username}</span><br><span class="text-sm text-yellow-400">${formatCurrency(p.wealth)} in ${formatHours(p.hours)}</span></li>`);
-                    populateList('grinders-list', data.playerArchetypes.grinders, p => `<li class="list-item py-2"><span class="font-semibold">${p.username}</span><br><span class="text-sm text-sky-400">${formatHours(p.hours)} for ${formatCurrency(p.wealth)}</span></li>`);
+                    populateList('grinders-list', data.playerArchetypes.grinders, p => `<li class="list-item py-2"><span class="font-semibold">${p.username}</span><br><span class="text-sm text-sky-400">${(p.hours)} for ${formatCurrency(p.wealth)}</span></li>`);
 
                 } catch (error) {
                     console.error("Failed to load dashboard data:", error);
