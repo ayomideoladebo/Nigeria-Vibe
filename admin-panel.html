@@ -55,14 +55,14 @@
                 <a href="dashboard.html" class="text-gray-400 hover:bg-slate-700 hover:text-white flex items-center space-x-3 py-2 px-4 rounded-lg font-semibold">
                     <span>Main Dashboard</span>
                 </a>
-                <a href="economy.html" class="bg-slate-700 text-white flex items-center space-x-3 py-2 px-4 rounded-lg font-semibold">
+                <a href="admin-panel.html" class="bg-slate-700 text-white flex items-center space-x-3 py-2 px-4 rounded-lg font-semibold">
                     <span>Economic Analysis</span>
                 </a>
-                <a href="general-logs.html" class="text-gray-400 hover:bg-slate-700 hover:text-white flex items-center space-x-3 py-2 px-4 rounded-lg font-semibold">
+                <a href="general-log.html" class="text-gray-400 hover:bg-slate-700 hover:text-white flex items-center space-x-3 py-2 px-4 rounded-lg font-semibold">
                     <span>General Logs</span>
                 </a>
-                 <a href="admin-panel.html" class="text-gray-400 hover:bg-slate-700 hover:text-white flex items-center space-x-3 py-2 px-4 rounded-lg font-semibold">
-                    <span>Admin Panel</span>
+                 <a href="faction.html" class="text-gray-400 hover:bg-slate-700 hover:text-white flex items-center space-x-3 py-2 px-4 rounded-lg font-semibold">
+                    <span>Faction Panel</span>
                 </a>
             </nav>
         </aside>
@@ -124,8 +124,8 @@
                             <ul id="top-meatchoppers-list" class="space-y-3"><li class="skeleton h-10 w-full"></li><li class="skeleton h-10 w-full"></li></ul>
                         </div>
                         <div class="stat-card p-6 rounded-xl">
-                            <h4 class="font-bold text-lg mb-4">Top 5 Business Magnates</h4>
-                            <ul id="business-magnates-list" class="space-y-3"><li class="skeleton h-10 w-full"></li><li class="skeleton h-10 w-full"></li></ul>
+                            <h4 class="font-bold text-lg mb-4">Top 5 Forklifters</h4>
+                            <ul id="top-forklifters-list" class="space-y-3"><li class="skeleton h-10 w-full"></li><li class="skeleton h-10 w-full"></li></ul>
                         </div>
                         <div class="md:col-span-2 stat-card p-6 rounded-xl">
                             <h4 class="font-bold text-lg mb-4">Top 5 "High Rollers" (High Wealth, Low Playtime)</h4>
@@ -222,9 +222,9 @@
                     populateList('top-miners-list', data.playerArchetypes.topMiners, p => `<li class="list-item py-2"><span class="font-semibold">${p.player}</span><br><span class="text-sm text-green-400">${formatCurrency(p.total)}</span></li>`);
                     populateList('top-farmers-list', data.playerArchetypes.topFarmers, p => `<li class="list-item py-2"><span class="font-semibold">${p.player}</span><br><span class="text-sm text-green-400">${formatCurrency(p.total)}</span></li>`);
                     populateList('top-meatchoppers-list', data.playerArchetypes.topMeatChoppers, p => `<li class="list-item py-2"><span class="font-semibold">${p.player}</span><br><span class="text-sm text-green-400">${formatCurrency(p.total)}</span></li>`);
-                    populateList('business-magnates-list', data.playerArchetypes.businessMagnates, p => `<li class="list-item py-2"><span class="font-semibold">${p.player}</span><br><span class="text-sm text-purple-400">${p.business_count} properties</span></li>`);
-                    populateList('high-rollers-list', data.playerArchetypes.highRollers, p => `<li class="list-item py-2"><span class="font-semibold">${p.username}</span><br><span class="text-sm text-yellow-400">${formatCurrency(p.wealth)} in ${formatHours(p.hours)}</span></li>`);
-                    populateList('grinders-list', data.playerArchetypes.grinders, p => `<li class="list-item py-2"><span class="font-semibold">${p.username}</span><br><span class="text-sm text-sky-400">${(p.hours)} for ${formatCurrency(p.wealth)}</span></li>`);
+                    populateList('top-forklifters-list', data.playerArchetypes.topForklifters, p => `<li class="list-item py-2"><span class="font-semibold">${p.player}</span><br><span class="text-sm text-green-400">${formatCurrency(p.total)}</span></li>`);
+                    populateList('high-rollers-list', data.playerArchetypes.highRollers, p => `<li class="list-item py-2"><span class="font-semibold">${p.username}</span><br><span class="text-sm text-yellow-400">${formatCurrency(p.wealth)} in ${(p.hours)}hrs</span></li>`);
+                    populateList('grinders-list', data.playerArchetypes.grinders, p => `<li class="list-item py-2"><span class="font-semibold">${p.username}</span><br><span class="text-sm text-sky-400">${(p.hours)}hrs for ${formatCurrency(p.wealth)}</span></li>`);
 
                 } catch (error) {
                     console.error("Failed to load dashboard data:", error);
