@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NV:RP Economy Dashboard</title>
+    <title>NV:RP Admin Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -18,6 +18,7 @@
             background-color: rgba(15, 23, 42, 0.8);
             backdrop-filter: blur(10px);
             border-right: 1px solid rgba(51, 65, 85, 0.5);
+            transition: transform 0.3s ease-in-out;
         }
         .stat-card, .chart-container {
             background: #1E293B; /* slate-800 */
@@ -49,95 +50,40 @@
 </head>
 <body class="text-gray-200">
     <div id="app-container" class="flex h-screen overflow-hidden">
-        <aside class="w-64 sidebar p-6 space-y-6 hidden md:block">
-            <h1 class="text-2xl font-black text-white tracking-wider">NV:RP <span class="text-cyan-400">ADMIN</span></h1>
+        <aside id="sidebar" class="w-64 sidebar p-6 space-y-6 fixed inset-y-0 left-0 z-30 md:relative md:translate-x-0 -translate-x-full">
+            <div class="flex items-center justify-between">
+                <h1 class="text-2xl font-black text-white tracking-wider">NV:RP <span class="text-cyan-400">ADMIN</span></h1>
+                <button id="close-menu" class="md:hidden text-gray-400 hover:text-white text-2xl">&times;</button>
+            </div>
             <nav class="flex flex-col space-y-2">
                 <a href="dashboard.html" class="text-gray-400 hover:bg-slate-700 hover:text-white flex items-center space-x-3 py-2 px-4 rounded-lg font-semibold">
+                    <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
                     <span>Main Dashboard</span>
                 </a>
                 <a href="admin-panel.html" class="bg-slate-700 text-white flex items-center space-x-3 py-2 px-4 rounded-lg font-semibold">
+                    <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
                     <span>Economic Analysis</span>
                 </a>
-                <a href="general-log.html" class="text-gray-400 hover:bg-slate-700 hover:text-white flex items-center space-x-3 py-2 px-4 rounded-lg font-semibold">
+                <a href="general-logs.html" class="text-gray-400 hover:bg-slate-700 hover:text-white flex items-center space-x-3 py-2 px-4 rounded-lg font-semibold">
+                    <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
                     <span>General Logs</span>
                 </a>
-                 <a href="faction.html" class="text-gray-400 hover:bg-slate-700 hover:text-white flex items-center space-x-3 py-2 px-4 rounded-lg font-semibold">
+                <a href="faction.html" class="text-gray-400 hover:bg-slate-700 hover:text-white flex items-center space-x-3 py-2 px-4 rounded-lg font-semibold">
+                    <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M15 21a6 6 0 00-9-5.197M15 21a6 6 0 00-9-5.197"></path></svg>
                     <span>Faction Panel</span>
                 </a>
             </nav>
         </aside>
 
         <main class="flex-1 overflow-y-auto">
+            <header class="bg-slate-800/80 backdrop-blur-sm p-4 flex items-center sticky top-0 z-20">
+                <button id="menu-toggle" class="md:hidden text-gray-400 hover:text-white mr-4">
+                    <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
+                </button>
+                <h2 class="text-3xl font-bold text-white">Server Economic Analysis</h2>
+            </header>
             <div id="main-content" class="p-6 md:p-8 space-y-8">
-                <div>
-                    <h2 class="text-3xl font-bold text-white">Server Economic Analysis</h2>
-                    <p class="text-slate-400">A detailed overview of the server's financial health and player activity.</p>
                 </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" id="key-metrics-container">
-                    <div class="stat-card p-6 rounded-xl"><p class="text-sm text-slate-400">Total Players</p><div class="skeleton h-8 w-24 mt-2"></div></div>
-                    <div class="stat-card p-6 rounded-xl"><p class="text-sm text-slate-400">Players Today</p><div class="skeleton h-8 w-16 mt-2"></div></div>
-                    <div class="stat-card p-6 rounded-xl"><p class="text-sm text-slate-400">Total Server Wealth</p><div class="skeleton h-8 w-40 mt-2"></div></div>
-                    <div class="stat-card p-6 rounded-xl"><p class="text-sm text-slate-400">Richest Player</p><div class="skeleton h-8 w-32 mt-2"></div></div>
-                </div>
-                
-                <section>
-                    <h3 class="text-2xl font-bold text-white mb-4">Asset Market Analysis</h3>
-                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                        <div class="lg:col-span-2 chart-container p-6 rounded-xl">
-                            <h4 class="font-bold text-lg mb-2">Total Asset Value Distribution</h4>
-                            <div class="h-64 flex items-center justify-center">
-                                <canvas id="asset-distribution-chart"></canvas>
-                            </div>
-                        </div>
-                        <div class="space-y-6">
-                            <div class="stat-card p-6 rounded-xl">
-                                <h4 class="font-bold text-lg mb-4">Top 5 "End-Game" Vehicles</h4>
-                                <ul id="top-vehicles-list" class="space-y-3 text-sm">
-                                    <li class="skeleton h-6 w-full"></li><li class="skeleton h-6 w-full"></li><li class="skeleton h-6 w-full"></li>
-                                </ul>
-                            </div>
-                            <div class="stat-card p-6 rounded-xl">
-                                <h4 class="font-bold text-lg mb-2">Wealth Inequality</h4>
-                                <div id="asset-inequality-metric-container">
-                                    <div class="skeleton h-10 w-24 my-1"></div>
-                                </div>
-                                <p class="text-slate-400 text-sm">of total server wealth is held by the top 10% of players.</p>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-                
-                <section>
-                    <h3 class="text-2xl font-bold text-white mb-4">Player Archetypes</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
-                        <div class="stat-card p-6 rounded-xl">
-                            <h4 class="font-bold text-lg mb-4">Top 5 Miners</h4>
-                            <ul id="top-miners-list" class="space-y-3"><li class="skeleton h-10 w-full"></li><li class="skeleton h-10 w-full"></li></ul>
-                        </div>
-                        <div class="stat-card p-6 rounded-xl">
-                            <h4 class="font-bold text-lg mb-4">Top 5 Farmers</h4>
-                            <ul id="top-farmers-list" class="space-y-3"><li class="skeleton h-10 w-full"></li><li class="skeleton h-10 w-full"></li></ul>
-                        </div>
-                        <div class="stat-card p-6 rounded-xl">
-                            <h4 class="font-bold text-lg mb-4">Top 5 Meat Choppers</h4>
-                            <ul id="top-meatchoppers-list" class="space-y-3"><li class="skeleton h-10 w-full"></li><li class="skeleton h-10 w-full"></li></ul>
-                        </div>
-                        <div class="stat-card p-6 rounded-xl">
-                            <h4 class="font-bold text-lg mb-4">Top 5 Forklifters</h4>
-                            <ul id="top-forklifters-list" class="space-y-3"><li class="skeleton h-10 w-full"></li><li class="skeleton h-10 w-full"></li></ul>
-                        </div>
-                        <div class="md:col-span-2 stat-card p-6 rounded-xl">
-                            <h4 class="font-bold text-lg mb-4">Top 5 "High Rollers" (High Wealth, Low Playtime)</h4>
-                            <ul id="high-rollers-list" class="space-y-3"><li class="skeleton h-10 w-full"></li><li class="skeleton h-10 w-full"></li></ul>
-                        </div>
-                        <div class="md:col-span-2 stat-card p-6 rounded-xl">
-                            <h4 class="font-bold text-lg mb-4">Top 5 "Grinders" (High Playtime, Low Wealth)</h4>
-                            <ul id="grinders-list" class="space-y-3"><li class="skeleton h-10 w-full"></li><li class="skeleton h-10 w-full"></li></ul>
-                        </div>
-                    </div>
-                </section>
-            </div>
         </main>
     </div>
 
@@ -150,6 +96,14 @@
             document.getElementById('app-container').style.display = 'flex';
 
             const economyBackendUrl = "https://rcon-nvrp-backend.onrender.com";
+
+            const mainContent = document.getElementById('main-content');
+            const menuToggle = document.getElementById('menu-toggle');
+            const closeMenuBtn = document.getElementById('close-menu');
+            const sidebar = document.getElementById('sidebar');
+            
+            menuToggle.addEventListener('click', () => sidebar.classList.remove('-translate-x-full'));
+            closeMenuBtn.addEventListener('click', () => sidebar.classList.add('-translate-x-full'));
 
             const formatCurrency = (value) => `₦${parseInt(value || 0).toLocaleString()}`;
             const formatHours = (minutes) => `${((minutes || 0) / 60).toFixed(1)} hrs`;
@@ -228,9 +182,77 @@
 
                 } catch (error) {
                     console.error("Failed to load dashboard data:", error);
-                    document.getElementById('main-content').innerHTML = `<div class="text-red-400 p-8"><h2>Error Loading Data</h2><p>${error.message}</p><p>Please ensure the economy.js server is running and accessible at the configured URL.</p></div>`;
+                    mainContent.innerHTML = `<div class="text-red-400 p-8"><h2>Error Loading Data</h2><p>${error.message}</p><p>Please ensure the economy.js server is running and accessible at the configured URL.</p></div>`;
                 }
             };
+            
+            mainContent.innerHTML = `
+                <div>
+                    <h2 class="text-3xl font-bold text-white">Server Economic Analysis</h2>
+                    <p class="text-slate-400">A detailed overview of the server's financial health and player activity.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" id="key-metrics-container">
+                    <div class="stat-card p-6 rounded-xl"><p class="text-sm text-slate-400">Total Players</p><div class="skeleton h-8 w-24 mt-2"></div></div>
+                    <div class="stat-card p-6 rounded-xl"><p class="text-sm text-slate-400">Players Today</p><div class="skeleton h-8 w-16 mt-2"></div></div>
+                    <div class="stat-card p-6 rounded-xl"><p class="text-sm text-slate-400">Total Server Wealth</p><div class="skeleton h-8 w-40 mt-2"></div></div>
+                    <div class="stat-card p-6 rounded-xl"><p class="text-sm text-slate-400">Richest Player</p><div class="skeleton h-8 w-32 mt-2"></div></div>
+                </div>
+                <section>
+                    <h3 class="text-2xl font-bold text-white mb-4">Asset Market Analysis</h3>
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <div class="lg:col-span-2 chart-container p-6 rounded-xl">
+                            <h4 class="font-bold text-lg mb-2">Total Asset Value Distribution</h4>
+                            <div class="h-64 flex items-center justify-center">
+                                <canvas id="asset-distribution-chart"></canvas>
+                            </div>
+                        </div>
+                        <div class="space-y-6">
+                            <div class="stat-card p-6 rounded-xl">
+                                <h4 class="font-bold text-lg mb-4">Top 5 "End-Game" Vehicles</h4>
+                                <ul id="top-vehicles-list" class="space-y-3 text-sm">
+                                    <li class="skeleton h-6 w-full"></li><li class="skeleton h-6 w-full"></li><li class="skeleton h-6 w-full"></li>
+                                </ul>
+                            </div>
+                            <div class="stat-card p-6 rounded-xl">
+                                <h4 class="font-bold text-lg mb-2">Wealth Inequality</h4>
+                                <div id="asset-inequality-metric-container">
+                                    <div class="skeleton h-10 w-24 my-1"></div>
+                                </div>
+                                <p class="text-slate-400 text-sm">of total server wealth is held by the top 10% of players.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section>
+                    <h3 class="text-2xl font-bold text-white mb-4">Player Archetypes</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+                        <div class="stat-card p-6 rounded-xl">
+                            <h4 class="font-bold text-lg mb-4">Top 5 Miners</h4>
+                            <ul id="top-miners-list" class="space-y-3"><li class="skeleton h-10 w-full"></li><li class="skeleton h-10 w-full"></li></ul>
+                        </div>
+                        <div class="stat-card p-6 rounded-xl">
+                            <h4 class="font-bold text-lg mb-4">Top 5 Farmers</h4>
+                            <ul id="top-farmers-list" class="space-y-3"><li class="skeleton h-10 w-full"></li><li class="skeleton h-10 w-full"></li></ul>
+                        </div>
+                        <div class="stat-card p-6 rounded-xl">
+                            <h4 class="font-bold text-lg mb-4">Top 5 Meat Choppers</h4>
+                            <ul id="top-meatchoppers-list" class="space-y-3"><li class="skeleton h-10 w-full"></li><li class="skeleton h-10 w-full"></li></ul>
+                        </div>
+                        <div class="stat-card p-6 rounded-xl">
+                            <h4 class="font-bold text-lg mb-4">Top 5 Forklifters</h4>
+                            <ul id="top-forklifters-list" class="space-y-3"><li class="skeleton h-10 w-full"></li><li class="skeleton h-10 w-full"></li></ul>
+                        </div>
+                        <div class="md:col-span-2 stat-card p-6 rounded-xl">
+                            <h4 class="font-bold text-lg mb-4">Top 5 "High Rollers" (High Wealth, Low Playtime)</h4>
+                            <ul id="high-rollers-list" class="space-y-3"><li class="skeleton h-10 w-full"></li><li class="skeleton h-10 w-full"></li></ul>
+                        </div>
+                        <div class="md:col-span-2 stat-card p-6 rounded-xl">
+                            <h4 class="font-bold text-lg mb-4">Top 5 "Grinders" (High Playtime, Low Wealth)</h4>
+                            <ul id="grinders-list" class="space-y-3"><li class="skeleton h-10 w-full"></li><li class="skeleton h-10 w-full"></li></ul>
+                        </div>
+                    </div>
+                </section>
+            `;
             
             fetchAllDashboardData();
         });
