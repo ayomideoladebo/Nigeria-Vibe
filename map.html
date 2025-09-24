@@ -35,9 +35,12 @@
         .player-marker.names-hidden .player-name { display: none; }
         .player-name::after { content: ''; position: absolute; top: 100%; left: 50%; margin-left: -5px; border-width: 5px; border-style: solid; border-color: rgba(17, 24, 39, 0.8) transparent transparent transparent; }
         .player-marker:hover { z-index: 11; }
-        .player-marker.located .player-dot, #search-highlighter { animation: pulse 2.5s infinite; }
-        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(0, 255, 255, 0.7); } 70% { box-shadow: 0 0 0 25px rgba(0, 255, 255, 0); } 100% { box-shadow: 0 0 0 0 rgba(0, 255, 255, 0); } }
+        .player-marker.located .player-dot { animation: pulse-player 2.5s infinite; }
+        #search-highlighter { animation: pulse-property 2.5s infinite; }
 
+        @keyframes pulse-player { 0% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.7); } 70% { box-shadow: 0 0 0 20px rgba(255, 0, 0, 0); } 100% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0); } }
+        @keyframes pulse-property { 0% { box-shadow: 0 0 0 0 rgba(0, 255, 255, 0.7); } 70% { box-shadow: 0 0 0 25px rgba(0, 255, 255, 0); } 100% { box-shadow: 0 0 0 0 rgba(0, 255, 255, 0); } }
+        
         .property-marker { position: absolute; width: 28px; height: 28px; z-index: 5; cursor: pointer; filter: drop-shadow(0 2px 3px rgba(0,0,0,0.7)); transition: transform 0.2s ease; }
         .property-marker svg { width: 100%; height: 100%; }
         .property-marker:hover { transform: scale(1.25) !important; z-index: 6; }
@@ -96,9 +99,10 @@
     <div id="coord-modal" class="modal-overlay hidden fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 opacity-0">
         <div class="modal-content bg-gray-900 border-2 border-[var(--color-cyan-accent)] rounded-lg p-6 w-full max-w-sm text-center opacity-0 transform scale-95">
             <h3 id="modal-title" class="text-2xl font-bold mb-4 text-glow-green"></h3>
-            <div id="modal-body" class="text-left space-y-2 text-gray-300"></div>
-            <button id="show-route-btn" class="hidden mt-4 w-full bg-blue-500 text-white px-6 py-2 rounded-md font-bold hover:bg-blue-600">Show Last Hour's Route</button>
-            <button id="teleport-btn" class="hidden mt-6 w-full bg-green-500 text-white px-6 py-2 rounded-md font-bold hover:bg-green-600/80">Teleport Player</button>
+            <div id="modal-body">
+                </div>
+            <button id="show-route-btn" class="hidden mt-4 w-full bg-blue-500 text-white px-6 py-2 rounded-md font-bold hover:bg-blue-600">Show Last 15 MINUTES Route</button>
+            <button id="teleport-btn" class="mt-6 w-full bg-green-500 text-white px-6 py-2 rounded-md font-bold hover:bg-green-600/80">Teleport Player</button>
             <button id="close-coord-modal" class="mt-2 w-full bg-[var(--color-cyan-accent)] text-black px-6 py-2 rounded-md font-bold hover:bg-[var(--color-cyan-accent)]/80">Close</button>
         </div>
     </div>
@@ -120,11 +124,11 @@
         const modalBody = document.getElementById('modal-body');
         const closeCoordModalBtn = document.getElementById('close-coord-modal');
         const teleportBtn = document.getElementById('teleport-btn');
-        const showRouteBtn = document.getElementById('show-route-btn');
+        const showRouteBtn = document.getElementById('show-route-btn'); // Ensure this is correctly retrieved
         const heatmapToggle = document.getElementById('heatmap-toggle');
         const onlineOnlyToggle = document.getElementById('online-only-toggle');
         const toggleNamesBtn = document.getElementById('toggle-names-btn');
-        const toggleHousesBtn = document.getElementById('toggle-houses-btn');
+        const toggleHousesBtn = document = document.getElementById('toggle-houses-btn');
         const toggleBusinessesBtn = document.getElementById('toggle-businesses-btn');
         const heatmapCanvas = document.getElementById('heatmap-canvas');
         const housesLayer = document.getElementById('houses-layer');
@@ -230,7 +234,7 @@
                 ["Ikoyi",44.6,-2892.9,-242.9,2997,-768,900],["Las Venturas",869.4,596.3,-242.9,2997,2993.8,900],["Bone County",-480.5,596.3,-242.9,869.4,2993.8,900],["Tierra Robada",-2997.4,1659.6,-242.9,-480.5,2993.8,900],
                 ["Tierra Robada",-1213.9,596.3,-242.9,-480.5,1659.6,900],["San Fierro",-2997.4,-1115.5,-242.9,-1213.9,1659.6,900],["Red County",-1213.9,-768,-242.9,2997,596.3,900],["Flint County",-1213.9,-2892.9,-242.9,44.6,-768,900],
                 ["Whetstone",-2997.4,-2892.9,-242.9,-1213.9,-1115.5,900]
-            ];
+             ];
         const factionColors = { 1: '#3B82F6', 2: '#EF4444', 4: '#F59E0B', 5: '#A855F7', 16: '#10B981', default: '#9CA3AF' };
         const icons = {
             house: `<svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="100" height="100" viewBox="0 0 48 48">
@@ -265,7 +269,7 @@
             } catch (error) { console.error('Failed to fetch player updates:', error); }
         }
         
-        // --- ALL DRAWING & UPDATING LOGIC ---
+        // --- DRAWING AND UPDATING LOGIC ---
         function updatePlayerLocations() {
             playersData = onlineOnlyToggle.checked ? allPlayersData.filter(p => p.is_online) : allPlayersData;
             playerCountSpan.textContent = playersData.length;
@@ -281,32 +285,29 @@
                     marker = document.createElement('div');
                     marker.className = 'player-marker';
                     marker.id = `player-${player.username}`;
-                    marker.innerHTML = `<div class="player-name">${player.username}</div><div class="player-dot"></div>`;
+                    marker.innerHTML = `<div class="player-name"></div><div class="player-dot"></div>`;
                     mapImage.appendChild(marker);
-                    // Set initial position without transition to prevent flying from corner
                     marker.style.transition = 'none';
                     marker.style.left = `${left}px`;
                     marker.style.top = `${top}px`;
-                    marker.offsetHeight; // Force reflow
+                    marker.offsetHeight; 
                     marker.style.transition = 'left 4.5s linear, top 4.5s linear';
                 } else {
-                    // For existing markers, check for teleport
                     const oldLeft = parseFloat(marker.style.left);
                     const oldTop = parseFloat(marker.style.top);
                     const distance = Math.sqrt(Math.pow(left - oldLeft, 2) + Math.pow(top - oldTop, 2));
 
-                    if (distance > 300) { // Teleport threshold (in pixels)
+                    if (distance > 300) { 
                         marker.style.transition = 'none';
                     }
                     marker.style.left = `${left}px`;
                     marker.style.top = `${top}px`;
                     if (distance > 300) {
-                        marker.offsetHeight; // Force reflow
+                        marker.offsetHeight;
                         marker.style.transition = 'left 4.5s linear, top 4.5s linear';
                     }
                 }
-
-                // Update styles for both new and existing markers
+                marker.querySelector('.player-name').textContent = player.username;
                 marker.querySelector('.player-dot').style.cssText = `background-color: ${getFactionColor(player.faction)}; border: 3px solid ${player.is_online ? 'white' : 'red'}; width: 16px; height: 16px;`;
                 marker.querySelector('.player-dot').dataset.username = player.username;
                 marker.querySelector('.player-dot').dataset.posX = player.pos_x.toFixed(2);
@@ -353,61 +354,86 @@
             });
         }
         
-        function clearRoute() { routeCtx.clearRect(0, 0, routeCanvas.width, routeCanvas.height); }
+        function clearRoute() { 
+            routeCtx.clearRect(0, 0, routeCanvas.width, routeCanvas.height); 
+        }
 
         async function fetchAndDrawRoute(username) {
-            clearRoute();
+            clearRoute(); // Clear previous route before drawing new one
             if (!username) return;
             try {
                 const response = await fetch(`${backendUrl}/api/player-route/${username}`);
                 const routeData = await response.json();
-                if (routeData.length < 2) { alert(`${username} has no recent route data.`); return; }
+                if (routeData.length < 2) { 
+                    alert(`No recent route data found for ${username} in the last hour.`); 
+                    return; 
+                }
+                
                 routeCtx.beginPath();
                 routeCtx.strokeStyle = "rgba(0, 255, 255, 0.7)";
                 routeCtx.lineWidth = 5 * (1/scale);
                 routeCtx.lineCap = "round";
                 routeCtx.lineJoin = "round";
+                
                 const firstPoint = convertCoordinates(routeData[0].pos_x, routeData[0].pos_y);
                 routeCtx.moveTo(firstPoint.left, firstPoint.top);
+                
                 for (let i = 1; i < routeData.length; i++) {
                     const point = convertCoordinates(routeData[i].pos_x, routeData[i].pos_y);
                     routeCtx.lineTo(point.left, point.top);
                 }
                 routeCtx.stroke();
-            } catch (error) { console.error("Failed to draw route:", error); }
+            } catch (error) { 
+                console.error("Failed to fetch or draw route:", error); 
+                alert("Failed to fetch player route. Check console for details.");
+            }
         }
 
         function drawHeatmap() { heatmapCanvas.classList.toggle('visible', heatmapToggle.checked); if (!heatmapToggle.checked) return; const locations = playersData.map(p => { const { left, top } = convertCoordinates(p.pos_x, p.pos_y); return [left, top, 1]; }); heat.data(locations).max(10).radius(40, 25).draw(); }
         function updateDotStyles() { const newScale = 1 / scale; const clampedScale = Math.max(0.75, Math.min(1.5, newScale)); document.querySelectorAll('.player-marker, .property-marker').forEach(m => m.style.transform = `scale(${clampedScale})`); }
 
-        // --- MODALS & UI ---
         function showCoordModal(username, posX, posY) {
             modalTitle.textContent = username;
             modalBody.innerHTML = `<p class="text-lg text-white font-mono bg-gray-800 p-4 rounded-md">X: ${posX}, Y: ${posY}</p>
                                  <p class="text-lg text-white font-mono bg-gray-800 p-4 rounded-md mt-2">Zone: ${getZoneName(parseFloat(posX), parseFloat(posY))}</p>`;
             teleportBtn.classList.remove('hidden');
             showRouteBtn.classList.remove('hidden');
-            showRouteBtn.onclick = () => fetchAndDrawRoute(username);
+            clearRoute();
+            
+            // Set the onclick handler directly here
+            showRouteBtn.onclick = () => {
+                fetchAndDrawRoute(username);
+                clearRoute();
+                
+                // After drawing, you might want to adjust the map to center on the route
+                // For now, we'll just keep the modal open.
+            };
+
             coordModal.classList.remove('hidden');
             setTimeout(() => { coordModal.classList.remove('opacity-0'); coordModal.querySelector('.modal-content').classList.remove('opacity-0', 'scale-95'); }, 10);
         }
         
         function showPropertyModal(item, type) {
             modalTitle.textContent = item.name || `${type} #${item.id}`;
-            modalBody.innerHTML = `<p><strong>Status:</strong> <span style="color:${item.is_owned ? '#EF4444' : 'var(--color-green-accent)'}">${item.is_owned ? 'Owned' : 'For Sale'}</span></p>
+            modalBody.innerHTML = `<div class="text-gray-200 text-left"><p><strong>Status:</strong> <span style="color:${item.is_owned ? '#EF4444' : 'var(--color-green-accent)'}">${item.is_owned ? 'Owned' : 'For Sale'}</span></p>
                                    <p><strong>Owner:</strong> ${item.owner || 'N/A'}</p>
                                    <p><strong>Price:</strong> $${item.price.toLocaleString()}</p>
-                                   ${type === 'Business' ? `<p><strong>Type:</strong> ${ {0:'24/7 Store', 1:'Ammunation', 2:'Fashion'}[item.type] || 'General'}</p>` : ''}`;
-            teleportBtn.classList.add('hidden'); // Hide teleport for properties
-            showRouteBtn.classList.add('hidden'); // Hide route for properties
+                                   ${type === 'Business' ? `<p><strong>Type:</strong> ${ {0:'24/7 Store', 1:'Ammunation', 2:'Fashion'}[item.type] || 'General'}</p>` : ''}</div>`;
+            teleportBtn.classList.add('hidden');
+            showRouteBtn.classList.add('hidden'); // Ensure route button is hidden for properties
+            clearRoute(); // Clear any existing route when opening property modal
             coordModal.classList.remove('hidden');
             setTimeout(() => { coordModal.classList.remove('opacity-0'); coordModal.querySelector('.modal-content').classList.remove('opacity-0', 'scale-95'); }, 10);
         }
 
-        function hideCoordModal() { clearRoute(); coordModal.classList.add('opacity-0'); coordModal.querySelector('.modal-content').classList.add('opacity-0', 'scale-95'); setTimeout(() => { coordModal.classList.add('hidden'); }, 300); }
+        function hideCoordModal() { 
+            // clearRoute(); // Ensure route is cleared when modal closes
+            coordModal.classList.add('opacity-0'); 
+            coordModal.querySelector('.modal-content').classList.add('opacity-0', 'scale-95'); 
+            setTimeout(() => { coordModal.classList.add('hidden'); }, 300); 
+        }
         
         async function handleTeleport() { 
-            // FIX: Get the player name from the now correctly updated modalTitle
             const playerName = modalTitle.textContent; 
             if (!playerName || !confirm(`Are you sure you want to teleport ${playerName}?`)) return; 
             try { 
@@ -415,7 +441,6 @@
                 if (response.ok) { 
                     alert('Teleport command sent!'); 
                     hideCoordModal(); 
-                    // No need for immediate periodicPlayerUpdate, the regular interval will handle it
                 } else { 
                     throw new Error('Teleport failed'); 
                 } 
@@ -429,7 +454,6 @@
         function getFactionColor(factionId) { return factionColors[factionId] || factionColors.default; }
         function convertCoordinates(x, y) { const mapSize = 2048, gameMin = -3000, gameMax = 3000; const pX = (x-gameMin)/(gameMax-gameMin); const pY = (y-gameMin)/(gameMax-gameMin); return { left: pX * mapSize, top: (1-pY) * mapSize }; }
         
-        // --- MAP PAN AND ZOOM ---
         let isDragging = false, startPos = { x: 0, y: 0 }, scale = 0.5, currentTranslate = { x: 0, y: 0 };
         function applyTransform(withTransition = false) { mapImage.style.transition = withTransition ? 'transform 0.5s ease-out' : 'none'; mapImage.style.transform = `translate(${currentTranslate.x}px, ${currentTranslate.y}px) scale(${scale})`; updateDotStyles(); }
         function initializeMapPosition(withTransition = false) { scale = mapContainer.clientWidth / 2048; currentTranslate.x = 0; currentTranslate.y = (mapContainer.clientHeight - 2048 * scale) / 2; applyTransform(withTransition); }
@@ -440,13 +464,18 @@
         zoomInBtn.addEventListener('click', () => { scale = Math.min(20.0, scale * 1.2); applyTransform(true); });
         zoomOutBtn.addEventListener('click', () => { scale = Math.max(0.1, scale / 1.2); applyTransform(true); });
 
-        // --- EVENT LISTENERS ---
         toggleNamesBtn.addEventListener('change', () => document.querySelectorAll('.player-marker').forEach(m => m.classList.toggle('names-hidden', !toggleNamesBtn.checked)));
         onlineOnlyToggle.addEventListener('change', updatePlayerLocations);
         heatmapToggle.addEventListener('change', drawHeatmap);
         [toggleHousesBtn, toggleBusinessesBtn].forEach(el => el.addEventListener('change', drawProperties));
+        
         closeCoordModalBtn.addEventListener('click', hideCoordModal);
-        coordModal.addEventListener('click', (e) => { if (e.target === coordModal) hideCoordModal(); });
+        coordModal.addEventListener('click', (e) => { 
+            if (e.target === coordModal) { // Only close if clicking the backdrop, not the modal content
+                hideCoordModal(); 
+            }
+        });
+        
         teleportBtn.addEventListener('click', handleTeleport);
         searchBtn.addEventListener('click', handleSearch);
         searchInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') handleSearch(); });
@@ -457,7 +486,6 @@
             if (dot) { showCoordModal(dot.dataset.username, dot.dataset.posX, dot.dataset.posY); }
         });
 
-        // --- SEARCH LOGIC ---
         function flyToLocation(x, y) { scale = 3.0; const { left, top } = convertCoordinates(x, y); currentTranslate.x = -left*scale + (mapContainer.clientWidth/2); currentTranslate.y = -top*scale + (mapContainer.clientHeight/2); applyTransform(true); }
         function highlightLocation(x, y) {
             document.getElementById('search-highlighter')?.remove();
@@ -482,7 +510,6 @@
             if (found) { flyToLocation(found.pos_x, found.pos_y); highlightLocation(found.pos_x, found.pos_y); } else { alert('Property not found!'); }
         }
 
-        // --- INITIALIZATION ---
         initializeMapPosition();
         initialDataLoad();
         setInterval(periodicPlayerUpdate, 5000);
