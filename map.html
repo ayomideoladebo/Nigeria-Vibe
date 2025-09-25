@@ -541,7 +541,7 @@
             if (e.target.classList.contains('route-hitbox-segment')) {
                 const rawTimestamp = e.target.dataset.timestamp;
                 const date = new Date(rawTimestamp);
-                date.setHours(date.getHours() - 1); // Add 1 hour for timezone correction
+                date.setHours(date.getHours()); // Add 1 hour for timezone correction
                 routeTooltip.innerHTML = date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
                 routeTooltip.style.left = `${e.pageX}px`;
                 routeTooltip.style.top = `${e.pageY}px`;
