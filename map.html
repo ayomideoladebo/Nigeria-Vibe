@@ -49,6 +49,26 @@
 
         .modal-overlay { transition: opacity 0.3s ease; }
         .modal-content { transition: transform 0.3s ease, opacity 0.3s ease; }
+
+        /* Add these new styles inside your <style> tag */
+
+        .route-hitbox-segment {
+            position: absolute;
+            height: 10px; /* Make hitbox slightly larger for easier hover */
+            background: transparent; /* Invisible */
+            transform-origin: 0 50%;
+            pointer-events: auto; /* Allow hovering */
+            cursor: pointer;
+            z-index: 10; /* Ensure it's above the canvas but below player markers */
+        }
+        /* Optional: for debugging hitboxes, remove in production */
+        /* .route-hitbox-segment:hover {
+            background: rgba(255,0,0,0.2);
+        } */
+
+        #route-tooltip {
+            transform: translate(-50%, -120%); /* Position above the cursor */
+        }
     </style>
 </head>
 <body class="bg-gray-950 text-white">
@@ -58,6 +78,7 @@
             <canvas id="route-canvas" width="2048" height="2048"></canvas>
             <div id="houses-layer"></div>
             <div id="businesses-layer"></div>
+            <div id="route-hitboxes"></div>
             </div>
     </div>
 
@@ -101,11 +122,13 @@
             <h3 id="modal-title" class="text-2xl font-bold mb-4 text-glow-green"></h3>
             <div id="modal-body">
                 </div>
-            <button id="show-route-btn" class="hidden mt-4 w-full bg-blue-500 text-white px-6 py-2 rounded-md font-bold hover:bg-blue-600">Show Last 15 MINUTES Route</button>
+            <button id="show-route-btn" class="hidden mt-4 w-full bg-blue-500 text-white px-6 py-2 rounded-md font-bold hover:bg-blue-600">Show Last 30 MINUTES Route</button>
             <button id="teleport-btn" class="mt-6 w-full bg-green-500 text-white px-6 py-2 rounded-md font-bold hover:bg-green-600/80">Teleport Player</button>
             <button id="close-coord-modal" class="mt-2 w-full bg-[var(--color-cyan-accent)] text-black px-6 py-2 rounded-md font-bold hover:bg-[var(--color-cyan-accent)]/80">Close</button>
         </div>
     </div>
+
+    <div id="route-tooltip" class="hidden absolute bg-black/80 text-white text-sm px-3 py-1 rounded-md pointer-events-none z-50"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/simpleheat@0.4.0/simpleheat.js"></script>
     <script>
@@ -137,6 +160,8 @@
         const routeCtx = routeCanvas.getContext('2d');
         const zoomInBtn = document.getElementById('zoom-in-btn');
         const zoomOutBtn = document.getElementById('zoom-out-btn');
+        const routeHitboxes = document.getElementById('route-hitboxes');
+        const routeTooltip = document.getElementById('route-tooltip');
         
         // --- GLOBAL STATE ---
         let allPlayersData = [], playersData = [], allProperties = { houses: [], businesses: [] };
@@ -378,9 +403,26 @@
                 const firstPoint = convertCoordinates(routeData[0].pos_x, routeData[0].pos_y);
                 routeCtx.moveTo(firstPoint.left, firstPoint.top);
                 
-                for (let i = 1; i < routeData.length; i++) {
-                    const point = convertCoordinates(routeData[i].pos_x, routeData[i].pos_y);
-                    routeCtx.lineTo(point.left, point.top);
+                for (let i = 0; i < routeData.length - 1; i++) {
+                    const p1 = convertCoordinates(routeData[i].pos_x, routeData[i].pos_y);
+                    const p2 = convertCoordinates(routeData[i+1].pos_x, routeData[i+1].pos_y);
+                    
+                    routeCtx.lineTo(p2.left, p2.top);
+
+                    const dx = p2.left - p1.left;
+                    const dy = p2.top - p1.top;
+                    const length = Math.sqrt(dx * dx + dy * dy);
+                    const angle = Math.atan2(dy, dx);
+
+                    const hitbox = document.createElement('div');
+                    hitbox.className = 'route-hitbox-segment';
+                    hitbox.style.left = `${p1.left}px`;
+                    hitbox.style.top = `${p1.top}px`;
+                    hitbox.style.width = `${length}px`;
+                    hitbox.style.transform = `rotate(${angle}rad)`;
+                    hitbox.style.marginTop = '-5px'; // Center hitbox on the line
+                    hitbox.dataset.timestamp = routeData[i+1].timestamp;
+                    routeHitboxes.appendChild(hitbox);
                 }
                 routeCtx.stroke();
             } catch (error) { 
@@ -450,6 +492,12 @@
             } 
         }
 
+        // --- ADDED FEATURE: Route Drawing and Interaction ---
+        function clearRoute() {
+            routeCtx.clearRect(0, 0, routeCanvas.width, routeCanvas.height);
+            routeHitboxes.innerHTML = '';
+        }
+
         function getZoneName(x, y) { for (const z of zones) { if (x>=z[1] && x<=z[4] && y>=z[2] && y<=z[5]) return z[0]; } return "Unknown Zone"; }
         function getFactionColor(factionId) { return factionColors[factionId] || factionColors.default; }
         function convertCoordinates(x, y) { const mapSize = 2048, gameMin = -3000, gameMax = 3000; const pX = (x-gameMin)/(gameMax-gameMin); const pY = (y-gameMin)/(gameMax-gameMin); return { left: pX * mapSize, top: (1-pY) * mapSize }; }
@@ -484,6 +532,26 @@
         mapImage.addEventListener('click', (e) => {
             const dot = e.target.closest('.player-dot');
             if (dot) { showCoordModal(dot.dataset.username, dot.dataset.posX, dot.dataset.posY); }
+        });
+
+        
+
+        // --- ADDED FEATURE: Route Tooltip Listeners ---
+        routeHitboxes.addEventListener('mouseover', e => {
+            if (e.target.classList.contains('route-hitbox-segment')) {
+                const rawTimestamp = e.target.dataset.timestamp;
+                const date = new Date(rawTimestamp);
+                date.setHours(date.getHours() - 1); // Add 1 hour for timezone correction
+                routeTooltip.innerHTML = date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+                routeTooltip.style.left = `${e.pageX}px`;
+                routeTooltip.style.top = `${e.pageY}px`;
+                routeTooltip.classList.remove('hidden');
+            }
+        });
+        routeHitboxes.addEventListener('mouseout', () => routeTooltip.classList.add('hidden'));
+        routeHitboxes.addEventListener('mousemove', e => {
+            routeTooltip.style.left = `${e.pageX}px`;
+            routeTooltip.style.top = `${e.pageY}px`;
         });
 
         function flyToLocation(x, y) { scale = 3.0; const { left, top } = convertCoordinates(x, y); currentTranslate.x = -left*scale + (mapContainer.clientWidth/2); currentTranslate.y = -top*scale + (mapContainer.clientHeight/2); applyTransform(true); }
