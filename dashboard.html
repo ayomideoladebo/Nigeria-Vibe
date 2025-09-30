@@ -941,7 +941,7 @@
             reelInner.className = 'slot-reel-inner';
 
             const shuffledPlayers = [...allPlayers].sort(() => 0.5 - Math.random());
-            const displayPlayers = shuffledPlayers.slice(0, 30);
+            const displayPlayers = shuffledPlayers.slice(0, 60);
             
             if (!displayPlayers.includes(winner)) {
                 displayPlayers[Math.floor(Math.random() * displayPlayers.length)] = winner;
