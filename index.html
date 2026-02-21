@@ -1,362 +1,943 @@
 <!DOCTYPE html>
-<html lang="en">
+<html class="dark" lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nigerian Vibe RP - The Ultimate SA-MP Experience</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Horizon RP - Next Gen Roleplay</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;family=Orbitron:wght@400;500;700;900&amp;family=Poppins:wght@300;400;500;600&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#D4AF37",
+                        "primary-light": "#F5D77A",
+                        "primary-dark": "#B8860B",
+                        accent: "#7CFF00",
+                        "accent-dark": "#4CAF00",
+                        "background-light": "#121214",
+                        "background-dark": "#050505",
+                        "background-secondary": "#0A0F18",
+                        "surface-dark": "#0A0F18",
+                        "surface-card": "#0F131A",
+                        "gold-glow": "rgba(212, 175, 55, 0.4)",
+                        "green-glow": "rgba(124, 255, 0, 0.4)"
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Orbitron', 'sans-serif'],
+                        body: ['Poppins', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'gold': '0 0 20px rgba(212, 175, 55, 0.3)',
+                        'gold-hover': '0 0 35px rgba(212, 175, 55, 0.5)',
+                        'green': '0 0 20px rgba(124, 255, 0, 0.3)',
+                        'green-hover': '0 0 35px rgba(124, 255, 0, 0.5)',
+                        'card-hover': '0 10px 40px -10px rgba(212, 175, 55, 0.2)',
+                    },
+                    backgroundImage: {
+                        'gradient-gold': 'linear-gradient(135deg, #F5D77A 0%, #D4AF37 100%)',
+                        'gradient-green': 'linear-gradient(135deg, #7CFF00 0%, #4CAF00 100%)',
+                        'gradient-bg': 'linear-gradient(to bottom, #050505, #0A0F18)',
+                        'grid-pattern': "linear-gradient(to right, #1f1f1f 1px, transparent 1px), linear-gradient(to bottom, #1f1f1f 1px, transparent 1px)",
+                        'gold-gradient': "linear-gradient(135deg, #FFE29F 0%, #FFA99F 0%, #FFC554 40%, #D4AF37 100%)",
+                    }
+                },
+            },
+        }
+    </script>
     <style>
-        :root {
-            --font-heading: 'Audiowide', sans-serif;
-            --font-body: 'Rajdhani', sans-serif;
-            --color-green-primary: #008000;
-            --color-green-accent: #39FF14;
-            --color-cyan-accent: #00FFFF;
+        ::-webkit-scrollbar {
+            width: 8px;
         }
 
-        @tailwind base;
-        @tailwind components;
-        @tailwind utilities;
-
-        @layer base {
-            html { scroll-behavior: smooth; }
-            body {
-                font-family: var(--font-body);
-                @apply bg-gray-950 text-gray-200 antialiased;
-            }
-            h1, h2, h3, h4 {
-                font-family: var(--font-heading);
-                @apply tracking-wider;
-            }
+        ::-webkit-scrollbar-track {
+            background: #050505;
         }
 
-        .text-glow-cyan { text-shadow: 0 0 5px var(--color-cyan-accent), 0 0 10px var(--color-cyan-accent), 0 0 15px var(--color-cyan-accent); }
-        .text-glow-green { text-shadow: 0 0 5px var(--color-green-accent), 0 0 10px var(--color-green-accent), 0 0 15px var(--color-green-accent); }
-
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            background: linear-gradient(45deg, #0d1f02, #011424, #0d1f02);
-            background-size: 200% 200%;
-            animation: gradientShift 20s ease infinite;
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 4px;
         }
 
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #D4AF37;
         }
-        
-        .featured-tier {
-            @apply scale-105 border-[var(--color-cyan-accent)] bg-gray-800/80 shadow-2xl shadow-[var(--color-cyan-accent)]/20 z-10;
+
+        .glass-panel {
+            background: rgba(10, 15, 24, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(212, 175, 55, 0.2);
         }
-        .featured-tier .btn-purchase {
-            @apply bg-[var(--color-cyan-accent)] text-black shadow-[0_0_15px_var(--color-cyan-accent)];
+
+        .glass-card {
+            background: linear-gradient(180deg, rgba(20, 25, 35, 0.6) 0%, rgba(10, 15, 24, 0.3) 100%);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            transition: all 0.3s ease;
         }
-        .featured-tier .btn-purchase:hover {
-            @apply bg-[var(--color-cyan-accent)]/80 shadow-[0_0_25px_var(--color-cyan-accent)];
+
+        .glass-card:hover {
+            border-color: rgba(212, 175, 55, 0.6);
+            transform: translateY(-4px);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.15);
+        }
+
+        .text-gradient-gold {
+            background: linear-gradient(to right, #F5D77A, #D4AF37);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .text-glow {
+            text-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+        }
+
+        .btn-green-glow {
+            box-shadow: 0 0 15px rgba(124, 255, 0, 0.3);
+        }
+
+        .btn-green-glow:hover {
+            box-shadow: 0 0 25px rgba(124, 255, 0, 0.5);
+        }
+
+        .bg-grid-fade {
+            background-size: 40px 40px;
+            mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
         }
     </style>
 </head>
-<body class="overflow-x-hidden">
 
-    <header class="sticky top-0 z-50 bg-black/50 backdrop-blur-lg border-b border-gray-700/50">
-        <div class="container mx-auto px-6 py-3 flex justify-between items-center">
-            <h1 class="text-3xl font-black text-[var(--color-green-accent)]">NV:RP</h1>
-            <nav class="hidden md:flex items-center space-x-8">
-                <a href="#about" class="text-[var(--color-cyan-accent)] text-lg font-semibold hover:text-[var(--color-green-accent)] transition-colors">About</a>
-                <a href="#why-us" class="text-[var(--color-cyan-accent)] text-lg font-semibold hover:text-[var(--color-green-accent)] transition-colors">Features</a>
-                <a href="#donate" class="text-[var(--color-cyan-accent)] text-lg font-semibold hover:text-[var(--color-green-accent)] transition-colors">Donate</a>
-            </nav>
-            <a href="https://drive.google.com/file/d/1icfnCffDx_kgzTgEgrtKXFZoUhVwAB4N/view?usp=drivesdk" target="_blank" class="border-2 border-[var(--color-green-accent)] text-[var(--color-green-accent)] px-5 py-2 rounded-md font-bold text-sm hover:bg-[var(--color-green-accent)] hover:text-black hover:shadow-[0_0_15px_var(--color-green-accent)] transition-all">
-                DOWNLOAD MODPACK
-            </a>
+<body
+    class="bg-background-dark dark:bg-background-dark text-slate-100 font-sans min-h-screen flex flex-col overflow-x-hidden selection:bg-primary selection:text-black">
+
+    <nav class="fixed top-0 left-0 right-0 z-50 glass-panel border-b border-[#D4AF37]/20">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <div class="flex items-center gap-3 group cursor-pointer" onclick="window.location.href='index.html'">
+                <img src="asset/horizon.png" alt="Horizon RP Logo"
+                    class="h-20 w-auto transition-transform duration-300 group-hover:scale-110">
+            </div>
+            <div class="hidden md:flex items-center gap-8">
+                <a class="text-sm font-medium text-[#F5D77A]/80 hover:text-[#7CFF00] hover:shadow-[0_2px_0_0_#7CFF00] transition-all pb-1"
+                    href="index.html">Home</a>
+                <a class="text-sm font-medium text-[#F5D77A]/80 hover:text-[#7CFF00] hover:shadow-[0_2px_0_0_#7CFF00] transition-all pb-1"
+                    href="#about">Features</a>
+                <a class="text-sm font-medium text-[#F5D77A]/80 hover:text-[#7CFF00] hover:shadow-[0_2px_0_0_#7CFF00] transition-all pb-1"
+                    href="rules.html">Rules</a>
+                <a class="text-sm font-medium text-[#F5D77A]/80 hover:text-[#7CFF00] hover:shadow-[0_2px_0_0_#7CFF00] transition-all pb-1"
+                    href="commands.html">Commands</a>
+                <a class="text-sm font-medium text-[#F5D77A]/80 hover:text-[#7CFF00] hover:shadow-[0_2px_0_0_#7CFF00] transition-all pb-1"
+                    href="https://discord.gg/dGEu7GQv" target="_blank">Discord</a>
+            </div>
+            <button id="play-now-header"
+                class="hidden md:flex bg-gradient-green text-black text-sm font-bold py-2.5 px-6 rounded-lg transition-all btn-green-glow items-center gap-2 group hover:scale-105">
+                <span
+                    class="material-symbols-outlined group-hover:translate-x-1 transition-transform text-[20px]">play_arrow</span>
+                Play Now
+            </button>
+            <button id="mobile-menu-btn" class="md:hidden text-primary p-2 hover:text-white transition-colors">
+                <span class="material-symbols-outlined text-3xl">menu</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu Overlay -->
+    <div id="mobile-menu-overlay"
+        class="fixed inset-0 z-[100] bg-background-dark/98 backdrop-blur-2xl translate-x-full transition-transform duration-500 ease-in-out md:hidden flex flex-col items-center justify-center">
+        <button id="mobile-menu-close"
+            class="absolute top-8 right-8 text-primary p-2 hover:scale-110 transition-transform">
+            <span class="material-symbols-outlined text-5xl font-bold">close</span>
+        </button>
+
+        <div class="flex flex-col space-y-10 text-center items-center w-full px-6">
+            <a href="index.html"
+                class="text-3xl font-display font-black text-primary tracking-[0.2em] uppercase transition-all hover:scale-110">Home</a>
+            <a href="#about"
+                class="mobile-nav-link text-3xl font-display font-black text-white tracking-[0.2em] uppercase transition-all hover:scale-110 hover:text-primary">Features</a>
+            <a href="rules.html"
+                class="text-3xl font-display font-black text-white tracking-[0.2em] uppercase transition-all hover:scale-110 hover:text-primary">Rules</a>
+            <a href="commands.html"
+                class="text-3xl font-display font-black text-white tracking-[0.2em] uppercase transition-all hover:scale-110 hover:text-primary">Commands</a>
+            <a href="https://discord.gg/dGEu7GQv" target="_blank"
+                class="text-3xl font-display font-black text-white tracking-[0.2em] uppercase transition-all hover:scale-110 hover:text-primary">Discord</a>
+
+            <div class="pt-12 w-full max-w-xs">
+                <button id="mobile-play-now"
+                    class="w-full bg-[#7CFF00] text-black font-black py-5 px-10 rounded-2xl shadow-[0_0_30px_rgba(124,255,0,0.4)] flex items-center justify-center gap-3 text-xl tracking-tighter hover:scale-105 transition-transform uppercase">
+                    <span class="material-symbols-outlined text-3xl">play_arrow</span>
+                    PLAY NOW
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <header class="relative min-h-[90vh] flex items-center justify-center pt-20 overflow-hidden bg-background-dark">
+        <div class="absolute inset-0 z-0">
+            <div
+                class="absolute inset-0 bg-gradient-to-b from-background-dark/90 via-background-dark/70 to-background-dark z-10">
+            </div>
+            <div
+                class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(212,175,55,0.15)_0%,rgba(0,0,0,0)_70%)] z-10">
+            </div>
+            <video class="w-full h-full object-cover opacity-60" autoplay loop muted playsinline
+                style="filter: grayscale(40%) contrast(1.1);">
+                <source src="asset/bgvid.webm" type="video/webm">
+            </video>
+        </div>
+        <div class="relative z-20 container mx-auto px-6 pt-20 flex flex-col items-center text-center">
+            <div
+                class="mb-6 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/30 text-primary-light text-xs font-bold tracking-wider uppercase backdrop-blur-sm animate-pulse">
+                <span class="w-2 h-2 rounded-full bg-accent shadow-[0_0_10px_rgba(124,255,0,0.8)]"></span>
+                Beta Season 1 Live Now
+            </div>
+            <h1
+                class="font-display font-black text-5xl md:text-7xl lg:text-8xl leading-tight text-white mb-6 tracking-tight drop-shadow-2xl uppercase">
+                A NEW STANDARD <br />
+                <span class="text-gradient-gold text-glow">FOR ROLEPLAY</span>
+            </h1>
+            <p class="font-body text-gray-300 text-lg md:text-xl max-w-2xl mb-10 leading-relaxed font-light">
+                Experience the next evolution of SA-MP gaming. Build your empire, enforce the law, or rule the
+                underground in Horizon RP.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
+                <button id="copy-ip-btn"
+                    class="flex items-center justify-center gap-3 bg-gradient-green text-black font-bold py-4 px-8 rounded-xl transition-all hover:scale-105 btn-green-glow min-w-[200px] border border-transparent">
+                    <span class="material-symbols-outlined">rocket_launch</span>
+                    Join Server
+                </button>
+                <a href="https://drive.google.com/file/d/1icfnCffDx_kgzTgEgrtKXFZoUhVwAB4N/view?usp=drivesdk"
+                    target="_blank"
+                    class="flex items-center justify-center gap-3 bg-black/40 hover:bg-black/60 border border-primary text-primary-light font-bold py-4 px-8 rounded-xl transition-all hover:border-accent hover:text-accent hover:shadow-gold backdrop-blur-md min-w-[200px]">
+                    <span class="material-symbols-outlined">download</span>
+                    Download Client
+                </a>
+            </div>
+            <div class="mt-16 sm:mt-24 w-full max-w-4xl grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div
+                    class="glass-panel rounded-xl p-4 flex items-center justify-between hover:border-primary/50 transition-colors group">
+                    <div class="flex items-center gap-4">
+                        <div
+                            class="p-2 rounded-lg bg-primary/10 text-primary group-hover:text-black group-hover:bg-primary transition-colors">
+                            <span class="material-symbols-outlined">group</span>
+                        </div>
+                        <div class="text-left">
+                            <p class="text-xs text-gray-400 uppercase font-semibold tracking-wider">Players Online</p>
+                            <p class="text-xl font-display font-bold text-white">124 <span
+                                    class="text-gray-500 text-sm font-sans">/ 500</span></p>
+                        </div>
+                    </div>
+                    <div class="h-2 w-2 rounded-full bg-accent shadow-[0_0_10px_#7CFF00]"></div>
+                </div>
+                <div
+                    class="glass-panel rounded-xl p-4 flex items-center justify-between hover:border-primary/50 transition-colors group">
+                    <div class="flex items-center gap-4">
+                        <div
+                            class="p-2 rounded-lg bg-primary/10 text-primary group-hover:text-black group-hover:bg-primary transition-colors">
+                            <span class="material-symbols-outlined">dns</span>
+                        </div>
+                        <div class="text-left">
+                            <p class="text-xs text-gray-400 uppercase font-semibold tracking-wider">Server Status</p>
+                            <p class="text-xl font-display font-bold text-white">Online</p>
+                        </div>
+                    </div>
+                    <div class="h-2 w-2 rounded-full bg-accent shadow-[0_0_10px_#7CFF00]"></div>
+                </div>
+                <div
+                    class="glass-panel rounded-xl p-4 flex items-center justify-between hover:border-primary/50 transition-colors group">
+                    <div class="flex items-center gap-4">
+                        <div
+                            class="p-2 rounded-lg bg-primary/10 text-primary group-hover:text-black group-hover:bg-primary transition-colors">
+                            <span class="material-symbols-outlined">network_check</span>
+                        </div>
+                        <div class="text-left">
+                            <p class="text-xs text-gray-400 uppercase font-semibold tracking-wider">Average Ping</p>
+                            <p class="text-xl font-display font-bold text-white">42ms</p>
+                        </div>
+                    </div>
+                    <span class="material-symbols-outlined text-accent text-sm">signal_cellular_alt</span>
+                </div>
+            </div>
+        </div>
+        <div
+            class="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-background-dark to-transparent z-10 pointer-events-none">
         </div>
     </header>
 
-    <main>
-        <section id="home" class="relative min-h-screen flex items-center justify-center text-center bg-cover bg-center" style="background-image: url('image.gif');">
-            <div class="absolute inset-0 bg-black/70"></div>
-            <div class="relative z-10 container mx-auto px-6">
-                <h2 class="text-5xl md:text-8xl font-black text-white text-glow-green uppercase">Nigerian Vibe RP</h2>
-                <p class="text-xl md:text-2xl mt-4 text-gray-300 max-w-4xl mx-auto font-semibold">
-                    The Ultimate SA-MP Roleplay Experience. Join a thriving, ever-evolving world driven by players. Your story, your rules, your legacy.
-                </p>
-                <div class="mt-8 flex flex-col md:flex-row justify-center items-center gap-4">
-                    <a href="waitlist.html" target="_blank" class="w-full md:w-auto bg-yellow-500 text-black px-10 py-3 rounded-lg font-bold text-lg hover:bg-yellow-400 transition-all transform hover:scale-105 hover:shadow-[0_0_20px_#f59e0b]">
-                        JOIN THE GAME
-                    </a>
-                    <a href="217.182.175.212:28071" id="copy-ip-btn" class="w-full md:w-auto border-2 border-[var(--color-cyan-accent)] text-[var(--color-cyan-accent)] px-10 py-3 rounded-lg font-bold text-lg hover:bg-[var(--color-cyan-accent)] hover:text-black transition-all transform hover:scale-105 hover:shadow-[0_0_20px_var(--color-cyan-accent)]">
-                        COPY SERVER IP
-                    </a>
-                </div>
-            </div>
-        </section>
-
-        <section id="about" class="py-24 bg-black/20">
-            <div class="container mx-auto px-6 text-center">
-                <h2 class="text-4xl md:text-5xl font-extrabold text-white text-glow-green">ABOUT THE SERVER</h2>
-                <p class="mt-4 max-w-3xl mx-auto text-lg text-gray-300">
-                    Nigerian Vibe RP is more than just a server, it's a community where stories unfold. We provide a feature-rich, stable platform for you to immerse yourself in deep roleplay scenarios and forge your own path with endless possibilities.
-                </p>
-                <div class="mt-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                    <div class="bg-gray-900/50 border border-gray-700 p-8 rounded-lg transition-all duration-300 hover:border-[var(--color-green-accent)] hover:-translate-y-2">
-                        <h3 class="text-2xl text-[var(--color-green-accent)]">Immersive Roleplay</h3>
-                        <p class="mt-2 text-gray-400">Player-driven stories in a dynamic, custom-mapped Nigerian environment.</p>
-                    </div>
-                    <div class="bg-gray-900/50 border border-gray-700 p-8 rounded-lg transition-all duration-300 hover:border-[var(--color-green-accent)] hover:-translate-y-2">
-                        <h3 class="text-2xl text-[var(--color-green-accent)]">Custom Features</h3>
-                        <p class="mt-2 text-gray-400">Unique jobs, custom vehicles, advanced economy, and exclusive scripts.</p>
-                    </div>
-                    <div class="bg-gray-900/50 border border-gray-700 p-8 rounded-lg transition-all duration-300 hover:border-[var(--color-green-accent)] hover:-translate-y-2">
-                        <h3 class="text-2xl text-[var(--color-green-accent)]">Active Community</h3>
-                        <p class="mt-2 text-gray-400">A friendly and growing community with active factions and businesses.</p>
-                    </div>
-                    <div class="bg-gray-900/50 border border-gray-700 p-8 rounded-lg transition-all duration-300 hover:border-[var(--color-green-accent)] hover:-translate-y-2">
-                        <h3 class="text-2xl text-[var(--color-green-accent)]">Dedicated Staff</h3>
-                        <p class="mt-2 text-gray-400">Professional and responsive staff team ensuring fair and fun gameplay.</p>
+    <main id="about" class="relative z-10 -mt-10 pb-20 pt-20 bg-background-dark">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col lg:flex-row gap-12 items-center mb-24 py-10">
+                <div class="flex-1 space-y-6 text-center lg:text-left">
+                    <h2 class="font-display text-4xl md:text-5xl font-bold text-white leading-tight uppercase">
+                        Define Your Legacy in <br /> <span class="text-gradient-gold">Horizon City</span>
+                    </h2>
+                    <p class="font-body text-gray-400 text-lg leading-relaxed max-w-2xl mx-auto lg:mx-0">
+                        Horizon RP redefines the boundaries of the classic game. We've rebuilt the core mechanics to
+                        support complex legal systems, underground racing circuits, and dynamic faction wars. Your story
+                        isn't just played; it's lived.
+                    </p>
+                    <div class="flex justify-center lg:justify-start">
+                        <a class="inline-flex items-center gap-2 text-primary hover:text-accent font-bold transition-colors group"
+                            href="waitlist.html">
+                            Apply Now
+                            <span
+                                class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                        </a>
                     </div>
                 </div>
-            </div>
-        </section>
-
-        <section id="why-us" class="py-24">
-            <div class="container mx-auto px-6">
-                <div class="bg-black/20 border border-[var(--color-green-primary)]/30 rounded-xl p-8 lg:p-12 grid grid-cols-1 lg:grid-cols-3 gap-12 items-center">
-                    <div class="lg:col-span-2">
-                        <h3 class="text-3xl font-bold text-white text-glow-green">WHY CHOOSE NV:RP?</h3>
-                        <p class="mt-4 text-gray-300 text-lg">
-                            We're dedicated to providing the most authentic and enjoyable roleplay experience. Our developers are constantly working on new features and improvements based on community feedback. We prioritize a balanced economy, fair rule enforcement, and a platform where your character's story truly matters.
-                        </p>
+                <div class="flex-1 w-full relative group">
+                    <div
+                        class="absolute -inset-1 bg-gradient-to-r from-primary to-accent rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-1000 group-hover:duration-200">
                     </div>
-                    <div class="text-center">
-                        <h4 class="text-2xl font-semibold text-[var(--color-cyan-accent)] text-glow-cyan mb-4">SERVER STATS</h4>
-                        <div class="space-y-4">
-                            <div><p class="text-5xl font-black text-white">100+</p><p class="text-gray-400 tracking-widest">PLAYERS</p></div>
-                            <div><p class="text-5xl font-black text-white">200+</p><p class="text-gray-400 tracking-widest">MEMBERS</p></div>
+                    <div
+                        class="relative w-full aspect-video rounded-2xl overflow-hidden bg-surface-card border border-primary/20">
+                        <video id="feature-video" class="w-full h-full object-cover"
+                            style="filter: sepia(20%) hue-rotate(20deg);">
+                            <source src="asset/bgvid.webm" type="video/webm">
+                        </video>
+                        <div id="video-overlay"
+                            class="absolute inset-0 flex items-center justify-center bg-black/40 group-hover:bg-black/20 transition-all cursor-pointer">
+                            <div id="feature-play-btn"
+                                class="w-16 h-16 rounded-full bg-primary/20 backdrop-blur-sm flex items-center justify-center border border-primary/40 group-hover:scale-110 transition-transform">
+                                <span
+                                    class="material-symbols-outlined text-primary text-3xl font-bold">play_circle</span>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
 
-        <section id="donate" class="py-24 bg-black/20">
-            <div class="container mx-auto px-6 text-center">
-                <h2 class="text-4xl md:text-5xl font-extrabold text-white text-glow-cyan">VIP DONATION TIERS</h2>
-                <p class="mt-4 max-w-3xl mx-auto text-lg text-gray-300">
-                    Support the server's growth and enjoy exclusive in-game perks! Choose from the tiers below to get started.
-                </p>
-                <div class="mt-16 flex flex-wrap justify-center gap-8">
-                    <div class="tier-card w-full max-w-sm sm:w-1/2 md:w-1/3 lg:w-1/4 bg-gray-900/50 border border-gray-700 p-6 rounded-lg transition-all duration-300 hover:border-[var(--color-green-accent)] hover:-translate-y-2">
-                        <h4 class="text-xl font-bold text-[var(--color-green-accent)]">VIP Tier 1</h4>
-                        <p class="text-3xl font-black my-4 text-white">₦1,000</p>
-                        <ul class="text-left space-y-2 text-gray-400"><li>✓ ₦500K In-game Cash</li><li>✓ VIP Chat Access</li><li>✓ 3 Days VIP Tag</li></ul>
-                        <button class="btn-purchase mt-6 w-full bg-[var(--color-green-primary)] text-black py-2 rounded-md font-bold hover:bg-[var(--color-green-accent)] hover:shadow-[0_0_15px_var(--color-green-accent)] transition-all" data-tier="VIP Tier 1" data-price="1000">Purchase Now</button>
+            <!-- Features -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-24">
+                <div class="glass-card p-8 rounded-2xl relative overflow-hidden group">
+                    <div
+                        class="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full blur-3xl -mr-16 -mt-16 group-hover:bg-primary/20 transition-all">
                     </div>
-                    <div class="tier-card w-full max-w-sm sm:w-1/2 md:w-1/3 lg:w-1/4 bg-gray-900/50 border border-gray-700 p-6 rounded-lg transition-all duration-300 hover:border-[var(--color-green-accent)] hover:-translate-y-2">
-                        <h4 class="text-xl font-bold text-[var(--color-green-accent)]">VIP Tier 2</h4>
-                        <p class="text-3xl font-black my-4 text-white">₦2,000</p>
-                        <ul class="text-left space-y-2 text-gray-400"><li>✓ ₦1.25M Cash</li><li>✓ 7 Days Tag</li><li>✓ 5 Repair Kits</li></ul>
-                        <button class="btn-purchase mt-6 w-full bg-[var(--color-green-primary)] text-black py-2 rounded-md font-bold hover:bg-[var(--color-green-accent)] hover:shadow-[0_0_15px_var(--color-green-accent)] transition-all" data-tier="VIP Tier 2" data-price="2000">Purchase Now</button>
+                    <div
+                        class="w-12 h-12 rounded-lg bg-primary/20 flex items-center justify-center text-primary mb-6 group-hover:bg-primary group-hover:text-black transition-colors">
+                        <span class="material-symbols-outlined text-2xl">memory</span>
                     </div>
-                    <div class="tier-card featured-tier w-full max-w-sm sm:w-1/2 md:w-1/3 lg:w-1/4 bg-gray-900/50 border border-[var(--color-cyan-accent)] p-6 rounded-lg transition-all duration-300">
-                        <p class="text-sm font-bold text-black bg-[var(--color-cyan-accent)] rounded-md py-1 px-4 inline-block mb-4">Most Popular</p>
-                        <h4 class="text-xl font-bold text-[var(--color-cyan-accent)]">VIP Tier 3</h4>
-                        <p class="text-3xl font-black my-4 text-white">₦4,000</p>
-                        <ul class="text-left space-y-2 text-gray-300"><li>✓ ₦3.5M Cash</li><li>✓ VIP Outfit</li><li>✓ 14 Days Tag</li><li>✓ 10 Repair Kits</li></ul>
-                        <button class="btn-purchase mt-6 w-full bg-[var(--color-cyan-accent)] text-black py-2 rounded-md font-bold hover:bg-[var(--color-green-accent)] hover:shadow-[0_0_15px_var(--color-green-accent)] transition-all" data-tier="VIP Tier 3" data-price="4000">Purchase Now</button>
+                    <h3
+                        class="font-display text-xl font-bold text-white mb-3 group-hover:text-primary transition-colors">
+                        Realistic Systems</h3>
+                    <p class="font-body text-gray-400 text-sm leading-relaxed">
+                        Custom-coded damage engine, vehicle handling overhaul, and property management systems that
+                        mimic real-world physics and logistics.
+                    </p>
+                </div>
+                <div class="glass-card p-8 rounded-2xl relative overflow-hidden group">
+                    <div
+                        class="absolute top-0 right-0 w-32 h-32 bg-accent/10 rounded-full blur-3xl -mr-16 -mt-16 group-hover:bg-accent/20 transition-all">
                     </div>
-                    <div class="tier-card w-full max-w-sm sm:w-1/2 md:w-1/3 lg:w-1/4 bg-gray-900/50 border border-gray-700 p-6 rounded-lg transition-all duration-300 hover:border-[var(--color-green-accent)] hover:-translate-y-2">
-                        <h4 class="text-xl font-bold text-[var(--color-green-accent)]">VIP Tier 4</h4>
-                        <p class="text-3xl font-black my-4 text-white">₦7,000</p>
-                        <ul class="text-left space-y-2 text-gray-400"><li>✓ ₦5.5M Cash</li><li>✓ Business Tier 1 (24/7 Store)</li><li>✓ VIP Car Access (Spawn Car Anywhere)</li><li>✓ 30 Days Tag</li><li>✓ Priority Support</li><li>✓ VIP Island Access</li><li>✓ 1 Free Namechange</li></ul>
-                        <button class="btn-purchase mt-6 w-full bg-[var(--color-green-primary)] text-black py-2 rounded-md font-bold hover:bg-[var(--color-green-accent)] hover:shadow-[0_0_15px_var(--color-green-accent)] transition-all" data-tier="VIP Tier 4" data-price="7000">Purchase Now</button>
+                    <div
+                        class="w-12 h-12 rounded-lg bg-accent/10 flex items-center justify-center text-accent mb-6 group-hover:bg-accent group-hover:text-black transition-colors">
+                        <span class="material-symbols-outlined text-2xl">public</span>
                     </div>
-                    <div class="tier-card w-full max-w-sm sm:w-1/2 md:w-1/3 lg:w-1/4 bg-gray-900/50 border border-gray-700 p-6 rounded-lg transition-all duration-300 hover:border-[var(--color-green-accent)] hover:-translate-y-2">
-                        <h4 class="text-xl font-bold text-[var(--color-green-accent)]">VIP Tier 5</h4>
-                        <p class="text-3xl font-black my-4 text-white">₦10,000</p>
-                        <ul class="text-left space-y-2 text-gray-400"><li>✓ ₦7M Cash</li><li>✓ 1 Street Vehicle (BMW, AUDI, etc.)</li><li>✓ 10 Repair Kit</li><li>✓ VIP Car Access (Spawn Car Anywhere)</li><li>✓ 60 Days Tag</li><li>✓ Priority Support</li><li>✓ VIP Island Acces</li><li>✓ 2 Free Namechange</li></ul>
-                        <button class="btn-purchase mt-6 w-full bg-[var(--color-green-primary)] text-black py-2 rounded-md font-bold hover:bg-[var(--color-green-accent)] hover:shadow-[0_0_15px_var(--color-green-accent)] transition-all" data-tier="VIP Tier 5" data-price="10000">Purchase Now</button>
+                    <h3
+                        class="font-display text-xl font-bold text-white mb-3 group-hover:text-accent transition-colors">
+                        Global Community</h3>
+                    <p class="font-body text-gray-400 text-sm leading-relaxed">
+                        Join thousands of players from around the world. Our server is hosted on high-performance nodes
+                        ensuring low latency regardless of your location.
+                    </p>
+                </div>
+                <div class="glass-card p-8 rounded-2xl relative overflow-hidden group">
+                    <div
+                        class="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full blur-3xl -mr-16 -mt-16 group-hover:bg-primary/20 transition-all">
                     </div>
+                    <div
+                        class="w-12 h-12 rounded-lg bg-primary/20 flex items-center justify-center text-primary mb-6 group-hover:bg-primary group-hover:text-black transition-colors">
+                        <span class="material-symbols-outlined text-2xl">payments</span>
+                    </div>
+                    <h3
+                        class="font-display text-xl font-bold text-white mb-3 group-hover:text-primary transition-colors">
+                        Balanced Economy</h3>
+                    <p class="font-body text-gray-400 text-sm leading-relaxed">
+                        A fair, player-driven market where every dollar counts. From minimum wage jobs to corporate
+                        empires, the economy adapts to player actions.
+                    </p>
                 </div>
             </div>
-        </section>
-    </main>
 
-    <div id="donation-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 hidden">
-        <div class="bg-gray-900 border border-[var(--color-cyan-accent)] rounded-lg p-6 max-w-3xl w-full m-4 relative">
-            <button id="close-modal-btn" class="absolute top-4 right-4 text-gray-400 hover:text-white text-3xl leading-none">&times;</button>
-            <div class="grid md:grid-cols-2 gap-8 items-center">
-                <div class="text-center md:text-left">
-                    <h3 class="text-2xl font-bold text-[var(--color-cyan-accent)] text-glow-cyan">Complete Your <span id="purchase-title"></span></h3>
-                    <div class="mt-6 text-center bg-gray-800/50 p-4 rounded-lg">
-                        <p class="text-lg text-gray-300">Please transfer to the account below:</p>
-                        <div class="my-3 flex items-center justify-center gap-2 bg-gray-900 p-3 rounded-md">
-                            <p id="account-number" class="text-xl md:text-2xl font-black text-white">0123456789 - Bank Name</p>
-                            <button id="copy-account-btn" class="p-2 bg-gray-700 rounded-md hover:bg-gray-600 flex-shrink-0">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg>
+            <!-- VIP Section -->
+            <section id="store" class="py-20 relative">
+                <div class="absolute inset-0 z-0 bg-grid-pattern bg-grid-fade opacity-10 pointer-events-none h-[800px]">
+                </div>
+                <div class="container mx-auto max-w-7xl relative z-10">
+                    <div class="mb-12 text-center">
+                        <h2 class="text-sm font-bold uppercase tracking-widest text-primary mb-2">Support the Server
+                        </h2>
+                        <h1 class="text-4xl md:text-5xl font-bold text-white mb-4 uppercase font-display">VIP
+                            Memberships</h1>
+                        <p class="text-slate-400 max-w-2xl mx-auto">Enhance your roleplay experience with exclusive
+                            perks. All donations go directly towards server hosting and development.</p>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+                        <!-- Bronze VIP -->
+                        <div
+                            class="glass-card rounded-xl p-6 flex flex-col relative group transition-all duration-300 transform hover:-translate-y-2">
+                            <div class="mb-4">
+                                <h3 class="text-xl font-bold mb-2 text-gold-gradient font-display">Bronze VIP</h3>
+                                <div class="flex items-baseline gap-1">
+                                    <span class="text-3xl font-bold text-white">₦1,000</span>
+                                    <span class="text-sm text-slate-400">/month</span>
+                                </div>
+                            </div>
+                            <ul class="flex-1 space-y-3 mb-8">
+                                <li class="flex items-start gap-3 text-sm text-slate-300">
+                                    <span class="material-symbols-outlined text-primary text-[20px]">check_circle</span>
+                                    <span>₦500K Starting Cash</span>
+                                </li>
+                                <li class="flex items-start gap-3 text-sm text-slate-300">
+                                    <span class="material-symbols-outlined text-primary text-[20px]">check_circle</span>
+                                    <span>Bronze Chat Badge</span>
+                                </li>
+                                <li class="flex items-start gap-3 text-sm text-slate-300">
+                                    <span class="material-symbols-outlined text-primary text-[20px]">check_circle</span>
+                                    <span>1 Extra Character Slot</span>
+                                </li>
+                            </ul>
+                            <button
+                                class="btn-purchase w-full py-3 rounded-lg border border-primary/30 bg-primary/5 text-primary font-semibold hover:bg-primary/10 hover:border-primary/50 transition-all uppercase text-xs"
+                                data-tier="Bronze" data-price="1000">
+                                Purchase Bronze
                             </button>
                         </div>
-                        <p class="text-lg text-gray-400">Total Due: <span id="tier-price-display" class="text-2xl font-bold text-white"></span></p>
+                        <!-- Silver VIP -->
+                        <div
+                            class="glass-card rounded-xl p-6 flex flex-col relative group transition-all duration-300 transform hover:-translate-y-2">
+                            <div class="mb-4">
+                                <h3 class="text-xl font-bold mb-2 text-gold-gradient font-display">Silver VIP</h3>
+                                <div class="flex items-baseline gap-1">
+                                    <span class="text-3xl font-bold text-white">₦2,000</span>
+                                    <span class="text-sm text-slate-400">/month</span>
+                                </div>
+                            </div>
+                            <ul class="flex-1 space-y-3 mb-8">
+                                <li class="flex items-start gap-3 text-sm text-slate-300">
+                                    <span class="material-symbols-outlined text-primary text-[20px]">check_circle</span>
+                                    <span>₦1.25M Starting Cash</span>
+                                </li>
+                                <li class="flex items-start gap-3 text-sm text-slate-300">
+                                    <span class="material-symbols-outlined text-primary text-[20px]">check_circle</span>
+                                    <span>+2 Vehicle Slots</span>
+                                </li>
+                                <li class="flex items-start gap-3 text-sm text-slate-300">
+                                    <span class="material-symbols-outlined text-primary text-[20px]">check_circle</span>
+                                    <span>Silver Chat Badge</span>
+                                </li>
+                            </ul>
+                            <button
+                                class="btn-purchase w-full py-3 rounded-lg border border-primary/30 bg-primary/5 text-primary font-semibold hover:bg-primary/10 hover:border-primary/50 transition-all uppercase text-xs"
+                                data-tier="Silver" data-price="2000">
+                                Purchase Silver
+                            </button>
+                        </div>
+                        <!-- Gold VIP -->
+                        <div
+                            class="glass-card rounded-xl p-6 flex flex-col relative group transition-all duration-300 transform hover:-translate-y-2 border-primary/60 shadow-[0_0_25px_rgba(212,175,55,0.15)]">
+                            <div
+                                class="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-black text-[10px] font-bold px-3 py-1 rounded-full shadow-lg shadow-primary/30 uppercase tracking-widest z-10">
+                                MOST POPULAR
+                            </div>
+                            <div class="mb-4 mt-2">
+                                <h3 class="text-xl font-bold mb-2 text-gold-gradient neon-text-gold font-display">Gold
+                                    VIP</h3>
+                                <div class="flex items-baseline gap-1">
+                                    <span class="text-3xl font-bold text-white">₦4,000</span>
+                                    <span class="text-sm text-slate-400">/month</span>
+                                </div>
+                            </div>
+                            <ul class="flex-1 space-y-3 mb-8">
+                                <li class="flex items-start gap-3 text-sm text-slate-300">
+                                    <span class="material-symbols-outlined text-primary text-[20px]">check_circle</span>
+                                    <span>₦3.5M Starting Cash</span>
+                                </li>
+                                <li class="flex items-start gap-3 text-sm text-slate-300">
+                                    <span class="material-symbols-outlined text-primary text-[20px]">check_circle</span>
+                                    <span>VIP Exclusive Outfit</span>
+                                </li>
+                                <li class="flex items-start gap-3 text-sm text-slate-300">
+                                    <span class="material-symbols-outlined text-primary text-[20px]">check_circle</span>
+                                    <span>Unique Gold Badge</span>
+                                </li>
+                            </ul>
+                            <button
+                                class="btn-purchase w-full py-3 rounded-lg bg-gradient-to-r from-primary to-[#b8860b] text-black font-bold hover:brightness-110 shadow-lg shadow-primary/25 transition-all uppercase text-xs"
+                                data-tier="Gold" data-price="4000">
+                                Purchase Gold
+                            </button>
+                        </div>
+                        <!-- Platinum VIP -->
+                        <div
+                            class="glass-card rounded-xl p-6 flex flex-col relative group transition-all duration-300 transform hover:-translate-y-2">
+                            <div class="mb-4">
+                                <h3 class="text-xl font-bold mb-2 text-gold-gradient font-display">Platinum VIP</h3>
+                                <div class="flex items-baseline gap-1">
+                                    <span class="text-3xl font-bold text-white">₦7,000</span>
+                                    <span class="text-sm text-slate-400">/month</span>
+                                </div>
+                            </div>
+                            <ul class="flex-1 space-y-3 mb-8">
+                                <li class="flex items-start gap-3 text-sm text-slate-300">
+                                    <span class="material-symbols-outlined text-primary text-[20px]">check_circle</span>
+                                    <span>₦5.5M Cash + Custom Car</span>
+                                </li>
+                                <li class="flex items-start gap-3 text-sm text-slate-300">
+                                    <span class="material-symbols-outlined text-primary text-[20px]">check_circle</span>
+                                    <span>Free Namechange</span>
+                                </li>
+                                <li class="flex items-start gap-3 text-sm text-slate-300">
+                                    <span class="material-symbols-outlined text-primary text-[20px]">check_circle</span>
+                                    <span>Priority Queue Access</span>
+                                </li>
+                            </ul>
+                            <button
+                                class="btn-purchase w-full py-3 rounded-lg border border-primary/30 bg-primary/5 text-primary font-semibold hover:bg-primary/10 hover:border-primary/50 transition-all uppercase text-xs"
+                                data-tier="Platinum" data-price="7000">
+                                Purchase Platinum
+                            </button>
+                        </div>
                     </div>
                 </div>
-                <div>
-                    <form id="donation-form" class="space-y-4">
+            </section>
+
+            <!-- Dynamic Gallery -->
+            <section class="relative z-10 py-20 bg-background-dark/80 border-t border-primary/10">
+                <div class="container mx-auto max-w-7xl">
+                    <div
+                        class="mb-12 flex flex-col md:flex-row justify-between items-end gap-6 text-center md:text-left">
+                        <div>
+                            <h2 class="text-sm font-bold uppercase tracking-widest text-primary mb-2 font-display">
+                                Gallery</h2>
+                            <h1 class="text-4xl font-bold text-white uppercase font-display">Life in Horizon</h1>
+                        </div>
+                        <a href="#"
+                            class="flex items-center gap-2 text-sm font-medium text-slate-300 hover:text-primary transition-colors group">
+                            View Full Gallery
+                            <span
+                                class="material-symbols-outlined text-[18px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                        </a>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 grid-rows-2 gap-4 h-auto lg:h-[600px]">
+                        <div
+                            class="lg:col-span-2 lg:row-span-2 rounded-xl overflow-hidden relative group border border-primary/20 hover:border-accent/40 transition-all">
+                            <div
+                                class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent z-10">
+                            </div>
+                            <div class="w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
+                                style="background-image: url('image.gif');"></div>
+                            <div class="absolute bottom-0 left-0 p-6 z-20">
+                                <span
+                                    class="inline-block px-2 py-1 bg-accent/10 backdrop-blur-md border border-accent/40 rounded text-xs text-accent font-bold mb-2 shadow-[0_0_10px_rgba(124,255,0,0.2)] uppercase">Event</span>
+                                <h3 class="text-xl font-bold text-white uppercase font-display">Horizon Street Racing
+                                </h3>
+                            </div>
+                        </div>
+                        <div
+                            class="rounded-xl overflow-hidden relative group border border-primary/20 hover:border-accent/40 transition-all">
+                            <div
+                                class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent z-10">
+                            </div>
+                            <div class="w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-105 min-h-[250px]"
+                                style="background-image: url('image.jpg');"></div>
+                            <div class="absolute bottom-0 left-0 p-4 z-20">
+                                <h3 class="text-sm font-bold text-white uppercase font-display">Underground Deals</h3>
+                            </div>
+                        </div>
+                        <div
+                            class="rounded-xl overflow-hidden relative group border border-primary/20 hover:border-accent/40 transition-all">
+                            <div
+                                class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent z-10">
+                            </div>
+                            <div class="w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-105 min-h-[250px]"
+                                style="background-image: url('sanandreas_map.jpg');"></div>
+                            <div class="absolute bottom-0 left-0 p-4 z-20">
+                                <h3 class="text-sm font-bold text-white uppercase font-display">Tactical Ops</h3>
+                            </div>
+                        </div>
+                        <div
+                            class="lg:col-span-2 rounded-xl overflow-hidden relative group border border-primary/20 hover:border-accent/40 transition-all">
+                            <div
+                                class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent z-10">
+                            </div>
+                            <div class="w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-105 min-h-[250px]"
+                                style="background-image: url('image.gif');"></div>
+                            <div class="absolute bottom-0 left-0 p-6 z-20">
+                                <span
+                                    class="inline-block px-2 py-1 bg-primary/20 backdrop-blur-md border border-primary/40 rounded text-xs text-primary font-bold mb-2 uppercase">Roleplay</span>
+                                <h3 class="text-lg font-bold text-white uppercase font-display">Pacific Bank Heist</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Final Call to Action -->
+            <section class="relative z-10 py-24 px-4 overflow-hidden">
+                <div
+                    class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[500px] bg-primary/5 blur-[120px] rounded-full pointer-events-none">
+                </div>
+                <div class="container mx-auto max-w-5xl relative">
+                    <div
+                        class="glass-card rounded-2xl p-8 md:p-12 border border-primary/20 flex flex-col md:flex-row items-center justify-between gap-8 text-center md:text-left">
+                        <div class="flex-1">
+                            <h2 class="text-3xl md:text-4xl font-bold text-white mb-4 uppercase font-display">Your Story
+                                Starts Here</h2>
+                            <p class="text-slate-300 text-lg mb-6">Join our growing community on the most immersive
+                                SA-MP server. Get support, find a faction, and make new friends.</p>
+                            <div class="flex items-center justify-center md:justify-start gap-4 mb-2">
+                                <div class="flex -space-x-3">
+                                    <div
+                                        class="w-10 h-10 rounded-full border-2 border-surface-dark bg-primary/20 flex items-center justify-center text-[10px] font-bold text-primary">
+                                        HR</div>
+                                    <div
+                                        class="w-10 h-10 rounded-full border-2 border-surface-dark bg-accent/20 flex items-center justify-center text-[10px] font-bold text-accent">
+                                        JD</div>
+                                    <div
+                                        class="w-10 h-10 rounded-full border-2 border-surface-dark bg-gold-glow flex items-center justify-center text-[10px] font-bold text-white">
+                                        VIP</div>
+                                    <div
+                                        class="w-10 h-10 rounded-full border-2 border-surface-dark bg-surface-dark flex items-center justify-center text-xs font-bold text-slate-400">
+                                        +500</div>
+                                </div>
+                                <span class="text-sm font-medium text-slate-400"><span
+                                        class="text-accent animate-pulse">●</span> 1,240 Online</span>
+                            </div>
+                        </div>
+                        <div class="flex flex-col gap-3 min-w-[240px]">
+                            <a href="https://discord.gg/dGEu7GQv" target="_blank"
+                                class="flex items-center justify-center gap-3 w-full py-4 px-6 bg-accent hover:bg-accent-dark text-black font-extrabold rounded-lg transition-colors shadow-lg shadow-accent/20 hover:shadow-accent/40 uppercase text-sm tracking-widest">
+                                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                    <path
+                                        d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.7728-.6083 1.1578a18.3377 18.3377 0 00-5.4897 0C9.091 3.6645 8.8573 3.267 8.6375 2.8917a.0754.0754 0 00-.0797-.0371 19.7214 19.7214 0 00-4.884 1.5152.0697.0697 0 00-.032.0277C1.455 8.5262.3168 12.6074.7578 16.6346a.0805.0805 0 00.0305.0565 19.9538 19.9538 0 005.9961 3.0185.0772.0772 0 00.0842-.0276c.4628-.6317.8687-1.2985 1.214-1.9965a.076.076 0 00-.0415-.1057 12.9248 12.9248 0 01-1.8741-.892.077.077 0 01-.0076-.1277c.1352-.0996.2694-.2023.3989-.3088a.0755.0755 0 01.0784-.0104c3.9268 1.7933 8.18 1.7933 12.0614 0a.0736.0736 0 01.0796.0105c.1311.1078.2662.2118.4037.3113a.0755.0755 0 01-.0076.1265 12.2965 12.2965 0 01-1.8753.8967.0753.0753 0 00-.0426.1057c.349.7034.7583 1.3732 1.2188 2.0025a.0769.0769 0 00.0853.0276 19.866 19.866 0 006.0024-3.0232.077.077 0 00.0315-.0554c.5235-5.2642-1.396-9.1576-3.1492-12.228a.0664.0664 0 00-.032-.0277zM8.02 14.156c-1.1825 0-2.1569-1.0858-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.419-2.1568 2.419zm7.9748 0c-1.1825 0-2.1569-1.0858-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.419-2.1568 2.419z">
+                                    </path>
+                                </svg>
+                                Join Discord
+                            </a>
+                            <button id="footer-copy-ip"
+                                class="flex items-center justify-center gap-2 w-full py-4 px-6 bg-white/5 hover:bg-white/10 border border-white/10 text-white font-medium rounded-lg transition-colors group uppercase text-sm">
+                                <span
+                                    class="material-symbols-outlined text-[20px] text-primary group-hover:text-white transition-colors">content_copy</span>
+                                217.182.175.212:28071
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Unified Footer -->
+    <footer class="bg-surface-dark border-t border-primary/10 py-12 relative z-10">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-6 mb-8">
+                <div class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-primary">rocket_launch</span>
+                    <span class="font-display font-bold text-white tracking-wider uppercase">HORIZON<span
+                            class="text-primary">RP</span></span>
+                </div>
+                <div class="flex flex-wrap justify-center gap-8">
+                    <a class="text-gray-400 hover:text-primary transition-colors text-sm font-light uppercase tracking-widest"
+                        href="rules.html">Rules</a>
+                    <a class="text-gray-400 hover:text-primary transition-colors text-sm font-light uppercase tracking-widest"
+                        href="commands.html">Commands</a>
+                    <a class="text-gray-400 hover:text-primary transition-colors text-sm font-light uppercase tracking-widest"
+                        href="waitlist.html">Waitlist</a>
+                    <a class="text-gray-400 hover:text-primary transition-colors text-sm font-light uppercase tracking-widest"
+                        href="admin.html">Admin</a>
+                </div>
+                <div class="flex gap-4">
+                    <a class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-gray-400 hover:bg-black hover:text-white hover:border hover:border-white transition-all"
+                        href="#">
+                        <span class="material-symbols-outlined text-xl">alternate_email</span>
+                    </a>
+                    <a class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-gray-400 hover:bg-red-600 hover:text-white transition-all"
+                        href="#">
+                        <span class="material-symbols-outlined text-xl">smart_display</span>
+                    </a>
+                </div>
+            </div>
+            <div
+                class="text-center md:text-left pt-8 border-t border-primary/10 flex flex-col md:flex-row justify-between items-center opacity-60">
+                <p class="text-gray-600 text-[10px] uppercase tracking-widest font-light">© 2026 Horizon Roleplay. Not
+                    affiliated with Rockstar Games or Take-Two Interactive.</p>
+                <p class="text-gray-600 text-[10px] uppercase tracking-widest font-light mt-2 md:mt-0">Built for the
+                    Ultimate Experience</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Donation Modal -->
+    <div id="donation-modal"
+        class="fixed inset-0 bg-background-dark/95 backdrop-blur-xl flex items-center justify-center z-[100] hidden opacity-0 transition-all duration-300 overflow-y-auto pt-20 pb-10">
+        <div class="glass-panel rounded-2xl p-6 md:p-12 max-w-4xl w-full mx-4 my-auto relative transform scale-95 transition-all duration-300"
+            id="modal-content">
+            <button id="close-modal-btn"
+                class="absolute top-6 right-6 text-gray-500 hover:text-white transition-colors p-2 rounded-full hover:bg-white/5">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+
+            <div class="flex flex-col md:flex-row gap-12">
+                <!-- Left: Info -->
+                <div class="flex-1 space-y-8">
+                    <div>
+                        <h3 class="text-3xl font-display text-white mb-2 uppercase">INITIALIZE <span
+                                class="text-gradient-gold" id="purchase-title">TIER</span></h3>
+                        <p class="text-slate-400 font-light">Complete the bank transfer to activate your rewards.</p>
+                    </div>
+
+                    <div class="bg-primary/5 p-6 rounded-xl border border-primary/20 space-y-6">
+                        <div>
+                            <p class="text-[10px] text-primary font-bold uppercase tracking-[0.2em] mb-3">Bank Transfer
+                                Info</p>
+                            <div class="flex items-center justify-between bg-black/40 p-4 rounded-lg border border-white/5 group hover:border-primary/40 transition-all cursor-pointer"
+                                id="copy-account-btn">
+                                <p id="account-number"
+                                    class="text-lg font-mono font-bold text-primary tracking-tighter">9019928557 - Opay
+                                    Bank(Ayomide)</p>
+                                <span
+                                    class="material-symbols-outlined text-gray-500 group-hover:text-primary transition-colors">content_copy</span>
+                            </div>
+                        </div>
+                        <div>
+                            <p class="text-[10px] text-slate-500 font-bold uppercase tracking-[0.2em] mb-1">Payable
+                                Amount</p>
+                            <p id="tier-price-display" class="text-4xl font-display text-white tracking-tight">₦0</p>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <p class="text-xs text-slate-500 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-primary text-[16px]">info</span>
+                            Processing typically takes 24-48 hours.
+                        </p>
+                        <p class="text-xs text-slate-500 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-primary text-[16px]">security</span>
+                            Encrypted departmental transaction.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Right: Form -->
+                <div class="flex-1">
+                    <form id="donation-form" class="space-y-6">
                         <input type="hidden" id="tier-name" name="tier">
                         <input type="hidden" id="tier-price" name="price">
-                        <div>
-                            <label for="discord-user" class="block text-sm font-semibold text-gray-300 mb-1">Discord Username</label>
-                            <input type="text" id="discord-user" name="discordUser" placeholder="e.g. username#1234" required class="w-full bg-gray-800 border border-gray-600 rounded-md p-3 focus:ring-2 focus:ring-[var(--color-cyan-accent)] focus:outline-none transition-all">
+
+                        <div class="space-y-4">
+                            <div>
+                                <label
+                                    class="block text-[10px] text-slate-500 font-bold uppercase tracking-widest mb-2 px-1">Discord
+                                    Identifier</label>
+                                <input type="text" id="discord-user" name="discordUser" placeholder="username#0000"
+                                    required
+                                    class="w-full bg-black/40 border border-white/10 rounded-xl p-4 text-white focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none transition-all font-light placeholder:text-slate-700">
+                            </div>
+                            <div>
+                                <label
+                                    class="block text-[10px] text-slate-500 font-bold uppercase tracking-widest mb-2 px-1">Character
+                                    Name</label>
+                                <input type="text" id="ingame-name" name="inGameName" placeholder="First_Last" required
+                                    class="w-full bg-black/40 border border-white/10 rounded-xl p-4 text-white focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none transition-all font-light placeholder:text-slate-700">
+                            </div>
+                            <div>
+                                <label
+                                    class="block text-[10px] text-slate-500 font-bold uppercase tracking-widest mb-2 px-1">Evidence
+                                    of Payment</label>
+                                <div class="relative group mt-1">
+                                    <input type="file" id="payment-screenshot" name="screenshot" required
+                                        accept="image/*"
+                                        class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
+                                    <div
+                                        class="bg-black/40 border border-dashed border-white/20 group-hover:border-primary group-hover:bg-primary/5 rounded-xl p-6 text-center transition-all">
+                                        <span
+                                            class="material-symbols-outlined text-primary text-3xl mb-2">upload_file</span>
+                                        <p class="text-[10px] text-slate-500 font-bold uppercase tracking-widest group-hover:text-primary transition-colors"
+                                            id="file-label">Upload Transfer Receipt</p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div>
-                            <label for="ingame-name" class="block text-sm font-semibold text-gray-300 mb-1">In-Game Name</label>
-                            <input type="text" id="ingame-name" name="inGameName" placeholder="e.g. FirstName_LastName" required class="w-full bg-gray-800 border border-gray-600 rounded-md p-3 focus:ring-2 focus:ring-[var(--color-cyan-accent)] focus:outline-none transition-all">
-                        </div>
-                        <div>
-                            <label for="payment-screenshot" class="block text-sm font-semibold text-gray-300 mb-1">Payment Screenshot</label>
-                            <input type="file" id="payment-screenshot" name="screenshot" required accept="image/*" class="w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-[var(--color-cyan-accent)] file:text-black hover:file:bg-[var(--color-cyan-accent)]/80 cursor-pointer">
-                        </div>
-                        <button type="submit" class="w-full bg-[var(--color-cyan-accent)] text-black py-3 rounded-md font-bold text-lg hover:bg-[var(--color-cyan-accent)]/80 hover:shadow-[0_0_20px_var(--color-cyan-accent)] transition-all mt-2">SUBMIT DONATION</button>
+
+                        <button type="submit"
+                            class="w-full bg-gradient-gold text-black py-4 rounded-xl font-bold tracking-[0.2em] transition-all hover:scale-[1.02] shadow-gold uppercase text-sm mt-4">
+                            Confirm Transaction
+                        </button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
 
-
-    <footer class="bg-black/50 border-t border-gray-700/50 py-16">
-        <div class="container mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-12 text-center md:text-left">
-            <div>
-                <h4 class="text-2xl text-[var(--color-green-accent)]">NIGERIAN VIBE RP</h4>
-                <p class="mt-4 text-gray-400">Crafting the ultimate Nigerian roleplay experience. Your story begins here.</p>
-            </div>
-            <div>
-                <h4 class="text-xl font-bold text-gray-300">QUICK LINKS</h4>
-                <ul class="mt-4 space-y-2">
-                    <li><a href="admin.html" class="text-gray-400 hover:text-[var(--color-cyan-accent)]">Admin Login</a></li>
-                    <li><a href="https://discordapp.com/channels/1344745626218401812/1346983202279133336" class="text-gray-400 hover:text-[var(--color-cyan-accent)]">Rules</a></li>
-                </ul>
-            </div>
-            <div>
-                <h4 class="text-xl font-bold text-gray-300">JOIN OUR COMMUNITY</h4>
-                <a href="rules.html" class="mt-4 inline-block bg-yellow-500 text-black px-6 py-2 rounded-md font-bold hover:bg-[var(--color-green-accent)] hover:text-black hover:shadow-[0_0_15px_var(--color-green-accent)] transition-all">
-                    SERVER RULES
-                </a><br>
-                <a href="https://discord.gg/dGEu7GQv" class="mt-4 inline-block bg-[var(--color-green-primary)] text-black px-6 py-2 rounded-md font-bold hover:bg-[var(--color-green-accent)] hover:text-black hover:shadow-[0_0_15px_var(--color-green-accent)] transition-all">
-                    DISCORD SERVER
-                </a>
-            </div>
-        </div>
-        <div class="text-center text-gray-500 mt-12 border-t border-gray-800 pt-8">
-            <p>&copy; 2025 Nigerian Vibe RP. All Rights Reserved.</p>
-        </div>
-    </footer>
-
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const serverIp = "217.182.175.212:28071"; // <-- IMPORTANT: SET YOUR SERVER IP HERE
-            const accountNumber = "9019928557 - Opay Bank(Ayomide)"; // <-- IMPORTANT: SET YOUR ACCOUNT NUMBER HERE
-            const backendUrl = "https://nigeria-vibe-backend.onrender.com"; // <-- YOUR LIVE BACKEND URL
+            const serverIp = "217.182.175.212:28071";
+            const accountNumber = "9019928557 - Opay Bank(Ayomide)";
+            const backendUrl = "https://nigeria-vibe-backend.onrender.com";
 
-            const copyIpBtn = document.getElementById('copy-ip-btn');
-            const purchaseButtons = document.querySelectorAll('.btn-purchase');
+            // UI Components
             const modal = document.getElementById('donation-modal');
+            const modalContent = document.getElementById('modal-content');
+            const purchaseButtons = document.querySelectorAll('.btn-purchase');
             const closeModalBtn = document.getElementById('close-modal-btn');
             const donationForm = document.getElementById('donation-form');
-            const copyAccountBtn = document.getElementById('copy-account-btn');
-            
-            const purchaseTitle = document.getElementById('purchase-title');
-            const priceDisplay = document.getElementById('tier-price-display');
-            const tierNameInput = document.getElementById('tier-name');
-            const tierPriceInput = document.getElementById('tier-price');
-            const accountNumberEl = document.getElementById('account-number');
+            const fileInput = document.getElementById('payment-screenshot');
+            const fileLabel = document.getElementById('file-label');
 
-            accountNumberEl.textContent = accountNumber;
-
-            // Copy Server IP
-            copyIpBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                navigator.clipboard.writeText(serverIp).then(() => {
-                    alert('Server IP copied to clipboard!');
-                }, (err) => {
-                    alert('Failed to copy Server IP.');
-                });
-            });
-
-            // Copy Account Number
-            copyAccountBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                navigator.clipboard.writeText(accountNumber).then(() => {
-                    alert('Account Number copied to clipboard!');
-                }, (err) => {
-                    alert('Failed to copy Account Number.');
-                });
-            });
-
-            // Open Modal
-            purchaseButtons.forEach(button => {
-                button.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    const tier = button.dataset.tier;
-                    const price = button.dataset.price;
-                    
-                    purchaseTitle.textContent = tier.toUpperCase();
-                    priceDisplay.textContent = `₦${parseInt(price).toLocaleString()}`;
-                    tierNameInput.value = tier;
-                    tierPriceInput.value = price;
-                    
-                    modal.classList.remove('hidden');
-                });
-            });
-
-            // Close Modal
-            const closeTheModal = () => modal.classList.add('hidden');
-            closeModalBtn.addEventListener('click', closeTheModal);
-            modal.addEventListener('click', (e) => {
-                if (e.target === modal) {
-                    closeTheModal();
+            // Copy IP logic
+            const ipButtons = ['copy-ip-btn', 'play-now-header', 'footer-copy-ip'];
+            ipButtons.forEach(id => {
+                const btn = document.getElementById(id);
+                if (btn) {
+                    btn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        navigator.clipboard.writeText(serverIp).then(() => {
+                            alert('Horizon RP IP Copied: ' + serverIp);
+                        });
+                    });
                 }
             });
 
-            // Handle Form Submission
+            // Copy Account logic
+            document.getElementById('copy-account-btn').addEventListener('click', () => {
+                navigator.clipboard.writeText(accountNumber).then(() => {
+                    alert('Banking details copied to clipboard!');
+                });
+            });
+
+            // Modal Logic
+            purchaseButtons.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const tier = btn.dataset.tier;
+                    const price = btn.dataset.price;
+
+                    document.getElementById('purchase-title').textContent = tier;
+                    document.getElementById('tier-price-display').textContent = `₦${parseInt(price).toLocaleString()}`;
+                    document.getElementById('tier-name').value = tier;
+                    document.getElementById('tier-price').value = price;
+
+                    modal.classList.remove('hidden');
+                    setTimeout(() => {
+                        modal.classList.remove('opacity-0');
+                        modalContent.classList.remove('scale-95');
+                    }, 10);
+                });
+            });
+
+            const closeTheModal = () => {
+                modal.classList.add('opacity-0');
+                modalContent.classList.add('scale-95');
+                setTimeout(() => modal.classList.add('hidden'), 300);
+            };
+
+            closeModalBtn.addEventListener('click', closeTheModal);
+            modal.addEventListener('click', (e) => { if (e.target === modal) closeTheModal(); });
+
+            // Mobile Menu Logic
+            const mobileBtn = document.getElementById('mobile-menu-btn');
+            const mobileOverlay = document.getElementById('mobile-menu-overlay');
+            const mobileClose = document.getElementById('mobile-menu-close');
+            const mobileLinks = document.querySelectorAll('.mobile-nav-link');
+            const mobilePlay = document.getElementById('mobile-play-now');
+
+            const openMenu = () => {
+                mobileOverlay.classList.remove('translate-x-full');
+                document.body.style.overflow = 'hidden';
+            };
+
+            const closeMenu = () => {
+                mobileOverlay.classList.add('translate-x-full');
+                document.body.style.overflow = '';
+            };
+
+            if (mobileBtn) mobileBtn.addEventListener('click', openMenu);
+            if (mobileClose) mobileClose.addEventListener('click', closeMenu);
+
+            mobileLinks.forEach(link => {
+                link.addEventListener('click', closeMenu);
+            });
+
+            if (mobilePlay) {
+                mobilePlay.addEventListener('click', () => {
+                    closeMenu();
+                    navigator.clipboard.writeText(serverIp).then(() => {
+                        alert('Horizon RP IP Copied: ' + serverIp);
+                    });
+                });
+            }
+
+            // File feedback
+            fileInput.addEventListener('change', (e) => {
+                if (e.target.files.length > 0) {
+                    fileLabel.textContent = "FILE ATTACHED: " + e.target.files[0].name.toUpperCase();
+                    fileLabel.classList.add('text-primary');
+                }
+            });
+
+            // Feature Video Logic
+            const featureVideo = document.getElementById('feature-video');
+            const videoOverlay = document.getElementById('video-overlay');
+            const playBtn = document.getElementById('feature-play-btn');
+
+            if (featureVideo && videoOverlay) {
+                videoOverlay.addEventListener('click', () => {
+                    if (featureVideo.paused) {
+                        featureVideo.play();
+                        videoOverlay.classList.add('opacity-0', 'pointer-events-none');
+                    } else {
+                        featureVideo.pause();
+                        videoOverlay.classList.remove('opacity-0', 'pointer-events-none');
+                    }
+                });
+
+                // Show overlay when video ends
+                featureVideo.addEventListener('ended', () => {
+                    videoOverlay.classList.remove('opacity-0', 'pointer-events-none');
+                });
+            }
+
+            // Form Submit
             donationForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
-                const formData = new FormData(donationForm);
-                const submitButton = donationForm.querySelector('button[type="submit"]');
-                submitButton.disabled = true;
-                submitButton.textContent = 'SUBMITTING...';
+                const submitBtn = donationForm.querySelector('button[type="submit"]');
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'TRANSMITTING...';
 
                 try {
                     const response = await fetch(`${backendUrl}/api/donations`, {
                         method: 'POST',
-                        body: formData,
+                        body: new FormData(donationForm),
                     });
 
                     if (response.ok) {
-                        alert('Donation submitted successfully! We will review it shortly.');
+                        alert('Data Transmitted! Your file is under review by administration.');
                         donationForm.reset();
                         closeTheModal();
                     } else {
-                        const errorData = await response.json();
-                        alert(`Error: ${errorData.message || 'Something went wrong.'}`);
+                        alert('Critical Transmission Failure. Please try again or contact staff.');
                     }
-                } catch (error) {
-                    console.error('Submission error:', error);
-                    alert('There was a network error. Please try again.');
+                } catch (err) {
+                    alert('Network Link Lost. Check connection.');
                 } finally {
-                    submitButton.disabled = false;
-                    submitButton.textContent = 'SUBMIT DONATION';
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'CONFIRM TRANSACTION';
                 }
             });
         });
     </script>
+
 </body>
+
 </html>

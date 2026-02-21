@@ -1,51 +1,126 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Server Commands - NV:RP</title>
+    <title>Server Commands - Horizon RP</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=Orbitron:wght@400;500;700;900&family=Poppins:wght@300;400;500;600&family=JetBrains+Mono:wght@400;700&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        heading: ['Orbitron', 'sans-serif'],
+                        body: ['Inter', 'sans-serif'],
+                        code: ['"JetBrains Mono"', 'monospace']
+                    },
+                    colors: {
+                        brand: {
+                            navy: '#0c142c',
+                            navydark: '#050a17',
+                            gold: '#f4b41a',
+                            goldlight: '#ffcd4d',
+                            green: '#80d638',
+                            greendark: '#57991f'
+                        }
+                    },
+                    backgroundImage: {
+                        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))'
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        :root { 
-            --font-heading: 'Audiowide', sans-serif; 
-            --font-body: 'Rajdhani', sans-serif; 
-            --color-green-accent: #39FF14; 
-            --color-cyan-accent: #00FFFF;
-        }
-        body { 
-            font-family: var(--font-body); 
-            background-color: #0a0a0a;
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #050a17;
+            color: #e2e8f0;
+            /* Subtle tech grid background */
             background-image:
-                radial-gradient(at 10% 20%, hsla(172, 100%, 50%, 0.1) 0px, transparent 50%),
-                radial-gradient(at 80% 0%, hsla(128, 100%, 54%, 0.08) 0px, transparent 50%),
-                radial-gradient(at 50% 90%, hsla(172, 100%, 50%, 0.15) 0px, transparent 50%);
+                linear-gradient(rgba(244, 180, 26, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(244, 180, 26, 0.03) 1px, transparent 1px);
+            background-size: 30px 30px;
+            background-position: center center;
+            background-attachment: fixed;
         }
-        h1, h2, h3, h4 { 
-            font-family: var(--font-heading); 
+
+        h1,
+        h2,
+        h3,
+        h4,
+        .font-heading {
+            font-family: 'Russo One', sans-serif;
+            letter-spacing: 0.05em;
         }
-        .text-glow-green { 
-            text-shadow: 0 0 5px var(--color-green-accent), 0 0 10px var(--color-green-accent); 
+
+        .font-code {
+            font-family: 'JetBrains Mono', monospace;
         }
-        
-        /* --- New Animations --- */
-        @keyframes rotate {
-            100% { transform: rotate(360deg); }
+
+        ::-webkit-scrollbar {
+            width: 8px;
         }
+
+        ::-webkit-scrollbar-track {
+            background: #050a17;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #f4b41a;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #ffcd4d;
+        }
+
+        /* Premium Glassmorphism */
+        .glass-panel {
+            background: rgba(12, 20, 44, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        .text-glow-gold {
+            text-shadow: 0 0 15px rgba(244, 180, 26, 0.6);
+        }
+
+        /* --- Advanced Animations --- */
         @keyframes glitch {
-            2%,64% { transform: translate(2px,0) skew(0deg); }
-            4%,60% { transform: translate(-2px,0) skew(0deg); }
-            62% { transform: translate(0,0) skew(5deg); }
+
+            2%,
+            64% {
+                transform: translate(2px, 0) skew(0deg);
+            }
+
+            4%,
+            60% {
+                transform: translate(-2px, 0) skew(0deg);
+            }
+
+            62% {
+                transform: translate(0, 0) skew(5deg);
+            }
         }
-        /* @keyframes pulse-glow {
-            0%, 100% { box-shadow: 0 0 10px -5px var(--color-cyan-accent); }
-            50% { box-shadow: 0 0 20px 0px var(--color-cyan-accent); }
-        } */
 
         .glitch-text {
-            animation: glitch 1s linear infinite;
+            animation: glitch 1.5s linear infinite;
+            position: relative;
         }
-        .glitch-text:before, .glitch-text:after {
+
+        .glitch-text:before,
+        .glitch-text:after {
             content: attr(data-text);
             position: absolute;
             left: 0;
@@ -55,231 +130,380 @@
             overflow: hidden;
             clip: rect(0, 900px, 0, 0);
         }
+
         .glitch-text:before {
             left: 2px;
-            text-shadow: -2px 0 var(--color-green-accent);
-            animation: glitch-anim-2 1.5s linear infinite reverse;
+            text-shadow: -2px 0 theme('colors.brand.gold');
+            animation: glitch-anim-2 2s linear infinite reverse;
         }
+
         .glitch-text:after {
             left: -2px;
-            text-shadow: -2px 0 var(--color-cyan-accent), 2px 2px var(--color-green-accent);
+            text-shadow: -2px 0 theme('colors.brand.green'), 2px 2px theme('colors.brand.gold');
             animation: glitch-anim-1 2.5s linear infinite reverse;
         }
+
         @keyframes glitch-anim-1 {
-            0% { clip: rect(42px, 9999px, 44px, 0); }
-            5% { clip: rect(12px, 9999px, 60px, 0); }
-            /* ... add more steps for a complex glitch */
-        }
-        @keyframes glitch-anim-2 {
-            0% { clip: rect(2px, 9999px, 90px, 0); }
-            3% { clip: rect(40px, 9999px, 40px, 0); }
-            /* ... add more steps */
+            0% {
+                clip: rect(42px, 9999px, 44px, 0);
+            }
+
+            10% {
+                clip: rect(12px, 9999px, 60px, 0);
+            }
         }
 
-        .animated-border-wrapper {
+        @keyframes glitch-anim-2 {
+            0% {
+                clip: rect(2px, 9999px, 90px, 0);
+            }
+
+            10% {
+                clip: rect(40px, 9999px, 40px, 0);
+            }
+        }
+
+        /* Animated Border for Active Tabs */
+        .tab-btn {
             position: relative;
-            padding: 2px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
             overflow: hidden;
         }
-        .animated-border-wrapper::before {
+
+        .tab-btn::before {
             content: '';
             position: absolute;
-            top: -50%; left: -50%;
-            width: 200%; height: 200%;
-            background: conic-gradient(from var(--angle), transparent 0%, var(--color-cyan-accent), var(--color-green-accent), var(--color-cyan-accent), transparent 25%);
-            animation: rotate 6s linear infinite;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        .tab-button.active .animated-border-wrapper::before,
-        .tab-button:hover .animated-border-wrapper::before {
-            opacity: 1;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: theme('colors.brand.gold');
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.3s ease;
         }
 
-        .command-row {
-            transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+        .tab-btn.active,
+        .tab-btn:hover {
+            background: rgba(244, 180, 26, 0.1);
+            border-color: rgba(244, 180, 26, 0.3);
+            color: theme('colors.brand.gold');
         }
+
+        .tab-btn.active::before,
+        .tab-btn:hover::before {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+
+        /* Command Card Reveal */
+        .command-row {
+            opacity: 0;
+            transform: translateY(10px);
+            animation: fadeUp 0.4s forwards cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes fadeUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         .command-row:hover {
-            animation: pulse-glow 1.5s ease-in-out infinite;
+            background-color: rgba(255, 255, 255, 0.03);
+            border-color: rgba(244, 180, 26, 0.2);
+        }
+
+        /* Mouse Glow */
+        #cursor-glow {
+            position: fixed;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            filter: blur(80px);
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(244, 180, 26, 0.15), transparent 60%);
+            z-index: 0;
         }
     </style>
 </head>
-<body class="bg-gray-950 text-gray-200 min-h-screen">
-    <div id="cursor-glow" class="fixed pointer-events-none -translate-x-1/2 -translate-y-1/2 rounded-full blur-3xl" style="width: 300px; height: 300px; background: radial-gradient(circle, rgba(0, 255, 255, 0.1), transparent 70%);"></div>
 
-    <header class="sticky top-0 z-50 bg-black/50 backdrop-blur-lg border-b border-gray-700/50">
-        <div class="container mx-auto px-6 py-3 flex justify-between items-center">
-            <h1 class="text-3xl font-black text-[var(--color-green-accent)]">NV:RP</h1>
-            
-            <nav class="hidden md:flex items-center space-x-8">
-                <a href="rules.html" class="text-[var(--color-cyan-accent)] text-lg font-semibold hover:text-[var(--color-green-accent)] transition-colors">Rules</a>
-                <a href="waitlist.html" class="text-[var(--color-cyan-accent)] text-lg font-semibold hover:text-[var(--color-green-accent)] transition-colors">Waitlist</a>
-            </nav>
+<body class="selection:bg-brand-gold selection:text-brand-navy min-h-screen flex flex-col">
 
-            <a href="index.html" target="_blank" class="hidden md:inline-block border-2 border-[var(--color-green-accent)] text-[var(--color-green-accent)] px-5 py-2 rounded-md font-bold text-sm hover:bg-[var(--color-green-accent)] hover:text-black hover:shadow-[0_0_15px_var(--color-green-accent)] transition-all">
-                BACK TO HOME
-            </a>
+    <div id="cursor-glow"></div>
 
-            <button id="mobile-menu-button" class="md:hidden text-white">
-                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+    <!-- Navigation -->
+    <header class="fixed top-0 left-0 right-0 z-50 glass-panel border-b border-[#D4AF37]/20">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <div class="flex items-center gap-3 group cursor-pointer" onclick="window.location.href='index.html'">
+                <img src="asset/horizon.png" alt="Horizon RP Logo"
+                    class="h-20 w-auto transition-transform duration-300 group-hover:scale-110">
+            </div>
+            <div class="hidden md:flex items-center gap-8">
+                <a class="text-sm font-medium text-[#F5D77A]/80 hover:text-[#7CFF00] hover:shadow-[0_2px_0_0_#7CFF00] transition-all pb-1"
+                    href="index.html">Home</a>
+                <a class="text-sm font-medium text-[#F5D77A]/80 hover:text-[#7CFF00] hover:shadow-[0_2px_0_0_#7CFF00] transition-all pb-1"
+                    href="index.html#about">Features</a>
+                <a class="text-sm font-medium text-[#F5D77A]/80 hover:text-[#7CFF00] hover:shadow-[0_2px_0_0_#7CFF00] transition-all pb-1"
+                    href="rules.html">Rules</a>
+                <a class="text-sm font-medium text-[#7CFF00] border-b-2 border-[#7CFF00] transition-all pb-1"
+                    href="commands.html">Commands</a>
+                <a class="text-sm font-medium text-[#F5D77A]/80 hover:text-[#7CFF00] hover:shadow-[0_2px_0_0_#7CFF00] transition-all pb-1"
+                    href="https://discord.gg/dGEu7GQv" target="_blank">Discord</a>
+            </div>
+            <button id="play-now-header"
+                class="hidden md:flex bg-gradient-green text-black text-sm font-bold py-2.5 px-6 rounded-lg transition-all btn-green-glow items-center gap-2 group hover:scale-105">
+                <span
+                    class="material-symbols-outlined group-hover:translate-x-1 transition-transform text-[20px]">play_arrow</span>
+                Play Now
+            </button>
+            <button id="mobile-menu-btn" class="md:hidden text-primary p-2 hover:text-white transition-colors">
+                <span class="material-symbols-outlined text-3xl font-bold">menu</span>
             </button>
         </div>
-        
-        <nav id="mobile-menu" class="hidden md:hidden bg-black/70">
-            <a href="rules.html" class="block text-center text-lg font-semibold text-[var(--color-cyan-accent)] py-3 border-b border-gray-800">Rules</a>
-            <a href="waitlist.html" class="block text-center text-lg font-semibold text-[var(--color-cyan-accent)] py-3 border-b border-gray-800">Waitlist</a>
-            <div class="p-4">
-                 <a href="index.html" target="_blank" class="block text-center border-2 border-[var(--color-green-accent)] text-[var(--color-green-accent)] px-5 py-2 rounded-md font-bold text-sm hover:bg-[var(--color-green-accent)] hover:text-black transition-all">
-                    BACK TO HOME
-                </a>
-            </div>
-        </nav>
     </header>
 
-    <div class="container mx-auto px-4 py-12 md:py-20">
-        <header class="text-center mb-12">
-            <h1 class="glitch-text text-6xl font-black text-glow-green" data-text="COMMANDS">COMMANDS</h1>
-            <p class="text-2xl text-gray-400 mt-2">Your Guide to Nigeria Vibe RP</p>
-        </header>
+    <!-- Standardized Mobile Menu Overlay -->
+    <div id="mobile-menu-overlay"
+        class="fixed inset-0 z-[100] bg-background-dark/98 backdrop-blur-2xl translate-x-full transition-transform duration-500 ease-in-out md:hidden flex flex-col items-center justify-center">
+        <button id="mobile-menu-close"
+            class="absolute top-8 right-8 text-primary p-2 hover:scale-110 transition-transform">
+            <span class="material-symbols-outlined text-5xl font-bold">close</span>
+        </button>
 
-        <div class="bg-black/20 border border-gray-800 rounded-xl p-4 md:p-6">
-            <div class="flex flex-wrap justify-center gap-2 md:gap-4 mb-8">
-                <button class="tab-button active" data-tab="general"><div class="animated-border-wrapper rounded-md"><span class="block bg-gray-900 rounded-md px-4 py-2 text-lg font-bold">GENERAL</span></div></button>
-                <button class="tab-button" data-tab="police"><div class="animated-border-wrapper rounded-md"><span class="block bg-gray-900 rounded-md px-4 py-2 text-lg font-bold">POLICE</span></div></button>
-                <button class="tab-button" data-tab="ems"><div class="animated-border-wrapper rounded-md"><span class="block bg-gray-900 rounded-md px-4 py-2 text-lg font-bold">EMS</span></div></button>
-                <button class="tab-button" data-tab="mechanic"><div class="animated-border-wrapper rounded-md"><span class="block bg-gray-900 rounded-md px-4 py-2 text-lg font-bold">MECHANIC</span></div></button>
-                <button class="tab-button" data-tab="government"><div class="animated-border-wrapper rounded-md"><span class="block bg-gray-900 rounded-md px-4 py-2 text-lg font-bold">GOVERNMENT</span></div></button>
-                <button class="tab-button" data-tab="efcc"><div class="animated-border-wrapper rounded-md"><span class="block bg-gray-900 rounded-md px-4 py-2 text-lg font-bold">EFCC</span></div></button>
-                <button class="tab-button" data-tab="restaurant"><div class="animated-border-wrapper rounded-md"><span class="block bg-gray-900 rounded-md px-4 py-2 text-lg font-bold">RESTAURANT</span></div></button>
+        <div class="flex flex-col space-y-10 text-center items-center w-full px-6">
+            <a href="index.html"
+                class="text-3xl font-display font-black text-white tracking-[0.2em] uppercase transition-all hover:scale-110 hover:text-primary">Home</a>
+            <a href="index.html#about"
+                class="text-3xl font-display font-black text-white tracking-[0.2em] uppercase transition-all hover:scale-110 hover:text-primary">Features</a>
+            <a href="rules.html"
+                class="text-3xl font-display font-black text-white tracking-[0.2em] uppercase transition-all hover:scale-110 hover:text-primary">Rules</a>
+            <a href="commands.html"
+                class="text-3xl font-display font-black text-primary tracking-[0.2em] uppercase transition-all hover:scale-110">Commands</a>
+            <a href="https://discord.gg/dGEu7GQv" target="_blank"
+                class="text-3xl font-display font-black text-white tracking-[0.2em] uppercase transition-all hover:scale-110 hover:text-primary">Discord</a>
+
+            <div class="pt-12 w-full max-w-xs">
+                <button id="mobile-play-now"
+                    class="w-full bg-[#7CFF00] text-black font-black py-5 px-10 rounded-2xl shadow-[0_0_30px_rgba(124,255,0,0.4)] flex items-center justify-center gap-3 text-xl tracking-tighter hover:scale-105 transition-transform uppercase">
+                    <span class="material-symbols-outlined text-3xl">play_arrow</span>
+                    PLAY NOW
+                </button>
             </div>
-
-            <main id="command-container" class="space-y-4">
-                </main>
-        </div>
-
-        <div class="text-center text-gray-500 mt-12 border-t border-gray-800 pt-8">
-            <p>&copy; 2025 Nigerian Vibe RP. All Rights Reserved.</p>
         </div>
     </div>
 
+    <!-- Main Content -->
+    <main class="flex-grow container mx-auto px-6 py-12 md:py-20 relative z-10">
+
+        <!-- Header -->
+        <div class="text-center mb-16">
+            <h1 class="glitch-text text-5xl md:text-7xl font-heading text-white text-glow-gold uppercase"
+                data-text="SYSTEM COMMANDS">SYSTEM COMMANDS</h1>
+            <p class="text-xl text-brand-green mt-4 tracking-widest uppercase font-semibold">Technical Documentation</p>
+            <div class="w-24 h-1 bg-gradient-to-r from-brand-gold to-brand-green mx-auto mt-6 rounded-full opacity-70">
+            </div>
+        </div>
+
+        <div
+            class="glass-panel rounded-2xl p-6 md:p-10 border-t-2 border-t-brand-gold/50 shadow-[0_20px_50px_rgba(0,0,0,0.4)]">
+
+            <!-- Category Tabs -->
+            <div class="flex flex-wrap justify-center gap-3 mb-10 text-sm md:text-base">
+                <button class="tab-btn active px-6 py-3 rounded-lg font-heading tracking-wide text-white uppercase"
+                    data-tab="general">General</button>
+                <button class="tab-btn px-6 py-3 rounded-lg font-heading tracking-wide text-gray-400 uppercase"
+                    data-tab="police">Police Dept</button>
+                <button class="tab-btn px-6 py-3 rounded-lg font-heading tracking-wide text-gray-400 uppercase"
+                    data-tab="ems">Paramedics</button>
+                <button class="tab-btn px-6 py-3 rounded-lg font-heading tracking-wide text-gray-400 uppercase"
+                    data-tab="mechanic">Mechanics</button>
+                <button class="tab-btn px-6 py-3 rounded-lg font-heading tracking-wide text-gray-400 uppercase"
+                    data-tab="government">Government</button>
+                <button class="tab-btn px-6 py-3 rounded-lg font-heading tracking-wide text-gray-400 uppercase"
+                    data-tab="efcc">EFCC</button>
+                <button class="tab-btn px-6 py-3 rounded-lg font-heading tracking-wide text-gray-400 uppercase"
+                    data-tab="restaurant">Restaurant</button>
+            </div>
+
+            <!-- Command List Container -->
+            <div class="bg-brand-navydark/80 rounded-xl border border-white/5 p-4 md:p-6 min-h-[400px]">
+                <!-- Column Headers -->
+                <div
+                    class="hidden md:grid grid-cols-12 gap-4 pb-4 border-b border-white/10 text-xs font-bold text-gray-500 uppercase tracking-widest px-4">
+                    <div class="col-span-4">Syntax</div>
+                    <div class="col-span-8">Description</div>
+                </div>
+
+                <div id="command-container" class="space-y-2 mt-4">
+                    <!-- Dynamic Content Inserted Here -->
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Footer Area within Main -->
+        <div class="text-center text-gray-500 mt-16 pb-8 text-sm font-light">
+            <p>&copy; 2026 Horizon RP. Engineered for Excellence.</p>
+        </div>
+    </main>
+
     <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const commands = {
-            general: [
-                { cmd: '/me [action]', desc: 'Describe a custom action your character is doing.' },
-                { cmd: '/do [action]', desc: 'Describe an outcome or environmental effect.' },
-                { cmd: '/pay [id] [amount]', desc: 'Give money to a nearby player.' },
-                { cmd: '/showid [id]', desc: 'Show your ID card to another player.' },
-                { cmd: '/engine', desc: 'Toggle your vehicle\'s engine on or off.' },
-                { cmd: '/lock', desc: 'Lock or unlock the nearest vehicle.' },
-            ],
-            police: [
-                { cmd: '/m [message]', desc: 'Broadcast a message over the department megaphone.' },
-                { cmd: '/r [message]', desc: 'Talk over the police radio.' },
-                { cmd: '/cuff [id]', desc: 'Place handcuffs on a suspect.' },
-                { cmd: '/ticket [id] [amount] [reason]', desc: 'Issue a traffic ticket to a player.' },
-                { cmd: '/mdc', desc: 'Open the Mobile Data Computer to search for records.' },
-            ],
-            ems: [
-                { cmd: '/r [message]', desc: 'Talk over the EMS radio.' },
-                { cmd: '/heal [id] [amount]', desc: 'Heal a player for a specific amount.' },
-                { cmd: '/revive [id]', desc: 'Revive a downed player.' },
-                { cmd: '/treatment [id]', desc: 'Check a player for injuries.' },
-            ],
-            mechanic: [
-                { cmd: '/r [message]', desc: 'Talk over the mechanic radio.' },
-                { cmd: '/repair [id]', desc: 'Repair a player\'s vehicle.' },
-                { cmd: '/refuel [id]', desc: 'Refuel a player\'s vehicle.' },
-                { cmd: '/tow', desc: 'Attach or detach the nearest vehicle to your tow truck.' },
-            ],
-            government: [
-                { cmd: '/gov [message]', desc: 'Broadcast a global announcement from the government.' },
-                { cmd: '/speech [message]', desc: 'Begin a public speech that is displayed to nearby players.' },
-            ],
-            efcc: [
-                { cmd: '/r [message]', desc: 'Talk over the EFCC radio.' },
-                { cmd: '/seize [property]', desc: 'Seize an illegal property or asset.' },
-                { cmd: '/investigate [id]', desc: 'Begin an official investigation on a player.' },
-            ],
-            restaurant: [
-                { cmd: '/cook [item]', desc: 'Cook a food item from the menu.' },
-                { cmd: '/serve [id]', desc: 'Serve a food item to a customer.' },
-                { cmd: '/bill [id] [amount]', desc: 'Give a bill to a customer for their order.' },
-            ]
-        };
+        document.addEventListener('DOMContentLoaded', () => {
+            const commands = {
+                general: [
+                    { cmd: '/me [action]', desc: 'Perform a custom action visible to surrounding players.' },
+                    { cmd: '/do [action]', desc: 'Describe an environmental effect, status, or RP sequence outcome.' },
+                    { cmd: '/pay [id] [amount]', desc: 'Transfer cash securely to an adjacent citizen.' },
+                    { cmd: '/showid [id]', desc: 'Present your government-issued identification.' },
+                    { cmd: '/engine', desc: 'Toggle the ignition state of your current vehicle.' },
+                    { cmd: '/lock', desc: 'Engage or disengage locks on your nearest owned vehicle.' },
+                ],
+                police: [
+                    { cmd: '/m [message]', desc: 'Project your voice utilizing the patrol cruiser megaphone.' },
+                    { cmd: '/r [message]', desc: 'Transmit a message via encrypted departmental radio frequencies.' },
+                    { cmd: '/cuff [id]', desc: 'Restrain a compliant or subdued suspect with steel cuffs.' },
+                    { cmd: '/ticket [id] [amt] [reason]', desc: 'Issue a formal citation for traffic or minor penal infractions.' },
+                    { cmd: '/mdc', desc: 'Access the Mobile Data Computer for criminal records and warrants.' },
+                ],
+                ems: [
+                    { cmd: '/r [message]', desc: 'Broadcast on the standardized emergency medical frequency.' },
+                    { cmd: '/heal [id] [amount]', desc: 'Administer basic first aid to restore a patient\'s vitality.' },
+                    { cmd: '/revive [id]', desc: 'Deploy a defibrillator to resuscitate an incapacitated individual.' },
+                    { cmd: '/treatment [id]', desc: 'Perform a thorough diagnostic assessment of a patient.' },
+                ],
+                mechanic: [
+                    { cmd: '/r [message]', desc: 'Communicate over the standard mechanic logistics channel.' },
+                    { cmd: '/repair [id]', desc: 'Utilize tools to fix structural and engine vehicle damage.' },
+                    { cmd: '/refuel [id]', desc: 'Replenish a vehicle\'s fuel reserves from a jerry can.' },
+                    { cmd: '/tow', desc: 'Engage hydraulic winch to securely connect a disabled vehicle.' },
+                ],
+                government: [
+                    { cmd: '/gov [message]', desc: 'Issue a legally binding statewide public service announcement.' },
+                    { cmd: '/speech [message]', desc: 'Broadcast an oratorical address to all citizens in the immediate vicinity.' },
+                ],
+                efcc: [
+                    { cmd: '/r [message]', desc: 'Transmit securely on the EFCC internal tactical frequency.' },
+                    { cmd: '/seize [property]', desc: 'Confiscate assets linked to verified criminal enterprises.' },
+                    { cmd: '/investigate [id]', desc: 'Initiate a formal audit and dossier on a suspected white-collar criminal.' },
+                ],
+                restaurant: [
+                    { cmd: '/cook [item]', desc: 'Prepare an item listed on the establishment\'s culinary menu.' },
+                    { cmd: '/serve [id]', desc: 'Deliver the prepared dish directly to a patron.' },
+                    { cmd: '/bill [id] [amount]', desc: 'Generate and present a commercial invoice for services rendered.' },
+                ]
+            };
 
-        const tabButtons = document.querySelectorAll('.tab-button');
-        const commandContainer = document.getElementById('command-container');
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            const commandContainer = document.getElementById('command-container');
 
-        const renderCommands = (category) => {
-            commandContainer.innerHTML = ''; // Clear previous commands
-            const commandList = commands[category];
+            const renderCommands = (category) => {
+                commandContainer.innerHTML = '';
+                const commandList = commands[category];
 
-            if (commandList) {
-                commandList.forEach((command, index) => {
-                    const row = document.createElement('div');
-                    row.className = 'command-row grid grid-cols-1 md:grid-cols-3 gap-4 items-center p-4 border-b border-gray-800';
-                    row.style.animationDelay = `${index * 50}ms`;
-                    row.innerHTML = `
-                        <div class="md:col-span-1">
-                            <code class="text-lg font-bold text-cyan-400 bg-gray-900 px-3 py-1 rounded">${command.cmd}</code>
+                if (commandList) {
+                    commandList.forEach((command, index) => {
+                        const row = document.createElement('div');
+                        row.className = 'command-row grid grid-cols-1 md:grid-cols-12 gap-y-2 md:gap-x-4 items-center p-4 border border-transparent rounded-lg transition-colors';
+                        row.style.animationDelay = `${index * 60}ms`;
+
+                        row.innerHTML = `
+                        <div class="col-span-12 md:col-span-4 flex items-center">
+                            <code class="font-code text-brand-gold bg-brand-navydark border border-white/10 px-3 py-1.5 rounded-md text-sm shadow-inner group-hover:border-brand-gold/30 transition-colors w-full md:w-auto inline-block relative pl-6">
+                                <span class="absolute left-2 text-gray-500 select-none">></span>
+                                ${command.cmd}
+                            </code>
                         </div>
-                        <div class="md:col-span-2">
-                            <p class="text-gray-300 text-lg">${command.desc}</p>
+                        <div class="col-span-12 md:col-span-8 flex items-center pr-2">
+                            <p class="text-gray-300 font-light leading-relaxed">${command.desc}</p>
                         </div>
                     `;
-                    commandContainer.appendChild(row);
+                        commandContainer.appendChild(row);
+                    });
+                }
+            };
+
+            // Tab Switching Logic
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    tabButtons.forEach(btn => {
+                        btn.classList.remove('active');
+                        btn.classList.replace('text-white', 'text-gray-400');
+                    });
+
+                    button.classList.add('active');
+                    button.classList.replace('text-gray-400', 'text-white');
+
+                    renderCommands(button.dataset.tab);
+                });
+            });
+
+            // Initialize First Tab
+            renderCommands('general');
+
+            // Mobile Menu Logic
+            const mobileBtn = document.getElementById('mobile-menu-btn');
+            const mobileOverlay = document.getElementById('mobile-menu-overlay');
+            const mobileClose = document.getElementById('mobile-menu-close');
+            const mobilePlay = document.getElementById('mobile-play-now');
+            const headerPlay = document.getElementById('play-now-header');
+            const serverIp = "play.horizon-rp.com";
+
+            const openMenu = () => {
+                if (mobileOverlay) mobileOverlay.classList.remove('translate-x-full');
+                document.body.style.overflow = 'hidden';
+            };
+
+            const closeMenu = () => {
+                if (mobileOverlay) mobileOverlay.classList.add('translate-x-full');
+                document.body.style.overflow = '';
+            };
+
+            const copyIp = () => {
+                navigator.clipboard.writeText(serverIp).then(() => {
+                    alert('Horizon RP IP Copied: ' + serverIp);
+                });
+            };
+
+            if (mobileBtn) mobileBtn.addEventListener('click', openMenu);
+            if (mobileClose) mobileClose.addEventListener('click', closeMenu);
+            if (headerPlay) headerPlay.addEventListener('click', copyIp);
+
+            if (mobilePlay) {
+                mobilePlay.addEventListener('click', () => {
+                    closeMenu();
+                    copyIp();
                 });
             }
-        };
 
-        tabButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                tabButtons.forEach(btn => btn.classList.remove('active'));
-                button.classList.add('active');
-                renderCommands(button.dataset.tab);
-            });
+            // Ambient Mouse Glow Effect
+            const cursorGlow = document.getElementById('cursor-glow');
+            if (cursorGlow) {
+                let requestRef;
+                let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
+                let currentX = mouseX, currentY = mouseY;
+
+                const updateGlow = () => {
+                    currentX += (mouseX - currentX) * 0.1;
+                    currentY += (mouseY - currentY) * 0.1;
+                    cursorGlow.style.left = currentX + 'px';
+                    cursorGlow.style.top = currentY + 'px';
+                    requestRef = requestAnimationFrame(updateGlow);
+                };
+
+                window.addEventListener('mousemove', (e) => {
+                    mouseX = e.clientX;
+                    mouseY = e.clientY;
+                });
+
+                requestRef = requestAnimationFrame(updateGlow);
+            }
         });
-
-        // Initial render
-        renderCommands('general');
-
-        // Mouse move effect
-        const cursorGlow = document.getElementById('cursor-glow');
-        window.addEventListener('mousemove', (e) => {
-            cursorGlow.style.left = e.clientX + 'px';
-            cursorGlow.style.top = e.clientY + 'px';
-        });
-
-
-        // Mouse move effect for rotating gradient on borders
-        document.body.addEventListener('mousemove', e => {
-            document.querySelectorAll('.animated-border-wrapper').forEach(el => {
-                el.style.setProperty('--angle', `${(e.clientX + e.clientY) / 10}deg`);
-            });
-        });
-
-        // 3D Tilt effect for cards
-        document.querySelector('.container').addEventListener('mousemove', (e) => {
-            document.querySelectorAll('.command-row').forEach(card => {
-                const rect = card.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                const { width, height } = rect;
-                
-                const rotateX = (y / height - 0.5) * -10; // Max 5deg rotation
-                const rotateY = (x / width - 0.5) * 10;  // Max 5deg rotation
-                
-                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
-            });
-        });
-
-        document.querySelector('.container').addEventListener('mouseleave', () => {
-            document.querySelectorAll('.command-row').forEach(card => {
-                card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)';
-            });
-        });
-    });
     </script>
 </body>
+
 </html>

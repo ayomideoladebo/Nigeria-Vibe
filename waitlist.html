@@ -1,83 +1,336 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Waitlist Application - Nigerian Vibe RP</title>
+    <title>Waitlist Application - Horizon RP</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=Orbitron:wght@400;500;700;900&family=Poppins:wght@300;400;500;600&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        heading: ['Orbitron', 'sans-serif'],
+                        body: ['Inter', 'sans-serif']
+                    },
+                    colors: {
+                        brand: {
+                            navy: '#0c142c',
+                            navydark: '#050a17',
+                            gold: '#f4b41a',
+                            goldlight: '#ffcd4d',
+                            green: '#80d638',
+                            greendark: '#57991f'
+                        }
+                    },
+                    backgroundImage: {
+                        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))'
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        :root { --font-heading: 'Audiowide', sans-serif; --font-body: 'Rajdhani', sans-serif; --color-green-primary: #008000; --color-green-accent: #39FF14; --color-cyan-accent: #00FFFF; }
-        body { font-family: var(--font-body); }
-        h1, h2, h3, h4 { font-family: var(--font-heading); }
-        .text-glow-cyan { text-shadow: 0 0 5px var(--color-cyan-accent), 0 0 10px var(--color-cyan-accent); }
-        body::before { content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background: linear-gradient(45deg, #0d1f02, #011424, #0d1f02); background-size: 200% 200%; animation: gradientShift 20s ease infinite; }
-        @keyframes gradientShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #050a17;
+            color: #e2e8f0;
+            background-image:
+                radial-gradient(at 90% 10%, rgba(244, 180, 26, 0.08) 0px, transparent 40%),
+                radial-gradient(at 10% 90%, rgba(128, 214, 56, 0.08) 0px, transparent 40%);
+            background-attachment: fixed;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        .font-heading {
+            font-family: 'Russo One', sans-serif;
+            letter-spacing: 0.05em;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #050a17;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #f4b41a;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #ffcd4d;
+        }
+
+        .glass-panel {
+            background: rgba(12, 20, 44, 0.4);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        .text-glow-gold {
+            text-shadow: 0 0 15px rgba(244, 180, 26, 0.6);
+        }
+
+        .form-input {
+            width: 100%;
+            background-color: rgba(5, 10, 23, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.5rem;
+            padding: 0.875rem 1rem;
+            color: white;
+            transition: all 0.3s ease;
+            font-weight: 300;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: theme('colors.brand.gold');
+            box-shadow: 0 0 0 1px theme('colors.brand.gold');
+        }
+
+        .form-input::placeholder {
+            color: #64748b;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #cbd5e1;
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.025em;
+        }
+
+        .btn-brand {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            z-index: 1;
+        }
+
+        .btn-brand::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+            z-index: -1;
+        }
+
+        .btn-brand:hover::before {
+            left: 100%;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: .5;
+            }
+        }
+
+        .animate-pulse-fast {
+            animation: pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
     </style>
 </head>
-<body class="bg-gray-950 text-gray-200 antialiased">
 
-    <header class="sticky top-0 z-50 bg-black/50 backdrop-blur-lg border-b border-gray-700/50">
-        <div class="container mx-auto px-6 py-3 flex justify-between items-center">
-            <a href="index.html" class="text-3xl font-black text-[var(--color-green-accent)]">NV:RP</a>
-            <a href="index.html" class="border-2 border-[var(--color-cyan-accent)] text-[var(--color-cyan-accent)] px-5 py-2 rounded-md font-bold text-sm hover:bg-[var(--color-cyan-accent)] hover:text-black transition-all">
-                BACK TO HOME
+<body class="selection:bg-brand-gold selection:text-brand-navy min-h-screen flex flex-col">
+
+    <!-- Navigation -->
+    <header class="fixed top-0 left-0 right-0 z-50 glass-panel border-b border-[#D4AF37]/20">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <div class="flex items-center gap-3 group cursor-pointer" onclick="window.location.href='index.html'">
+                <img src="asset/horizon.png" alt="Horizon RP Logo"
+                    class="h-20 w-auto transition-transform duration-300 group-hover:scale-110">
+            </div>
+            <div class="hidden md:flex items-center gap-8">
+                <a class="text-sm font-medium text-[#F5D77A]/80 hover:text-[#7CFF00] hover:shadow-[0_2px_0_0_#7CFF00] transition-all pb-1"
+                    href="index.html">Home</a>
+                <a class="text-sm font-medium text-[#F5D77A]/80 hover:text-[#7CFF00] hover:shadow-[0_2px_0_0_#7CFF00] transition-all pb-1"
+                    href="index.html#about">Features</a>
+                <a class="text-sm font-medium text-[#F5D77A]/80 hover:text-[#7CFF00] hover:shadow-[0_2px_0_0_#7CFF00] transition-all pb-1"
+                    href="rules.html">Rules</a>
+                <a class="text-sm font-medium text-[#F5D77A]/80 hover:text-[#7CFF00] hover:shadow-[0_2px_0_0_#7CFF00] transition-all pb-1"
+                    href="commands.html">Commands</a>
+                <a class="text-sm font-medium text-[#F5D77A]/80 hover:text-[#7CFF00] hover:shadow-[0_2px_0_0_#7CFF00] transition-all pb-1"
+                    href="https://discord.gg/dGEu7GQv" target="_blank">Discord</a>
+            </div>
+            <a href="index.html"
+                class="hidden md:flex bg-gradient-gold text-black text-sm font-bold py-2.5 px-6 rounded-lg transition-all shadow-gold hover:shadow-gold-hover items-center gap-2 group hover:scale-105">
+                <span class="material-symbols-outlined text-[20px]">arrow_back</span>
+                Return Home
             </a>
+            <button id="mobile-menu-btn" class="md:hidden text-primary p-2 hover:text-white transition-colors">
+                <span class="material-symbols-outlined text-3xl font-bold">menu</span>
+            </button>
         </div>
     </header>
 
-    <main class="py-16 md:py-24">
-        <div class="container mx-auto px-6 max-w-4xl">
-            <div class="text-center">
-                <h2 class="text-4xl md:text-5xl font-extrabold text-white text-glow-cyan">SERVER WAITLIST APPLICATION</h2>
-                <p class="mt-4 max-w-2xl mx-auto text-lg text-gray-300">
-                    Complete the form below to apply for our server. Take your time and answer thoughtfully.
+    <!-- Standardized Mobile Menu Overlay -->
+    <div id="mobile-menu-overlay"
+        class="fixed inset-0 z-[100] bg-background-dark/98 backdrop-blur-2xl translate-x-full transition-transform duration-500 ease-in-out md:hidden flex flex-col items-center justify-center">
+        <button id="mobile-menu-close"
+            class="absolute top-8 right-8 text-primary p-2 hover:scale-110 transition-transform">
+            <span class="material-symbols-outlined text-5xl font-bold">close</span>
+        </button>
+
+        <div class="flex flex-col space-y-10 text-center items-center w-full px-6">
+            <a href="index.html"
+                class="text-3xl font-display font-black text-white tracking-[0.2em] uppercase transition-all hover:scale-110 hover:text-primary">Home</a>
+            <a href="index.html#about"
+                class="text-3xl font-display font-black text-white tracking-[0.2em] uppercase transition-all hover:scale-110 hover:text-primary">Features</a>
+            <a href="rules.html"
+                class="text-3xl font-display font-black text-white tracking-[0.2em] uppercase transition-all hover:scale-110 hover:text-primary">Rules</a>
+            <a href="commands.html"
+                class="text-3xl font-display font-black text-white tracking-[0.2em] uppercase transition-all hover:scale-110 hover:text-primary">Commands</a>
+            <a href="https://discord.gg/dGEu7GQv" target="_blank"
+                class="text-3xl font-display font-black text-white tracking-[0.2em] uppercase transition-all hover:scale-110 hover:text-primary">Discord</a>
+
+            <div class="pt-12 w-full max-w-xs">
+                <button id="mobile-play-now"
+                    class="w-full bg-[#7CFF00] text-black font-black py-5 px-10 rounded-2xl shadow-[0_0_30px_rgba(124,255,0,0.4)] flex items-center justify-center gap-3 text-xl tracking-tighter hover:scale-105 transition-transform uppercase">
+                    <span class="material-symbols-outlined text-3xl">play_arrow</span>
+                    PLAY NOW
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="flex-grow container mx-auto px-6 py-12 md:py-20 relative z-10">
+        <div class="max-w-4xl mx-auto">
+
+            <!-- Header -->
+            <div class="text-center mb-12">
+                <div
+                    class="inline-block mb-4 px-4 py-1.5 rounded-full border border-brand-gold/30 bg-brand-gold/10 backdrop-blur-sm">
+                    <span
+                        class="text-brand-gold font-semibold text-xs tracking-wider uppercase flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-brand-gold animate-pulse-fast"></span>
+                        Accepting Applications
+                    </span>
+                </div>
+                <h2 class="text-4xl md:text-5xl font-heading text-white text-glow-gold">WHITELIST APPLICATION</h2>
+                <p class="mt-4 text-gray-400 text-lg font-light">
+                    Take your time. Detailed, high-quality answers significantly increase your chances of approval.
                 </p>
             </div>
-            
-            <form id="waitlist-form" class="mt-12 space-y-8 bg-black/20 p-8 rounded-lg border border-gray-700">
-                <div class="grid md:grid-cols-3 gap-6">
-                    <div>
-                        <label for="discord-user" class="block text-sm font-semibold text-gray-300">Discord Username</label>
-                        <input type="text" id="discord-user" name="discordUser" placeholder="username#1234" required class="w-full mt-2 bg-gray-800 border border-gray-600 rounded-md p-3 focus:ring-2 focus:ring-[var(--color-cyan-accent)] focus:outline-none">
-                    </div>
-                    <div>
-                        <label for="ingame-name" class="block text-sm font-semibold text-gray-300">In-Game Name</label>
-                        <input type="text" id="ingame-name" name="inGameName" placeholder="FirstName_LastName" required class="w-full mt-2 bg-gray-800 border border-gray-600 rounded-md p-3 focus:ring-2 focus:ring-[var(--color-cyan-accent)] focus:outline-none">
-                    </div>
-                    <div>
-                        <label for="age" class="block text-sm font-semibold text-gray-300">Who Referred You?</label>
-                        <input type="text" id="age" name="age" placeholder="Their In-Game Username" required class="w-full mt-2 bg-gray-800 border border-gray-600 rounded-md p-3 focus:ring-2 focus:ring-[var(--color-cyan-accent)] focus:outline-none">
-                    </div>
-                </div>
 
-                <div class="space-y-6">
-                    <div>
-                        <label for="q1" class="block text-lg font-semibold text-gray-300">What is Roleplay (RP)?</label>
-                        <p class="text-sm text-gray-400 mb-2">Explain in your own words what roleplaying means to you.</p>
-                        <textarea id="q1" name="rpDefinition" rows="4" required class="w-full bg-gray-800 border border-gray-600 rounded-md p-3 focus:ring-2 focus:ring-[var(--color-cyan-accent)] focus:outline-none"></textarea>
-                    </div>
-                    <div>
-                        <label for="q2" class="block text-lg font-semibold text-gray-300">Define Powergaming (PG).</label>
-                        <p class="text-sm text-gray-400 mb-2">Provide an example of what would be considered powergaming.</p>
-                        <textarea id="q2" name="powergaming" rows="4" required class="w-full bg-gray-800 border border-gray-600 rounded-md p-3 focus:ring-2 focus:ring-[var(--color-cyan-accent)] focus:outline-none"></textarea>
-                    </div>
-                    <div>
-                        <label for="q3" class="block text-lg font-semibold text-gray-300">Character Backstory</label>
-                        <p class="text-sm text-gray-400 mb-2">Briefly describe the character you plan to roleplay on our server.</p>
-                        <textarea id="q3" name="backstory" rows="5" required class="w-full bg-gray-800 border border-gray-600 rounded-md p-3 focus:ring-2 focus:ring-[var(--color-cyan-accent)] focus:outline-none"></textarea>
-                    </div>
-                </div>
+            <!-- Form Card -->
+            <div
+                class="glass-panel border-t-2 border-t-brand-gold/50 rounded-2xl p-8 md:p-12 shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
 
-                <div class="text-center">
-                    <button type="submit" class="w-full md:w-auto bg-[var(--color-cyan-accent)] text-black px-10 py-3 rounded-lg font-bold text-lg hover:bg-[var(--color-cyan-accent)]/80 hover:shadow-[0_0_20px_var(--color-cyan-accent)] transition-all transform hover:scale-105">SUBMIT APPLICATION</button>
-                </div>
-            </form>
+                <form id="waitlist-form" class="space-y-10">
+
+                    <!-- Applicant Info -->
+                    <div>
+                        <h3
+                            class="font-heading text-xl text-brand-gold tracking-widest uppercase mb-6 border-b border-white/5 pb-2">
+                            1. Identity verified</h3>
+                        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            <div>
+                                <label for="discord-user" class="form-label">Discord Name + Tag</label>
+                                <input type="text" id="discord-user" name="discordUser" placeholder="Username#1234"
+                                    required class="form-input">
+                            </div>
+                            <div>
+                                <label for="ingame-name" class="form-label">Desired Character Name</label>
+                                <input type="text" id="ingame-name" name="inGameName" placeholder="First_Last" required
+                                    class="form-input">
+                            </div>
+                            <div>
+                                <label for="age" class="form-label">Who Referred You?</label>
+                                <input type="text" id="age" name="age" placeholder="(Optional) Player Name"
+                                    class="form-input">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Roleplay Knowledge -->
+                    <div>
+                        <h3
+                            class="font-heading text-xl text-brand-gold tracking-widest uppercase mb-6 border-b border-white/5 pb-2">
+                            2. Roleplay Theory</h3>
+                        <div class="space-y-8">
+                            <div>
+                                <label for="q1" class="form-label text-base text-white">What does Roleplay (RP) mean to
+                                    you?</label>
+                                <p class="text-xs text-gray-500 mb-2 font-light">Explain how you approach playing a
+                                    character in a multiplayer environment.</p>
+                                <textarea id="q1" name="rpDefinition" rows="4" required
+                                    class="form-input resize-y"></textarea>
+                            </div>
+                            <div>
+                                <label for="q2" class="form-label text-base text-white">Define Powergaming (PG) with an
+                                    example.</label>
+                                <p class="text-xs text-gray-500 mb-2 font-light">Provide a specific scenario
+                                    demonstrating what it is and why it ruins RP.</p>
+                                <textarea id="q2" name="powergaming" rows="4" required
+                                    class="form-input resize-y"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Character Story -->
+                    <div>
+                        <h3
+                            class="font-heading text-xl text-brand-gold tracking-widest uppercase mb-6 border-b border-white/5 pb-2">
+                            3. Character Profile</h3>
+                        <div>
+                            <label for="q3" class="form-label text-base text-white">Character Backstory &
+                                Ambitions</label>
+                            <p class="text-xs text-gray-500 mb-2 font-light">Where is your character from? Why did they
+                                move to Horizon City? What are their goals (legal or illegal)? Minimum 100 words.</p>
+                            <textarea id="q3" name="backstory" rows="6" required class="form-input resize-y"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Submit -->
+                    <div class="pt-6 border-t border-white/5 text-center">
+                        <button type="submit"
+                            class="btn-brand bg-gradient-to-r from-brand-gold to-brand-goldlight text-brand-navy px-12 py-4 rounded-xl font-heading text-lg tracking-wide hover:shadow-[0_0_20px_rgba(244,180,26,0.4)] transition-all w-full md:w-auto">
+                            SUBMIT APPLICATION
+                        </button>
+                        <p class="text-xs text-gray-500 mt-4 font-light">By submitting, you agree to abide by all
+                            Horizon RP rules.</p>
+                    </div>
+
+                </form>
+
+            </div>
         </div>
     </main>
 
-    <footer class="text-center text-gray-600 py-6 mt-12">
-        <p>&copy; 2025 Nigerian Vibe RP. All Rights Reserved.</p>
+    <!-- Footer -->
+    <footer class="mt-auto border-t border-white/5 bg-brand-navydark/80 text-center py-8 z-10 relative">
+        <div class="container mx-auto px-6">
+            <p class="text-gray-500 font-light text-sm">Applications are reviewed within 24-48 hours. Announcements made
+                in Discord.</p>
+        </div>
     </footer>
 
     <script>
@@ -89,9 +342,9 @@
             const submitButton = form.querySelector('button[type="submit"]');
 
             submitButton.disabled = true;
-            submitButton.textContent = 'SUBMITTING...';
+            submitButton.innerHTML = '<span class="animate-pulse">TRANSMITTING...</span>';
 
-            const backendUrl = "https://nigeria-vibe-backend.onrender.com"; // Your live backend URL
+            const backendUrl = "https://nigeria-vibe-backend.onrender.com";
 
             try {
                 const response = await fetch(`${backendUrl}/api/waitlist`, {
@@ -101,20 +354,57 @@
                 });
 
                 if (response.ok) {
-                    alert('Application submitted successfully! We will review it shortly.');
+                    alert('Application submitted successfully!');
                     form.reset();
                 } else {
-                    const errorData = await response.json();
-                    alert(`Error: ${errorData.message || 'Something went wrong.'}`);
+                    alert('Submission failed.');
                 }
             } catch (error) {
-                console.error('Submission error:', error);
-                alert('There was a network error. Please try again.');
+                alert('Connection failure.');
             } finally {
                 submitButton.disabled = false;
-                submitButton.textContent = 'SUBMIT APPLICATION';
+                submitButton.innerHTML = 'SUBMIT APPLICATION';
+            }
+        });
+
+        // Mobile Menu Logic
+        document.addEventListener('DOMContentLoaded', () => {
+            const mobileBtn = document.getElementById('mobile-menu-btn');
+            const mobileOverlay = document.getElementById('mobile-menu-overlay');
+            const mobileClose = document.getElementById('mobile-menu-close');
+            const mobilePlay = document.getElementById('mobile-play-now');
+            const headerPlay = document.querySelector('header a[href="index.html"].bg-gradient-gold'); // This one is "Return Home" but let's see
+            // Wait, waitlist.html has "Return Home" instead of "Play Now" in header.
+            // Let's keep it that way but fix the mobile play button.
+            const serverIp = "play.horizon-rp.com";
+
+            const openMenu = () => {
+                mobileOverlay.classList.remove('translate-x-full');
+                document.body.style.overflow = 'hidden';
+            };
+
+            const closeMenu = () => {
+                mobileOverlay.classList.add('translate-x-full');
+                document.body.style.overflow = '';
+            };
+
+            const copyIp = () => {
+                navigator.clipboard.writeText(serverIp).then(() => {
+                    alert('Horizon RP IP Copied: ' + serverIp);
+                });
+            };
+
+            if (mobileBtn) mobileBtn.addEventListener('click', openMenu);
+            if (mobileClose) mobileClose.addEventListener('click', closeMenu);
+
+            if (mobilePlay) {
+                mobilePlay.addEventListener('click', () => {
+                    closeMenu();
+                    copyIp();
+                });
             }
         });
     </script>
 </body>
+
 </html>
